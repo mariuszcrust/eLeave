@@ -19,4 +19,9 @@ public class EmployeeDao extends AbstractDao {
         Criteria criteria = getSession().createCriteria(Employee.class);
         return (List<Employee>) criteria.list();
     }
+
+	public Employee getById(Long employeeId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -16,7 +16,21 @@ public class EmployeeService {
 	@Autowired
 	EmployeeDao employeeDao;
 	
-	public List<Employee> getAllEmployees() {
+	public List<Employee> getAll() {
 		return employeeDao.findAll();
+	}
+
+	public Employee getById(Long employeeId) {
+		return employeeDao.getById(employeeId);
+	}
+
+	public void delete(Long employeeId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void update(Employee currentEmployee) {
+		// TODO Auto-generated method stub
+		
 	}
 }
