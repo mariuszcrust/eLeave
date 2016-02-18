@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.company.eleave.employee.entity.Employee;
 
 @Repository("employeeDao")
-public class EmployeeDao extends AbstractDao {
+public class EmployeeDao extends AbstractDao<Long, Employee> {
 
     @SuppressWarnings("unchecked")
 	public List<Employee> findAll() {
@@ -21,7 +21,14 @@ public class EmployeeDao extends AbstractDao {
     }
 
 	public Employee getById(Long employeeId) {
-		// TODO Auto-generated method stub
-		return null;
+		return getById(employeeId);
+	}
+
+	public void update(Employee currentEmployee) {
+		update(currentEmployee);
+	}
+	
+	public void delete(final Long employeeId) {
+		delete(employeeId);
 	}
 }

@@ -25,12 +25,15 @@ public class EmployeeService {
 	}
 
 	public void delete(Long employeeId) {
-		// TODO Auto-generated method stub
-		
+		employeeDao.delete(employeeId);
 	}
 
 	public void update(Employee currentEmployee) {
-		// TODO Auto-generated method stub
+		employeeDao.update(currentEmployee);
 		
+	}
+
+	public long create(Employee employee) {
+		return employeeDao.persist(employee).getId();
 	}
 }
