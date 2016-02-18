@@ -47,5 +47,13 @@ public class Employee extends BaseEntity implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	public EmployeeRole getEmployeeRole() {
+		return employeeRole;
+	}
+	
+	public void setEmployeeRole(final EmployeeRole employeeRole) {
+		this.employeeRole = employeeRole;
+	}
 
 }
