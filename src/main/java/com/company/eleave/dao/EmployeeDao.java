@@ -21,14 +21,14 @@ public class EmployeeDao extends AbstractDao<Long, Employee> {
     }
 
 	public Employee getById(Long employeeId) {
-		return getById(employeeId);
+		return super.getById(employeeId);
 	}
 
 	public void update(Employee currentEmployee) {
-		update(currentEmployee);
+		super.update(currentEmployee);
 	}
 	
 	public void delete(final Long employeeId) {
-		delete(employeeId);
+		super.delete(employeeId);
 	}
 }
