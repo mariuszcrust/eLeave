@@ -41,6 +41,40 @@
         <jstl.version>1.2</jstl.version>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>profile-dev</id>
+            <properties>
+                <env>dev</env>
+                <jdbc.username>root</jdbc.username>
+                <jdbc.password>root</jdbc.password>
+                <jdbc.url>jdbc:mysql://localhost:3306/eleave</jdbc.url>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>env</name>
+                    <value>dev</value>
+                </property>
+            </activation>
+        </profile>
+        <profile>
+            <id>profile-szlachet</id>
+            <properties>
+                <env>szlachet</env>
+                <jdbc.username>szlachet</jdbc.username>
+                <jdbc.password>password</jdbc.password>
+                <jdbc.url>jdbc:mysql://localhost:3306/eLeaveDB</jdbc.url>
+            </properties>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>szlachet</value>
+                </property>
+            </activation>
+        </profile>
+    </profiles>
+
     <dependencyManagement>
         <dependencies>
             <!-- Spring -->
@@ -65,10 +99,10 @@
                 <version>${spring.framework.version}</version>
             </dependency>
             <dependency>
-    			<groupId>org.springframework.data</groupId>
-    			<artifactId>spring-data-jpa</artifactId>
-    			<version>${spring.data.jpa.framework.version}</version>
-  			</dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-jpa</artifactId>
+                <version>${spring.data.jpa.framework.version}</version>
+            </dependency>
             <!--  Web MVC -->
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -122,31 +156,31 @@
             </dependency>
             <!-- Jackson -->
             <dependency>
-    			<groupId>com.fasterxml.jackson.core</groupId>
-    			<artifactId>jackson-core</artifactId>
-    			<version>2.4.1</version>
-			</dependency>
-			<dependency>
-    			<groupId>com.fasterxml.jackson.core</groupId>
-    			<artifactId>jackson-databind</artifactId>
-    			<version>2.4.1.1</version>
-			</dependency>
-			<!-- Swagger -->
-			<dependency>
-    			<groupId>io.springfox</groupId>
-    			<artifactId>springfox-swagger2</artifactId>
-    			<version>${swagger.version}</version>
-			</dependency>
-			<dependency>
-    			<groupId>io.springfox</groupId>
-    			<artifactId>springfox-swagger-ui</artifactId>
-    			<version>${swagger.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.fasterxml</groupId>
-				<artifactId>classmate</artifactId>
-				<version>${classmate.version}</version>
-			</dependency>	
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>2.4.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>2.4.1.1</version>
+            </dependency>
+            <!-- Swagger -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml</groupId>
+                <artifactId>classmate</artifactId>
+                <version>${classmate.version}</version>
+            </dependency>	
             <!-- Testing dependencies -->
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -171,6 +205,12 @@
 
     <build>
         <finalName>${project.artifactId}</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources/config</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <pluginManagement>
             <plugins> 
                 <plugin>
@@ -212,10 +252,10 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
         </dependency>
-		<dependency>
-    			<groupId>org.springframework.data</groupId>
-    			<artifactId>spring-data-jpa</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+        </dependency>
         <!-- Web MVC -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -258,28 +298,28 @@
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
         </dependency>
-		<!-- Jackson -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-		</dependency>
-		<!-- Swagger -->
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml</groupId>
-			<artifactId>classmate</artifactId>
-		</dependency>	
+        <!-- Jackson -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <!-- Swagger -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml</groupId>
+            <artifactId>classmate</artifactId>
+        </dependency>	
         <!-- Testing dependencies -->
         <dependency>
             <groupId>org.springframework</groupId>
