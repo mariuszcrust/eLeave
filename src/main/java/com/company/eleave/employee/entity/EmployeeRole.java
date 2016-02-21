@@ -17,7 +17,7 @@ import javax.persistence.UniqueConstraint;
     @UniqueConstraint(columnNames = "role_name")})
 public class EmployeeRole extends BaseEntity implements Serializable {
 
-    public static final String MODEL_NAME = "ROLE";
+    public static final String MODEL_NAME = "role";
     private static final long serialVersionUID = 1L;
 
     @Column(name = "role_name", length = 30)
@@ -25,4 +25,22 @@ public class EmployeeRole extends BaseEntity implements Serializable {
 
     @Column(name = "comment", length = 255)
     private String comment;
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+    
+    
 }

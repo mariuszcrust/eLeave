@@ -12,12 +12,14 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 
 import com.company.eleave.BaseEntity;
+import javax.persistence.Table;
 
 /**
  *
  * @author Sebastian Szlachetka
  */
 @Entity
+@Table(name = "approver")
 public class Approver extends BaseEntity implements Serializable {
 
 	@OneToOne
@@ -25,27 +27,8 @@ public class Approver extends BaseEntity implements Serializable {
 	private Employee employee;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-	@JoinColumn(name = "id")
+	@JoinColumn(name = "approver_id")
 	private Set<Employee> approvers;
-
-	private Date startDate;
-	private Date endDate;
-
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
 	
 	public Set<Employee> getApprovers() {
 		return approvers;

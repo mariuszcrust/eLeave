@@ -1,27 +1,38 @@
 package com.company.eleave.employee.entity;
 
 import com.company.eleave.BaseEntity;
+import com.company.eleave.leave.entity.AnnualBalanceLeave;
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 /**
  *
  * @author Sebastian Szlachetka
  */
 @Entity
+@Table(name = "employee")
 public class Employee extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @Column(name = "first_name")
     private String firstName;
 
+    @Column(name = "last_name")
     private String lastName;
 
     private String email;
+    
+    @OneToMany(mappedBy = "employee")
+    private List<AnnualBalanceLeave> annualBalanceLeave;
 
     @OneToOne
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "employee_role_id", nullable = false)
     private EmployeeRole employeeRole;
 
 	public String getFirstName() {
