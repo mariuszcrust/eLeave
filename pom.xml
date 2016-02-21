@@ -43,18 +43,15 @@
 
     <profiles>
         <profile>
-            <id>profile-dev</id>
+            <id>profile-test</id>
             <properties>
-                <env>dev</env>
-                <jdbc.username>root</jdbc.username>
-                <jdbc.password>root</jdbc.password>
-                <jdbc.url>jdbc:mysql://localhost:3306/eleave</jdbc.url>
+                <env>test</env>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
                 <property>
                     <name>env</name>
-                    <value>dev</value>
+                    <value>test</value>
                 </property>
             </activation>
         </profile>
@@ -62,9 +59,6 @@
             <id>profile-szlachet</id>
             <properties>
                 <env>szlachet</env>
-                <jdbc.username>szlachet</jdbc.username>
-                <jdbc.password>password</jdbc.password>
-                <jdbc.url>jdbc:mysql://localhost:3306/eLeaveDB</jdbc.url>
             </properties>
             <activation>
                 <property>
@@ -205,10 +199,24 @@
 
     <build>
         <finalName>${project.artifactId}</finalName>
+        <filters>
+            <filter>src/main/resources/filters/${env}.properties</filter>
+        </filters>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
+                <includes>
+                    <include>**/config/*.*</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/config/*.*</exclude>
+                    <exclude>**/filters/*.*</exclude>
+                </excludes>
             </resource>
         </resources>
         <pluginManagement>
