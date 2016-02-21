@@ -67,6 +67,18 @@
                 </property>
             </activation>
         </profile>
+        <profile>
+            <id>profile-mdaniele</id>
+            <properties>
+                <env>mdaniele</env>
+            </properties>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>mdaniele</value>
+                </property>
+            </activation>
+        </profile>
     </profiles>
 
     <dependencyManagement>
