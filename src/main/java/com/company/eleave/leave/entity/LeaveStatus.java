@@ -1,9 +1,9 @@
 package com.company.eleave.leave.entity;
 
-import com.company.eleave.BaseEntity;
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -11,20 +11,20 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  *
  * @author Sebastian Szlachetka
  */
-@Entity
-@Table(name = "leave_status")
-public class LeaveStatus extends BaseEntity {
-
+@Embeddable
+public class LeaveStatus {
+    
+    @Enumerated(EnumType.STRING)
     @Column(name = "status_name")
-    private String statusName;
+    private StatusName statusName;
 
     private String comment;
 
-    public String getStatusName() {
+    public StatusName getStatusName() {
         return statusName;
     }
 
-    public void setStatusName(String statusName) {
+    public void setStatusName(StatusName statusName) {
         this.statusName = statusName;
     }
 
@@ -38,7 +38,7 @@ public class LeaveStatus extends BaseEntity {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(getId()).append(getComment()).append(getStatusName()).toHashCode();
+        return new HashCodeBuilder().append(getComment()).append(getStatusName()).toHashCode();
     }
 
     @Override
@@ -51,14 +51,16 @@ public class LeaveStatus extends BaseEntity {
         }
         final LeaveStatus other = (LeaveStatus) obj;
         return new EqualsBuilder()
-                .append(getId(), other.getId())
                 .append(getStatusName(), other.getStatusName())
                 .append(getComment(), other.getComment()).isEquals();
     }
 
     @Override
     public String toString() {
-        return "LeaveStatus{id=" + getId() + "statusName=" + statusName + ", comment=" + comment + '}';
+        return "LeaveStatus{statusName=" + statusName + ", comment=" + comment + '}';
     }
-
+    
+    public enum StatusName {
+        PENDING, APPROVED, REJECTED, WITHDRAW;
+    }
 }

@@ -12,6 +12,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 
 import com.company.eleave.BaseEntity;
+import javax.persistence.Column;
 import javax.persistence.Table;
 
 /**
@@ -22,16 +23,51 @@ import javax.persistence.Table;
 @Table(name = "approver")
 public class Approver extends BaseEntity implements Serializable {
 
-	@OneToOne
-	@PrimaryKeyJoinColumn
-	private Employee employee;
+    @OneToOne
+    @PrimaryKeyJoinColumn
+    private Employee employee;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-	@JoinColumn(name = "approver_id")
-	private Set<Employee> approvers;
-	
-	public Set<Employee> getApprovers() {
-		return approvers;
-	}
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "approver_id")
+    private Employee approver;
 
+    @Column(name = "start_date")
+    private Date startDate;
+    
+    @Column(name = "end_date")
+    private Date endDate;
+    
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public Employee getApprover() {
+        return approver;
+    }
+
+    public void setApprover(Employee approver) {
+        this.approver = approver;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    
 }

@@ -4,6 +4,7 @@ import com.company.eleave.BaseEntity;
 import com.company.eleave.employee.entity.Employee;
 import java.util.Date;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -17,8 +18,7 @@ import javax.persistence.Table;
 @Table(name = "taken_leave")
 public class TakenLeave extends BaseEntity{
     
-    @OneToOne
-    @JoinColumn(name = "leave_status_id", nullable = false)
+    @Embedded
     private LeaveStatus leaveStatus;
     
     @OneToOne
@@ -37,8 +37,6 @@ public class TakenLeave extends BaseEntity{
     
     @Column(name = "leave_to")
     private Date leaveTo;
-    
-    private String comment;
 
     public LeaveStatus getLeaveStatus() {
         return leaveStatus;
@@ -86,15 +84,5 @@ public class TakenLeave extends BaseEntity{
 
     public void setLeaveTo(Date leaveTo) {
         this.leaveTo = leaveTo;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-    
-    
+    }  
 }
