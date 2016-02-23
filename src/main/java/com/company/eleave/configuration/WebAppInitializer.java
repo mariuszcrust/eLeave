@@ -2,11 +2,11 @@ package com.company.eleave.configuration;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 	  
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] { WebConfiguration.class };
+        return new Class[] { HibernateConfig.class, WebConfiguration.class };
     }
    
     @Override
