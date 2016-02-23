@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Sebastian Szlachetka
  */
 @RestController
-@RequestMapping(path = "/annualBalanceLeaves", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/annualBalanceLeaves")
 public class AnnualBalanceLeaveController {
 
     @RequestMapping(path = "/employee/{id}", method = GET)
