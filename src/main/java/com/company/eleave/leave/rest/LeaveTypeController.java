@@ -2,6 +2,7 @@ package com.company.eleave.leave.rest;
 
 import com.company.eleave.leave.entity.LeaveType;
 import com.company.eleave.leave.repository.LeaveTypeRepository;
+import com.company.eleave.leave.service.LeaveTypeService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
@@ -20,23 +21,19 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Sebastian Szlachetka
  */
 @RestController
-@Transactional
-@RequestMapping(path = "/leaveTypes", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/leaveTypes")
 public class LeaveTypeController {
 
     private Logger LOGGER = Logger.getLogger(LeaveTypeController.class.getName());
-    @Autowired
-    private LeaveTypeRepository leaveTypeRepository;
 
     @Autowired
-    private EntityManagerFactory emf;
+    private LeaveTypeService leaveTypeService;
 
     @RequestMapping(method = POST)
     public ResponseEntity<Long> createNewLeaveType(@RequestBody LeaveType aLeaveType) {
         LOGGER.log(Level.INFO, "Received leave type: {0}", aLeaveType.toString());
-        final LeaveType leaveType = emf.createEntityManager().merge(aLeaveType);
-        // final LeaveType leaveType = leaveTypeRepository.save(aLeaveType);
-        LOGGER.log(Level.INFO, "Leave type stored with id: {0}", leaveType.getId());
-        return new ResponseEntity<>(leaveType.getId(), HttpStatus.CREATED);
+        final Long leaveTypeId = leaveTypeService.createNewLeaveType(aLeaveType);
+        LOGGER.log(Level.INFO, "Leave type stored with id: {0}", leaveTypeId);
+        return new ResponseEntity<>(leaveTypeId, HttpStatus.CREATED);
     }
 }

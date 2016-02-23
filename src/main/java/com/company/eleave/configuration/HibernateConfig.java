@@ -29,7 +29,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories({"com.company.eleave.leave.repository", "com.company.eleave.employee.repository"})
-//@EnableJpaRepositories("T(com.company.eleave.configuration.HibernateConfig).REPOSITORY_PACKAGES")
 @ComponentScan({"com.company.eleave.configuration"})
 @PropertySource(value = {"classpath:/config/application.properties"})
 public class HibernateConfig {
@@ -61,16 +60,6 @@ public class HibernateConfig {
     }
 
     @Bean
-    @DependsOn("flyway")
-    public LocalSessionFactoryBean sessionFactory() {
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(new String[]{"com.company.eleave"});
-        sessionFactory.setHibernateProperties(hibernateProperties());
-        return sessionFactory;
-    }
-
-    @Bean
     public PlatformTransactionManager transactionManager() {
         JpaTransactionManager txManager = new JpaTransactionManager();
         txManager.setEntityManagerFactory(entityManagerFactory());
@@ -85,14 +74,6 @@ public class HibernateConfig {
         dataSource.setUsername(env.getRequiredProperty("jdbc.username"));
         dataSource.setPassword(env.getRequiredProperty("jdbc.password"));
         return dataSource;
-    }
-
-    @Bean
-    @Autowired
-    public HibernateTransactionManager transactionManager(SessionFactory sf) {
-        HibernateTransactionManager txManager = new HibernateTransactionManager();
-        txManager.setSessionFactory(sf);
-        return txManager;
     }
 
     private Properties hibernateProperties() {

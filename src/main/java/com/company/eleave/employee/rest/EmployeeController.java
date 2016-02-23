@@ -1,4 +1,4 @@
-package com.company.eleave.rest;
+package com.company.eleave.employee.rest;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.company.eleave.employee.entity.Employee;
-import com.company.eleave.service.EmployeeService;
+import com.company.eleave.employee.service.EmployeeService;
 
 @RestController
 @RequestMapping(value = "/employee")
