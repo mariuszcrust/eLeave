@@ -85,30 +85,6 @@ CREATE TABLE IF NOT EXISTS `eleavedb`.`approver` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-
--- -----------------------------------------------------
--- Table `eleavedb`.`schema_version`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `eleavedb`.`schema_version` (
-  `version_rank` INT(11) NOT NULL,
-  `installed_rank` INT(11) NOT NULL,
-  `version` VARCHAR(50) NOT NULL,
-  `description` VARCHAR(200) NOT NULL,
-  `type` VARCHAR(20) NOT NULL,
-  `script` VARCHAR(1000) NOT NULL,
-  `checksum` INT(11) NULL DEFAULT NULL,
-  `installed_by` VARCHAR(100) NOT NULL,
-  `installed_on` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `execution_time` INT(11) NOT NULL,
-  `success` TINYINT(1) NOT NULL,
-  PRIMARY KEY (`version`),
-  INDEX `schema_version_vr_idx` (`version_rank` ASC),
-  INDEX `schema_version_ir_idx` (`installed_rank` ASC),
-  INDEX `schema_version_s_idx` (`success` ASC))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
 -- -----------------------------------------------------
 -- Table `eleavedb`.`taken_leave`
 -- -----------------------------------------------------
