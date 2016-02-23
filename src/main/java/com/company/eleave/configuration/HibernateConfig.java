@@ -1,6 +1,5 @@
 package com.company.eleave.configuration;
 
-import static com.company.eleave.configuration.HibernateConfig.REPOSITORY_PACKAGES;
 import java.util.Properties;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -29,13 +28,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories({"com.company.eleave.employee.repository", "com.company.eleave.leave.repository"})
+@EnableJpaRepositories({"com.company.eleave.leave.repository", "com.company.eleave.employee.repository"})
 //@EnableJpaRepositories("T(com.company.eleave.configuration.HibernateConfig).REPOSITORY_PACKAGES")
 @ComponentScan({"com.company.eleave.configuration"})
 @PropertySource(value = {"classpath:/config/application.properties"})
 public class HibernateConfig {
 
-    public static final String[] REPOSITORY_PACKAGES = {"com.company.eleave.employee.repository", "com.company.eleave.leave.repository"};
+    public static final String[] ENTITY_PACKAGES = {"com.company.eleave.leave.entity", "com.company.eleave.employee.entity"};
 
     @Autowired
     private Environment env;
@@ -49,26 +48,26 @@ public class HibernateConfig {
 
     @Bean
     @DependsOn("flyway")
+    public EntityManagerFactory entityManagerFactory() {
+        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        vendorAdapter.setGenerateDdl(true);
+        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+        factory.setJpaVendorAdapter(vendorAdapter);
+        factory.setPackagesToScan(ENTITY_PACKAGES);
+        factory.setDataSource(dataSource());
+        factory.afterPropertiesSet();
+
+        return factory.getObject();
+    }
+
+    @Bean
+    @DependsOn("flyway")
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
         sessionFactory.setPackagesToScan(new String[]{"com.company.eleave"});
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
-    }
-
-    @Bean
-    @DependsOn("flyway")
-    public EntityManagerFactory entityManagerFactory() {
-        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        vendorAdapter.setGenerateDdl(true);
-        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-        factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan(REPOSITORY_PACKAGES);
-        factory.setDataSource(dataSource());
-        factory.afterPropertiesSet();
-
-        return factory.getObject();
     }
 
     @Bean
