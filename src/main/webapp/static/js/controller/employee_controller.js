@@ -20,5 +20,6 @@ App.controller('EmployeeController', ['$scope', 'EmployeeService', function($sco
                                 }
                        );
           };
- 
+          
+          self.getAllEmployee();
 }]);

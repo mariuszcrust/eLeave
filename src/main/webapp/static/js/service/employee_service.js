@@ -4,12 +4,11 @@
 'use strict';
  
 App.factory('EmployeeService', ['$http', '$q', function($http, $q){
-         
-           var getAllEmployee = function() {
-                    return $http.get('http://localhost:8080/eLeave/employee/')
+           return { getAllEmployee : function() {
+                    return $http.get('http://localhost:8080/eLeave/employee')
                             .then(
                                     function(response){
-                                    	console.log('dfgdfgdfg');
+                                    	console.log(response.data);
                                         return response.data;
                                     }, 
                                     function(errResponse){
@@ -17,8 +16,7 @@ App.factory('EmployeeService', ['$http', '$q', function($http, $q){
                                         return $q.reject(errResponse);
                                     }
                             );
-            };
-           
-           return getAllEmployee;
+            }
+           };     
  
 }]);
