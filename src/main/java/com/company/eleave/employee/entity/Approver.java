@@ -1,18 +1,15 @@
 package com.company.eleave.employee.entity;
 
+import com.company.eleave.BaseEntity;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
-
-import com.company.eleave.BaseEntity;
-import javax.persistence.Column;
 import javax.persistence.Table;
 
 /**
@@ -28,7 +25,7 @@ public class Approver extends BaseEntity implements Serializable {
     private Employee employee;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "approver_id")
+    @JoinColumn(name = "employee_id")
     private Employee approver;
 
     @Column(name = "start_date")

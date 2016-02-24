@@ -233,6 +233,7 @@
                 <excludes>
                     <exclude>**/config/*.*</exclude>
                     <exclude>**/filters/*.*</exclude>
+                    <exclude>**/scripts/sql/*.*</exclude>
                 </excludes>
             </resource>
         </resources>

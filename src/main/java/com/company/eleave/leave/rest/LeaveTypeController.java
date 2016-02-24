@@ -1,16 +1,12 @@
 package com.company.eleave.leave.rest;
 
 import com.company.eleave.leave.entity.LeaveType;
-import com.company.eleave.leave.repository.LeaveTypeRepository;
 import com.company.eleave.leave.service.LeaveTypeService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;

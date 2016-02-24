@@ -13,7 +13,6 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name = EmployeeRole.MODEL_NAME, uniqueConstraints = {
-    @UniqueConstraint(columnNames = "id"),
     @UniqueConstraint(columnNames = "role_name")})
 public class EmployeeRole extends BaseEntity implements Serializable {
 
