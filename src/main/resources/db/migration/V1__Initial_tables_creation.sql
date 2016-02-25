@@ -1,14 +1,42 @@
 -- -----------------------------------------------------
--- Table `eleavedb`.`role`
+-- Table `eleavedb`.`employee_role`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `eleavedb`.`role` (
+CREATE TABLE IF NOT EXISTS `eleavedb`.`employee_role` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `version` BIGINT(20) NULL DEFAULT NULL,
   `comment` VARCHAR(255) NULL DEFAULT NULL,
   `role_name` VARCHAR(30) NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `uk_role_role_name` (`role_name` ASC))
+  UNIQUE INDEX `uk_employee_role_role_name` (`role_name` ASC))
 ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+-- -----------------------------------------------------
+-- Table `eleavedb`.`privilege`
+-- -----------------------------------------------------
+CREATE TABLE `privilege` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `version` bigint(20) DEFAULT NULL,
+  `privilege_name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)) 
+ENGINE=InnoDB 
+DEFAULT CHARACTER SET = utf8;
+
+-- -----------------------------------------------------
+-- Table `eleavedb`.`employee_role_privilege`
+-- -----------------------------------------------------
+CREATE TABLE `employee_role_privilege` (
+  `employee_role_id` bigint(20) NOT NULL,
+  `privilege_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`employee_role_id`,`privilege_id`),
+  KEY `fk_employee_role_privilege_privilege_id` (`privilege_id`),
+  CONSTRAINT `fk_employee_role_privilege_employee_role_id`
+    FOREIGN KEY (`employee_role_id`) 
+    REFERENCES `employee_role` (`id`),
+  CONSTRAINT `fk_employee_role_privilege_privilege_id`
+    FOREIGN KEY (`privilege_id`) 
+    REFERENCES `privilege` (`id`)
+) ENGINE=InnoDB 
 DEFAULT CHARACTER SET = utf8;
 
 -- -----------------------------------------------------
@@ -25,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `eleavedb`.`employee` (
   INDEX `fk_employee_employee_role_id` (`employee_role_id` ASC),
   CONSTRAINT `fk_employee_employee_role_id`
     FOREIGN KEY (`employee_role_id`)
-    REFERENCES `eleavedb`.`role` (`id`))
+    REFERENCES `eleavedb`.`employee_role` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -41,7 +69,6 @@ CREATE TABLE IF NOT EXISTS `eleavedb`.`leave_type` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
-
 
 -- -----------------------------------------------------
 -- Table `eleavedb`.`annual_balance_leave`

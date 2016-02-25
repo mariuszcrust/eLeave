@@ -3,7 +3,7 @@ DROP PROCEDURE IF EXISTS eleavedb.createEmployeeRole;
 delimiter //
 create procedure eleavedb.createEmployeeRole ($name varchar(30), $comment varchar(255))
 begin
-    insert into role (version, role_name, comment) values (1, $name, $comment);
+    insert into employee_role (version, role_name, comment) values (1, $name, $comment);
 end //
 delimiter ;
 
