@@ -19,13 +19,13 @@ import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
       DirtiesContextTestExecutionListener.class,
       TransactionalTestExecutionListener.class,
       DbUnitTestExecutionListener.class })
 @ContextConfiguration("file:src/main/resources/test/context-test.xml")
 //@DbUnitConfiguration(databaseConnection={"dataSource"})
-//@DatabaseSetup("toDoData.xml")
+@DatabaseSetup("toDoData.xml")
 public class ITEmployeeControllerRest {
 	
 	  @Test
