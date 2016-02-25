@@ -218,12 +218,6 @@
             </dependency>
             <!-- TODO change version to properties -->
             <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-test</artifactId>
-                <version>4.1.6.RELEASE</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
                 <groupId>org.dbunit</groupId>
                 <artifactId>dbunit</artifactId>
                 <version>2.4.9</version>
@@ -286,6 +280,51 @@
         </resources>
         <pluginManagement>
             <plugins> 
+            
+                 <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.5</version>
+        <executions>
+          <execution>
+            <id>add-test-source</id>
+            <!--
+                This will help m2eclipse to recognize the folder as source
+                folder after update project configuration.
+            -->
+            <phase>process-resources</phase>
+<!--            <phase>generate-test-sources</phase>-->
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>src/it/java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-failsafe-plugin</artifactId>
+  <version>2.15</version>
+  <executions>
+    <execution>
+      <id>integration-test</id>
+      <goals>
+        <goal>integration-test</goal>
+      </goals>
+    </execution>
+    <execution>
+      <id>verify</id>
+      <goals>
+        <goal>verify</goal>
+      </goals>
+    </execution>
+  </executions>
+</plugin>
+            
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -294,6 +333,7 @@
                         <source>${java.version}</source>
                         <target>${java.version}</target>
                     </configuration>
+                     
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -302,7 +342,13 @@
                     <configuration>
                         <failOnMissingWebXml>false</failOnMissingWebXml>
                     </configuration>
-                </plugin>      
+                </plugin>
+                <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.9</version>
+            </plugin>
+
             </plugins>
         </pluginManagement>   
     </build>
@@ -415,10 +461,6 @@
             <artifactId>junit</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.dbunit</groupId>
             <artifactId>dbunit</artifactId>
         </dependency>
@@ -427,11 +469,11 @@
             <artifactId>spring-test-dbunit</artifactId>
         </dependency>
         <dependency>
-	<groupId>org.hsqldb</groupId>
-	<artifactId>hsqldb</artifactId>
-	</dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+		</dependency>
 	<!-- Logging -->
-	<dependency>
+		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
@@ -439,6 +481,5 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 		</dependency>
-        
     </dependencies> 
 </project>

@@ -27,7 +27,7 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
       DbUnitTestExecutionListener.class })
 @ContextConfiguration("file:src/main/resources/test/context-test.xml")
 @DatabaseSetup("toDoData.xml")
-public class ITEmployeeControllerRest {
+public class EmployeeControllerRestIT {
 	
     @Autowired
     EmployeeController employeeController;
