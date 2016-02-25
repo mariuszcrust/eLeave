@@ -1,5 +1,7 @@
 -- DROP eLeave tables 
+DROP PROCEDURE IF EXISTS eleavedb.createPrivilege;
 DROP PROCEDURE IF EXISTS eleavedb.createEmployeeRole;
+DROP PROCEDURE IF EXISTS eleavedb.createEmployeeRoleHasPrivilege;
 
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS eleavedb.approver;
