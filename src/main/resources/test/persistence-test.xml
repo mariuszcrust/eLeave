@@ -1,0 +1,21 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+    version="2.0">
+    <persistence-unit name="pagingDatabase" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <class>com.company.eleave.employee.entity.EmployeeRole</class>
+        <class>com.company.eleave.employee.entity.Approver</class>
+        <class>com.company.eleave.employee.entity.Employee</class>
+        <class>com.company.eleave.leave.entity.AnnualBalanceLeave</class>
+        <class>com.company.eleave.leave.entity.LeaveStatus</class>
+        <class>com.company.eleave.leave.entity.LeaveType</class>
+        <class>com.company.eleave.leave.entity.TakenLeave</class>
+        <properties>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />
+            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.cache.provider_class" value="org.hibernate.cache.HashtableCacheProvider" />
+        </properties>
+    </persistence-unit>
+</persistence>
