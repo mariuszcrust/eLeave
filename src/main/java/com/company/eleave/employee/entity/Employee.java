@@ -2,6 +2,7 @@ package com.company.eleave.employee.entity;
 
 import com.company.eleave.BaseEntity;
 import com.company.eleave.leave.entity.AnnualBalanceLeave;
+import com.company.eleave.security.entity.User;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Column;
@@ -32,8 +33,8 @@ public class Employee extends BaseEntity implements Serializable {
     private List<AnnualBalanceLeave> annualBalanceLeave;
 
     @OneToOne
-    @JoinColumn(name = "employee_role_id", nullable = false)
-    private EmployeeRole employeeRole;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
 	public String getFirstName() {
 		return firstName;
@@ -58,13 +59,21 @@ public class Employee extends BaseEntity implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	public EmployeeRole getEmployeeRole() {
-		return employeeRole;
-	}
-	
-	public void setEmployeeRole(final EmployeeRole employeeRole) {
-		this.employeeRole = employeeRole;
-	}
+
+    public List<AnnualBalanceLeave> getAnnualBalanceLeave() {
+        return annualBalanceLeave;
+    }
+
+    public void setAnnualBalanceLeave(List<AnnualBalanceLeave> annualBalanceLeave) {
+        this.annualBalanceLeave = annualBalanceLeave;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
 }

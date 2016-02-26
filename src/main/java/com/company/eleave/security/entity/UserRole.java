@@ -1,12 +1,16 @@
-package com.company.eleave.employee.entity;
+package com.company.eleave.security.entity;
 
 import com.company.eleave.BaseEntity;
 import com.google.common.collect.Sets;
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -18,49 +22,55 @@ import javax.persistence.UniqueConstraint;
  * @author Sebastian Szlachetka
  */
 @Entity
-@Table(name = "employee_role", uniqueConstraints = {
+@Table(name = "user_role", uniqueConstraints = {
     @UniqueConstraint(columnNames = "role_name")})
-public class EmployeeRole extends BaseEntity implements Serializable {
+public class UserRole extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "role_name", length = 30)
-    private String roleName;
+    private RoleName roleName;
 
     @Column(name = "comment", length = 255)
     private String comment;
 
     @ManyToMany
-    @JoinTable(name = "employee_role_privilege", joinColumns = {
-        @JoinColumn(name = "employee_role_id", referencedColumnName = "id")}, inverseJoinColumns = {
+    @JoinTable(name = "user_role_privilege", joinColumns = {
+        @JoinColumn(name = "user_role_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "privilege_id", referencedColumnName = "id")})
     private Set<Privilege> privileges;
 
     public void addPrivilege(Privilege privilege) {
+        Privilege aPrivilege = Objects.requireNonNull(privilege);
         if (this.privileges == null) {
             this.privileges = new HashSet<>();
         }
-        this.privileges.add(privilege);
+        this.privileges.add(aPrivilege);
     }
 
     public Set<Privilege> getPrivileges() {
-        return privileges == null ? new HashSet<>() : privileges;
+        if (privileges == null) {
+            privileges = new HashSet<>();
+        }
+        return Collections.unmodifiableSet(privileges);
     }
 
     public void setPrivileges(Set<Privilege> privileges) {
+        Set<Privilege> aPrivileges = Objects.requireNonNull(privileges);
         if (this.privileges == null) {
-            this.privileges = Sets.newHashSet(privileges);
+            this.privileges = Sets.newHashSet(aPrivileges);
         } else {
-            this.privileges.addAll(privileges);
+            this.privileges.addAll(aPrivileges);
         }
     }
 
-    public String getName() {
+    public RoleName getRoleName() {
         return roleName;
     }
 
-    public void setName(String name) {
-        this.roleName = name;
+    public void setRoleName(RoleName roleName) {
+        this.roleName = roleName;
     }
 
     public String getComment() {
@@ -71,5 +81,8 @@ public class EmployeeRole extends BaseEntity implements Serializable {
         this.comment = comment;
     }
     
-    
+    public enum RoleName {
+
+        SUPER_USER, HR, APPROVER, EMPLOYEE;
+    }
 }

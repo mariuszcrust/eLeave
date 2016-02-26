@@ -1,4 +1,4 @@
-package com.company.eleave.employee.entity;
+package com.company.eleave.security.entity;
 
 import com.company.eleave.BaseEntity;
 import javax.persistence.Column;
@@ -52,6 +52,6 @@ public class Privilege extends BaseEntity {
     }
 
     public enum PrivilegeName {
-        READ, WRITE, DELETE;
+        REQUEST_LEAVE, APPROVED_LEAVE, ADD_EMPLOYEE, ADD_LEAVE_TYPE, REMOVE_LEAVE_TYPE, REMOVE_EMPLOYEE;
     }
 }
