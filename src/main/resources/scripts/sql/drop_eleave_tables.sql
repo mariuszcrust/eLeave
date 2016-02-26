@@ -4,6 +4,7 @@ DROP PROCEDURE IF EXISTS eleavedb.createUserRole;
 DROP PROCEDURE IF EXISTS eleavedb.createUserRoleHasPrivilege;
 DROP PROCEDURE IF EXISTS eleavedb.createUser;
 DROP PROCEDURE IF EXISTS eleavedb.createUserHasRole;
+DROP PROCEDURE IF EXISTS eleavedb.createLeaveType;
 
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS eleavedb.approver;

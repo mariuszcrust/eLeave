@@ -3,6 +3,7 @@ DROP PROCEDURE IF EXISTS eleavedb.createUserRole;
 DROP PROCEDURE IF EXISTS eleavedb.createUserRoleHasPrivilege;
 DROP PROCEDURE IF EXISTS eleavedb.createUser;
 DROP PROCEDURE IF EXISTS eleavedb.createUserHasRole;
+DROP PROCEDURE IF EXISTS eleavedb.createLeaveType;
 
 delimiter //
 create procedure eleavedb.createPrivilege ($name varchar(30))
@@ -15,24 +16,28 @@ begin
     insert into user_role (version, role_name, comment) values (1, $name, $comment);
     set $id := last_insert_id();
 end //
-delimiter ;
 
-create procedure createUserRoleHasPrivilege($employee_role_id smallint, $privilege_name varchar(30))
+create procedure eleavedb.createUserRoleHasPrivilege($user_role_id smallint, $privilege_name varchar(30))
 begin
     declare _privilege_id int;
     select id from privilege where privilege_name = $privilege_name into _privilege_id;
-    insert into user_role_privilege (employee_role_id, privilege_id) values ($employee_role_id, _privilege_id);
+    insert into user_role_privilege (user_role_id, privilege_id) values ($user_role_id, _privilege_id);
 end //
 
-create procedure createUser($name varchar(50), out $id int)
+create procedure eleavedb.createUser($name varchar(50), out $id int)
 begin
     insert into user (version, user_name, password) values (1, $name, 'password');
     set $id := last_insert_id();
 end //
 
-create procedure createUserHasRole($user_id int, $role_id smallint)
+create procedure eleavedb.createUserHasRole($user_id int, $role_id smallint)
 begin
-    insert into user_user_role (user_id, role_id) values ($user_id, $role_id);
+    insert into user_user_role (user_id, user_role_id) values ($user_id, $role_id);
+end //
+
+create procedure eleavedb.createLeaveType($leave_type_name varchar(50), $days smallint)
+begin
+    insert into leave_type (version, leave_type_name, default_days_allowed, comment) values (1, $leave_type_name, $days, 'No comment');
 end //
 
 delimiter ;
@@ -70,8 +75,21 @@ call eleavedb.createUserRoleHasPrivilege(@employee_role_id, 'REQUEST_LEAVE');
 call eleavedb.createUser('admin', @admin_user_id);
 call eleavedb.createUserHasRole(@admin_user_id, @super_user_role_id);
 
+-- Create leave types
+call eleavedb.createLeaveType('Annual holiday', 24);
+call eleavedb.createLeaveType('On demand', 4);
+call eleavedb.createLeaveType('Special holiday', 2);
+call eleavedb.createLeaveType('Paid child care', 2);
+call eleavedb.createLeaveType('Unpaid holiday', 5);
+call eleavedb.createLeaveType('Blood donation', 1);
+call eleavedb.createLeaveType('Justified paid absence', 1);
+call eleavedb.createLeaveType('Justified unpaid absence', 1);
+call eleavedb.createLeaveType('Overtime', 1);
+call eleavedb.createLeaveType('Other', 1);
+
 DROP PROCEDURE IF EXISTS eleavedb.createPrivilege;
 DROP PROCEDURE IF EXISTS eleavedb.createUserRole;
 DROP PROCEDURE IF EXISTS eleavedb.createUserRoleHasPrivilege;
 DROP PROCEDURE IF EXISTS eleavedb.createUser;
 DROP PROCEDURE IF EXISTS eleavedb.createUserHasRole;
+DROP PROCEDURE IF EXISTS eleavedb.createLeaveType;
