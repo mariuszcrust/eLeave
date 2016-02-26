@@ -3,7 +3,7 @@ package com.company.eleave.employee.rest;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class EmployeeControllerTest {
+public class TestEmployeeController {
 
 	@Test
 	public void dummyTest() {
