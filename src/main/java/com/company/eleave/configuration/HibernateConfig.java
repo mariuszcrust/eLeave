@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories({"com.company.eleave.leave.repository", "com.company.eleave.employee.repository"})
+@EnableJpaRepositories({"com.company.eleave.leave.repository", "com.company.eleave.employee.repository", "com.company.eleave.security.repository"})
 @ComponentScan({"com.company.eleave.configuration"})
 @PropertySource(value = {"classpath:/config/application.properties"})
 public class HibernateConfig {
