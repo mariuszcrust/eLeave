@@ -17,6 +17,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.springframework.security.core.GrantedAuthority;
+
 /**
  *
  * @author Sebastian Szlachetka
@@ -24,7 +26,7 @@ import javax.persistence.UniqueConstraint;
 @Entity
 @Table(name = "user_role", uniqueConstraints = {
     @UniqueConstraint(columnNames = "role_name")})
-public class UserRole extends BaseEntity implements Serializable {
+public class UserRole extends BaseEntity implements GrantedAuthority {
 
     private static final long serialVersionUID = 1L;
 
@@ -84,5 +86,11 @@ public class UserRole extends BaseEntity implements Serializable {
     public enum RoleName {
 
         SUPER_USER, HR, APPROVER, EMPLOYEE;
+    }
+
+    @Override
+    public String getAuthority() {
+      // TODO Auto-generated method stub
+      return null;
     }
 }

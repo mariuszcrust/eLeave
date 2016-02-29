@@ -2,6 +2,8 @@ package com.company.eleave.configuration;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import com.company.eleave.configuration.security.SecurityConfiguration;
+
 public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 	  
     @Override
