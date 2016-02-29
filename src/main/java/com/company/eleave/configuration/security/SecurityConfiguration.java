@@ -44,7 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-		auth.userDetailsService(userDetailsService).passwordEncoder(encoder);
+		auth.userDetailsService(userDetailsService);//.passwordEncoder(encoder);
 	}
 
 	@Override

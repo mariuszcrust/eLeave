@@ -62,7 +62,6 @@ public class Privilege extends BaseEntity implements GrantedAuthority {
 
   @Override
   public String getAuthority() {
-    // TODO Auto-generated method stub
-    return null;
+    return getPrivilegeName().toString();
   }
 }

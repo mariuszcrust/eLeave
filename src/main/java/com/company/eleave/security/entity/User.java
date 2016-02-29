@@ -40,10 +40,6 @@ public class User extends BaseEntity implements UserDetails {
       inverseJoinColumns = {@JoinColumn(name = "user_role_id", referencedColumnName = "id")})
   private Set<UserRole> userRoles;
 
-  public String getUserName() {
-    return userName;
-  }
-
   public void setUserName(String userName) {
     this.userName = userName;
   }
@@ -82,38 +78,36 @@ public class User extends BaseEntity implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    // TODO Auto-generated method stub
-    return null;
+    return getUserRoles();
   }
 
   @Override
   public String getUsername() {
-    // TODO Auto-generated method stub
-    return null;
+    return userName;
   }
 
+  //TODO check do we need it
   @Override
   public boolean isAccountNonExpired() {
-    // TODO Auto-generated method stub
-    return false;
+    return true;
   }
 
+  //TODO check do we need it
   @Override
   public boolean isAccountNonLocked() {
-    // TODO Auto-generated method stub
-    return false;
+    return true;
   }
 
+  //TODO check do we need it
   @Override
   public boolean isCredentialsNonExpired() {
-    // TODO Auto-generated method stub
     return false;
   }
 
+  //TODO check do we need enabled
   @Override
   public boolean isEnabled() {
-    // TODO Auto-generated method stub
-    return false;
+    return true;
   }
 
 }

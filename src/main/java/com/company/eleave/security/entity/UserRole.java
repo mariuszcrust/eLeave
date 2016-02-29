@@ -84,13 +84,11 @@ public class UserRole extends BaseEntity implements GrantedAuthority {
     }
     
     public enum RoleName {
-
         SUPER_USER, HR, APPROVER, EMPLOYEE;
     }
 
     @Override
     public String getAuthority() {
-      // TODO Auto-generated method stub
-      return null;
+      return getRoleName().toString();
     }
 }
