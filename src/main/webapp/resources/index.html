@@ -1,63 +1,42 @@
-<html>
-  <head>  
-    <title>Eleave</title>  
-    <style>
-      .username.ng-valid {
-          background-color: lightgreen;
-      }
-      .username.ng-dirty.ng-invalid-required {
-          background-color: red;
-      }
-      .username.ng-dirty.ng-invalid-minlength {
-          background-color: yellow;
-      }
- 
-      .email.ng-valid {
-          background-color: lightgreen;
-      }
-      .email.ng-dirty.ng-invalid-required {
-          background-color: red;
-      }
-      .email.ng-dirty.ng-invalid-email {
-          background-color: yellow;
-      }
- 
-    </style>
-     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-     <link rel="stylesheet" href="resources/css/app.css"></link>
-  </head>
-  <body ng-app="myApp" class="ng-cloak">
-      <div class="generic-container" ng-controller="EmployeeController as ctrl">
-          <div class="panel panel-default">
-                <!-- Default panel contents -->
-              <div class="panel-heading"><span class="lead">List of Employees </span></div>
-              <div class="tablecontainer">
-                  <table class="table table-hover">
-                      <thead>
-                          <tr>
-                              <th>ID.</th>
-                              <th>FirstName</th>
-                              <th>LastName</th>
-                              <th>Email</th>
-                              <th width="20%"></th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                          <tr ng-repeat="u in ctrl.employees">
-                              <td><span ng-bind="u.id"></span></td>
-                              <td><span ng-bind="u.firstName"></span></td>
-                              <td><span ng-bind="u.lastName"></span></td>
-                              <td><span ng-bind="u.email"></span></td>
-                          </tr>
-                      </tbody>
-                  </table>
-              </div>
-          </div>
-      </div>
-       
-      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
-      <script type="text/javascript" src="resources/js/app.js"></script>
-      <script type="text/javascript" src="resources/js/service/employee_service.js"></script>
-      <script type="text/javascript" src="resources/js/controller/employee_controller.js"></script>
-  </body>
+<!doctype html>
+<html lang="en" ng-app="eLeave">
+    <head>
+        <meta charset="utf-8">
+        <base href="/eLeave">
+        <title>eLeave - sloth</title>
+
+        <!-- build:css app/built/app.min.css -->
+        <link rel="stylesheet" href="eLeave/resources/lib/bootstrap/bootstrap.min.css">
+        <link rel="stylesheet" href="eLeave/resources/css/app.css">
+        <!-- endbuild -->
+    </head>
+    <body>
+        <ul class="menu">
+            <li><a ui-sref="leaveTypes">Leave Types</a></li>
+            <li><a ui-sref="leaveBalances">Leave Balances</a></li>
+        </ul>
+    </body>
+
+    <!-- build:js app/built/app.min.js -->
+
+    <script src="eLeave/resources/lib/jquery/jquery.min.js"></script>
+    <script src="eLeave/resources/lib/bootstrap/bootstrap.min.js"></script>
+
+    <script src="eLeave/resources/lib/angular/angular.js"></script>
+    <script src="eLeave/resources/lib/angular-ui-router/angular-ui-router.js"></script>
+    <script src="eLeave/resources/lib/angular/angular-resource.js"></script>
+    <script src="eLeave/resources/lib/angular/angular-sanitize.js"></script>
+    <script src="eLeave/resources/lib/angular/angular-animate.js"></script>
+    <script src="eLeave/resources/lib/angular/angular-cookies.js"></script>
+
+    <script src="eLeave/resources/js/app.js"></script>
+    <script src="eLeave/resources/js/controllers.js"></script>
+    <script src="eLeave/resources/js/directives.js"></script>
+    <script src="eLeave/resources/js/filters.js"></script>
+    <script src="eLeave/resources/js/services.js"></script>
+
+    <script src="eLeave/resources/modules/leaves/leavesModule.js"></script>
+    <script src="eLeave/resources/modules/leaves/js/controllers.js"></script>
+
+    <!-- endbuild -->
 </html>
