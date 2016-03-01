@@ -8,6 +8,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.springframework.security.core.GrantedAuthority;
 
 /**
  *
@@ -15,43 +16,52 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  */
 @Entity
 @Table(name = "privilege")
-public class Privilege extends BaseEntity {
+public class Privilege extends BaseEntity implements GrantedAuthority {
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "privilege_name")
-    private PrivilegeName privilegeName;
+  private static final long serialVersionUID = 1L;
 
-    public PrivilegeName getPrivilegeName() {
-        return privilegeName;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "privilege_name")
+  private PrivilegeName privilegeName;
+
+  public PrivilegeName getPrivilegeName() {
+    return privilegeName;
+  }
+
+  public void setPrivilegeName(PrivilegeName privilegeName) {
+    this.privilegeName = privilegeName;
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder().append(getId()).append(getPrivilegeName()).toHashCode();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == null) {
+      return false;
     }
-
-    public void setPrivilegeName(PrivilegeName privilegeName) {
-        this.privilegeName = privilegeName;
+    if (getClass() != obj.getClass()) {
+      return false;
     }
+    final Privilege other = (Privilege) obj;
+    return new EqualsBuilder().append(getId(), other.getId())
+        .append(getVersion(), other.getVersion())
+        .append(getPrivilegeName(), other.getPrivilegeName()).isEquals();
+  }
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(getId()).append(getPrivilegeName()).toHashCode();
-    }
+  @Override
+  public String toString() {
+    return "Privilege{" + "name=" + privilegeName + '}';
+  }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Privilege other = (Privilege) obj;
-        return new EqualsBuilder().append(getId(), other.getId()).append(getVersion(), other.getVersion()).append(getPrivilegeName(), other.getPrivilegeName()).isEquals();
-    }
+  public enum PrivilegeName {
+    REQUEST_LEAVE, APPROVED_LEAVE, ADD_EMPLOYEE, ADD_LEAVE_TYPE, REMOVE_LEAVE_TYPE, REMOVE_EMPLOYEE;
+  }
 
-    @Override
-    public String toString() {
-        return "Privilege{" + "name=" + privilegeName + '}';
-    }
-
-    public enum PrivilegeName {
-        REQUEST_LEAVE, APPROVED_LEAVE, ADD_EMPLOYEE, ADD_LEAVE_TYPE, REMOVE_LEAVE_TYPE, REMOVE_EMPLOYEE;
-    }
+  @Override
+  public String getAuthority() {
+    return getPrivilegeName().toString();
+  }
 }
