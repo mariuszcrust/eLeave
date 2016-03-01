@@ -50,9 +50,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 	    http.httpBasic().and().authorizeRequests()
-        .antMatchers("/", "/css/**", "/html/**", "/js/**", "/img/**", "/lib/**", "/rest/**")
+        .antMatchers("/", "index.html")
         .permitAll()// resources
-        .anyRequest().authenticated().and().formLogin().loginPage("/").permitAll().and().logout()
+        .anyRequest().authenticated().and().formLogin().loginPage("/resources/login.html").permitAll().and().logout()
             .permitAll().and().addFilterAfter( csrfHeaderFilter(), CsrfFilter.class).csrf()
         .csrfTokenRepository(csrfTokenRepository());
 	}
