@@ -8,6 +8,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -75,10 +78,14 @@ public class User extends BaseEntity implements UserDetails {
     }
     this.userRoles.add(anUserRole);
   }
+  
+  public Set<Privilege> getPermissions() {
+    return getUserRoles().stream().map(r -> r.getPrivileges()).flatMap(p -> p.stream()).collect(Collectors.toSet());
+  }
 
   @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    return getUserRoles();
+  public Collection<GrantedAuthority> getAuthorities() {
+      return Stream.concat(getUserRoles().stream(), getPermissions().stream()).collect(Collectors.toSet());
   }
 
   @Override
@@ -101,7 +108,7 @@ public class User extends BaseEntity implements UserDetails {
   //TODO check do we need it
   @Override
   public boolean isCredentialsNonExpired() {
-    return false;
+    return true;
   }
 
   //TODO check do we need enabled
