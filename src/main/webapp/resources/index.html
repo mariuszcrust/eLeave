@@ -2,41 +2,41 @@
 <html lang="en" ng-app="eLeave">
     <head>
         <meta charset="utf-8">
-        <base href="/eLeave">
+        <base href="/eLeave/">
         <title>eLeave - sloth</title>
 
         <!-- build:css app/built/app.min.css -->
-        <link rel="stylesheet" href="eLeave/resources/lib/bootstrap/bootstrap.min.css">
-        <link rel="stylesheet" href="eLeave/resources/css/app.css">
+        <link rel="stylesheet" href="resources/lib/bootstrap/bootstrap.min.css">
+        <link rel="stylesheet" href="resources/css/app.css">
         <!-- endbuild -->
     </head>
     <body>
-        <ul class="menu">
-            <li><a ui-sref="leaveTypes">Leave Types</a></li>
-            <li><a ui-sref="leaveBalances">Leave Balances</a></li>
-        </ul>
+        <div class="container" ng-cloak>
+            <br/>  	
+	</div>
+  	<div ui-view class="main-content">Loading . . .</div>
     </body>
 
     <!-- build:js app/built/app.min.js -->
 
-    <script src="eLeave/resources/lib/jquery/jquery.min.js"></script>
-    <script src="eLeave/resources/lib/bootstrap/bootstrap.min.js"></script>
+    <script src="resources/lib/jquery/jquery.min.js"></script>
+    <script src="resources/lib/bootstrap/bootstrap.min.js"></script>
 
-    <script src="eLeave/resources/lib/angular/angular.js"></script>
-    <script src="eLeave/resources/lib/angular-ui-router/angular-ui-router.js"></script>
-    <script src="eLeave/resources/lib/angular/angular-resource.js"></script>
-    <script src="eLeave/resources/lib/angular/angular-sanitize.js"></script>
-    <script src="eLeave/resources/lib/angular/angular-animate.js"></script>
-    <script src="eLeave/resources/lib/angular/angular-cookies.js"></script>
+    <script src="resources/lib/angular/angular.js"></script>
+    <script src="resources/lib/angular-ui-router/angular-ui-router.js"></script>
+    <script src="resources/lib/angular/angular-resource.js"></script>
+    <script src="resources/lib/angular/angular-sanitize.js"></script>
+    <script src="resources/lib/angular/angular-animate.js"></script>
+    <script src="resources/lib/angular/angular-cookies.js"></script>
 
-    <script src="eLeave/resources/js/app.js"></script>
-    <script src="eLeave/resources/js/controllers.js"></script>
-    <script src="eLeave/resources/js/directives.js"></script>
-    <script src="eLeave/resources/js/filters.js"></script>
-    <script src="eLeave/resources/js/services.js"></script>
+    <script src="resources/js/app.js"></script>
+    <script src="resources/js/controllers.js"></script>
+    <script src="resources/js/directives.js"></script>
+    <script src="resources/js/filters.js"></script>
+    <script src="resources/js/services.js"></script>
 
-    <script src="eLeave/resources/modules/leaves/leavesModule.js"></script>
-    <script src="eLeave/resources/modules/leaves/js/controllers.js"></script>
+    <script src="resources/modules/leaves/leavesModule.js"></script>
+    <script src="resources/modules/leaves/js/controllers.js"></script>
 
     <!-- endbuild -->
 </html>

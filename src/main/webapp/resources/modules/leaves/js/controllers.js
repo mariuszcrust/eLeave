@@ -9,5 +9,8 @@ angular.module('eLeave.leaves.controllers',[]).controller('LeaveTypesController'
 }]).controller('LeaveBalancesController',['$scope', '$stateParams', function($scope, $stateParams){
 
     $scope.employeeId=$stateParams.employeeId;
+    $scope.closePost=function(){
+        $state.go('leaveTypes');
+    };
 
 }]);
