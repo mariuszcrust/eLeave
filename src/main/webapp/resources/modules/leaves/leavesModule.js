@@ -2,16 +2,17 @@
 
 angular.module('eLeave.leaves', ['eLeave.leaves.controllers']);
 
-angular.module('eLeave.leaves').config(['$stateProvider', '$locationProvider', '$urlRouterProvider', function ($stateProvider, $locationProvider, $urlRouterProvider) {
-        $stateProvider.state('leaveTypes', {
-            url: '/leaves/leaveTypes',
-            templateUrl: 'resources/modules/leaves/views/leaveTypes.html',
-            controller: 'LeaveTypesController'
-        }).state('leaveBalances', {
-            url: '/leaves/leaveBalances/:employeeId',
+angular.module('eLeave.leaves').config(['$stateProvider', '$locationProvider', function ($stateProvider, $locationProvider) {
+        $stateProvider.state('leaveBalances', {
+            url: '/leaveBalances',
             templateUrl: 'resources/modules/leaves/views/leaveBalances.html',
             controller: 'LeaveBalancesController'
         });
-        $urlRouterProvider.otherwise('/leaves/leaveTypes');
+        $stateProvider.state('leaveTypes', {
+            url: '/leaveTypes',
+            templateUrl: 'resources/modules/leaves/views/leaveTypes.html',
+            controller: 'LeaveTypesController'
+        });
+
         $locationProvider.html5Mode(true);
     }]);

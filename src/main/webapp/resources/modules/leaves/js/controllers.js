@@ -1,16 +1,12 @@
 'use strict'
 
-angular.module('eLeave.leaves.controllers',[]).controller('LeaveTypesController',['$scope', '$location', '$state', function($scope, $location, $state){
-	$scope.loadLeaveBalances = function() {
-            $state.go('leaveBalances', {
-                employeeId: 1
-            });
-        }    
-}]).controller('LeaveBalancesController',['$scope', '$stateParams', function($scope, $stateParams){
+angular.module('eLeave.leaves.controllers',[]).controller('LeaveBalancesController',['$scope', '$state', function($scope, $state){
 
-    $scope.employeeId=$stateParams.employeeId;
-    $scope.closePost=function(){
+    $scope.closeBalances=function(){
         $state.go('leaveTypes');
     };
 
+}]).controller('LeaveTypesController',['$scope', '$state', function($scope, $state){
+
+            
 }]);
