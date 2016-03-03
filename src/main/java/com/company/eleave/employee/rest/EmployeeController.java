@@ -1,7 +1,10 @@
 package com.company.eleave.employee.rest;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,15 +17,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.company.eleave.employee.entity.Approver;
 import com.company.eleave.employee.entity.Employee;
+import com.company.eleave.employee.rest.dto.ApproverDTO;
+import com.company.eleave.employee.service.ApproverService;
 import com.company.eleave.employee.service.EmployeeService;
 
 @RestController
-@RequestMapping(value = "/employee")
+@RequestMapping(value = "/employees")
 public class EmployeeController {
 
 	@Autowired
 	EmployeeService employeeService;
+	
+	@Autowired
+	ApproverService approverService;
+
+	private static final SimpleDateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss a");
 
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Employee>> getAll() {
@@ -59,6 +70,49 @@ public class EmployeeController {
 		employeeService.update(currentEmployee);
 		
 		return new ResponseEntity<Employee>(currentEmployee, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/{id}/approver", method = RequestMethod.PUT)
+	public ResponseEntity<Void> assignApprover(final @PathVariable("id") Long employeeId, @RequestBody ApproverDTO approverDTO) {
+		final Employee currentEmployee = employeeService.getById(employeeId);
+		if(currentEmployee == null) {
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+		}
+		
+		final Employee newApprover = employeeService.getById(approverDTO.getApproverId());
+		if(newApprover == null) {
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+		}
+		
+		if(StringUtils.isNotBlank(approverDTO.getStartDate()) || StringUtils.isNotBlank(approverDTO.getEndDate())) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}
+		
+		final Approver approver = new Approver();
+		approver.setEmployee(currentEmployee);
+		approver.setApprover(newApprover);
+		try {
+			approver.setStartDate(FORMATTER.parse(approverDTO.getStartDate()));
+			approver.setEndDate(FORMATTER.parse(approverDTO.getEndDate()));
+		} catch (ParseException e) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}
+		
+		approverService.assignApprover(approver);
+		
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/{id}/approver/{approverId}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> removeApproverForEmployee(final @PathVariable("id") Long employeeId) {
+		final Approver approver = approverService.getById(employeeId);
+		if(approver == null) {
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+		}
+		
+		approverService.removeApproverForEmployee(approver);
+		
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
