@@ -7,7 +7,16 @@ angular.module('eLeave.leaves').config(['$stateProvider', '$locationProvider', f
             url: '/about',
             templateUrl: 'resources/modules/leaves/views/about.html',
             controller: 'AboutController'
+        }).state('about.mario', {
+            url: '/mario',
+            templateUrl: 'resources/modules/leaves/views/about-mario.html',
+            controller: 'MarioHomeController'
+        }).state('about.seba', {
+            url: '/seba',
+            templateUrl: 'resources/modules/leaves/views/about-seba.html',
+            controller: 'SebaHomeController'
         });
+        
         $stateProvider.state('home', {
             url: '/home',
             templateUrl: 'resources/modules/leaves/views/home.html',
