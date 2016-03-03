@@ -3,15 +3,15 @@
 angular.module('eLeave.leaves', ['eLeave.leaves.controllers']);
 
 angular.module('eLeave.leaves').config(['$stateProvider', '$locationProvider', function ($stateProvider, $locationProvider) {
-        $stateProvider.state('leaveBalances', {
-            url: '/leaveBalances',
-            templateUrl: 'resources/modules/leaves/views/leaveBalances.html',
-            controller: 'LeaveBalancesController'
+        $stateProvider.state('about', {
+            url: '/about',
+            templateUrl: 'resources/modules/leaves/views/about.html',
+            controller: 'AboutController'
         });
-        $stateProvider.state('leaveTypes', {
-            url: '/leaveTypes',
-            templateUrl: 'resources/modules/leaves/views/leaveTypes.html',
-            controller: 'LeaveTypesController'
+        $stateProvider.state('home', {
+            url: '/home',
+            templateUrl: 'resources/modules/leaves/views/home.html',
+            controller: 'HomeController'
         });
 
         $locationProvider.html5Mode(true);

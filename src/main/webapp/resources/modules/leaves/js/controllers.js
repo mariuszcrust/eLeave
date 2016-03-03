@@ -1,12 +1,12 @@
 'use strict'
 
-angular.module('eLeave.leaves.controllers',[]).controller('LeaveBalancesController',['$scope', '$state', function($scope, $state){
+angular.module('eLeave.leaves.controllers',[]).controller('AboutController',['$scope', '$state', function($scope, $state){
 
     $scope.closeBalances=function(){
-        $state.go('leaveTypes');
+        $state.go('home');
     };
 
-}]).controller('LeaveTypesController',['$scope', '$state', function($scope, $state){
+}]).controller('HomeController',['$scope', '$state', function($scope, $state){
 
             
 }]);
