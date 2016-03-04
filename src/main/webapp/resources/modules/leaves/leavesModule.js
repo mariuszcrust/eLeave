@@ -23,5 +23,5 @@ angular.module('eLeave.leaves').config(['$stateProvider', '$locationProvider', f
             controller: 'HomeController'
         });
 
-        $locationProvider.html5Mode(true);
+        //$locationProvider.html5Mode(true);
     }]);
