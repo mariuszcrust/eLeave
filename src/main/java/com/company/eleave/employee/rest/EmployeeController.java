@@ -21,10 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.company.eleave.employee.entity.Approver;
 import com.company.eleave.employee.entity.Employee;
+import com.company.eleave.employee.rest.dto.AnnualBalanceLeaveDTO;
 import com.company.eleave.employee.rest.dto.ApproverDTO;
 import com.company.eleave.employee.rest.dto.EmployeeDTO;
+import com.company.eleave.employee.rest.dto.LeaveTypeDTO;
 import com.company.eleave.employee.service.ApproverService;
 import com.company.eleave.employee.service.EmployeeService;
+import com.company.eleave.leave.entity.AnnualBalanceLeave;
+import com.company.eleave.leave.entity.LeaveType;
 
 @RestController
 @RequestMapping(value = "/employees")
@@ -35,6 +39,8 @@ public class EmployeeController {
 
   @Autowired
   ApproverService approverService;
+  
+  private ModelMapper mapper = new ModelMapper();
 
   private static final SimpleDateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss a");
 
@@ -135,7 +141,14 @@ public class EmployeeController {
   }
 
   private EmployeeDTO convertToDto(Employee employee) {
-    EmployeeDTO employeeDto = new ModelMapper().map(employee, EmployeeDTO.class);
+    EmployeeDTO employeeDto = mapper.map(employee, EmployeeDTO.class);
+    employeeDto.setAnnualBalanceLeave(employee.getAnnualBalanceLeave().stream().map(annualBalance -> convertToDto(annualBalance)).collect(Collectors.toList()));
     return employeeDto;
+  }
+  
+  private AnnualBalanceLeaveDTO convertToDto(AnnualBalanceLeave balanceLeave) {
+    AnnualBalanceLeaveDTO annualBalanceDto = mapper.map(balanceLeave, AnnualBalanceLeaveDTO.class);
+    annualBalanceDto.setLeaveType(mapper.map(balanceLeave.getLeaveType(), LeaveTypeDTO.class));
+    return annualBalanceDto;
   }
 }
