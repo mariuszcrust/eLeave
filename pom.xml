@@ -42,6 +42,7 @@
 		<env.coveralls_repo_token>VFblm0Qkq3ElkeLid6q47xScllqZHy7wM</env.coveralls_repo_token>
 		<!-- Spring Security -->
 		<spring.security.version>4.0.4.RELEASE</spring.security.version>
+		<model.mapper.version>0.7.5</model.mapper.version>
 	</properties>
 
 	<profiles>
@@ -266,6 +267,11 @@
 				<artifactId>slf4j-log4j12</artifactId>
 				<version>1.7.7</version>
 			</dependency>
+			<dependency>
+                <groupId>org.modelmapper</groupId>
+                <artifactId>modelmapper</artifactId>
+                <version>${model.mapper.version}</version>
+            </dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -531,5 +537,9 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+        </dependency>
 	</dependencies>
 </project>
