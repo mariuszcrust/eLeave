@@ -4,6 +4,7 @@ DROP PROCEDURE IF EXISTS eleavedb.createUserRoleHasPrivilege;
 DROP PROCEDURE IF EXISTS eleavedb.createUser;
 DROP PROCEDURE IF EXISTS eleavedb.createUserHasRole;
 DROP PROCEDURE IF EXISTS eleavedb.createLeaveType;
+DROP PROCEDURE IF EXISTS eleavedb.createEmployee;
 
 delimiter //
 create procedure eleavedb.createPrivilege ($name varchar(30))
@@ -40,6 +41,11 @@ begin
     insert into leave_type (version, leave_type_name, default_days_allowed, comment) values (1, $leave_type_name, $days, 'No comment');
 end //
 
+create procedure eleavedb.createEmployee($email varchar(255), $first_name varchar(255), $last_name varchar(255), $user_id smallint)
+begin
+    insert into employee (version, email, first_name, last_name, user_id) values (1, $email, $first_name, $last_name, $user_id);
+end //
+
 delimiter ;
 
 -- Create privileges (for details please see com.company.eleave.security.entity.Privilege)
@@ -74,6 +80,44 @@ call eleavedb.createUserRoleHasPrivilege(@employee_role_id, 'REQUEST_LEAVE');
 -- Create admin user
 call eleavedb.createUser('admin', @admin_user_id);
 call eleavedb.createUserHasRole(@admin_user_id, @super_user_role_id);
+
+-- Create HR roles
+call eleavedb.createUser('rita', @rita_user_id);
+call eleavedb.createUserHasRole(@rita_user_id, @hr_role_id);
+
+call eleavedb.createUser('beata', @beata_user_id);
+call eleavedb.createUserHasRole(@beata_user_id, @hr_role_id);
+
+-- Create Approver roles
+call eleavedb.createUser('maciek', @maciek_user_id);
+call eleavedb.createUserHasRole(@maciek_user_id, @approver_role_id);
+
+call eleavedb.createUser('pawel', @pawel_user_id);
+call eleavedb.createUserHasRole(@pawel_user_id, @approver_role_id);
+
+-- Create User roles
+call eleavedb.createUser('mariusz', @mariusz_user_id);
+call eleavedb.createUserHasRole(@mariusz_user_id, @employee_role_id);
+
+call eleavedb.createUser('sebastian', @seba_user_id);
+call eleavedb.createUserHasRole(@seba_user_id, @employee_role_id);
+
+call eleavedb.createUser('alex', @alex_user_id);
+call eleavedb.createUserHasRole(@alex_user_id, @employee_role_id);
+
+call eleavedb.createUser('liubomir', @liubomir_user_id);
+call eleavedb.createUserHasRole(@liubomir_user_id, @employee_role_id);
+
+-- Create employees
+call eleavedb.createEmployee('admin@softserve.com','super','admin', @admin_user_id);
+call eleavedb.createEmployee('rita@softserve.com','rita','prockow', @rita_user_id);
+call eleavedb.createEmployee('beata@softserve.com','beata','kepska', @beata_user_id);
+call eleavedb.createEmployee('maciek@softserve.com','maciek','urynowicz', @maciek_user_id);
+call eleavedb.createEmployee('pawel@softserve.com','pawel','lopatka', @pawel_user_id);
+call eleavedb.createEmployee('mariusz@softserve.com','mariusz','danielewski', @mariusz_user_id);
+call eleavedb.createEmployee('sebastian@softserve.com','sebastian','szlachetka', @seba_user_id);
+call eleavedb.createEmployee('alex@softserve.com','alex','belugorov', @alex_user_id);
+call eleavedb.createEmployee('liubomir@softserve.com','liubomir','mir', @admin_user_id);
 
 -- Create leave types
 call eleavedb.createLeaveType('Annual holiday', 24);

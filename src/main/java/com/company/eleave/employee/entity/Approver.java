@@ -25,7 +25,7 @@ public class Approver extends BaseEntity implements Serializable {
     private Employee employee;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "approver_id")
     private Employee approver;
 
     @Column(name = "start_date")

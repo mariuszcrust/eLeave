@@ -16,6 +16,7 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import com.company.eleave.employee.entity.Employee;
+import com.company.eleave.employee.rest.dto.EmployeeDTO;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 
@@ -33,7 +34,7 @@ public class ITEmployeeControllerRest{
   
       @Test
       public void testFindAll() throws Exception {
-        ResponseEntity<List<Employee>> response = employeeController.getAll();
+        ResponseEntity<List<EmployeeDTO>> response = employeeController.getAll();
         Assert.assertTrue("size of list should be 1", response.getBody().size() == 0);
       }
 }

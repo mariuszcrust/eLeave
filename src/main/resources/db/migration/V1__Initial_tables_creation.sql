@@ -131,11 +131,11 @@ CREATE TABLE IF NOT EXISTS `eleavedb`.`approver` (
   `version` BIGINT(20) NULL DEFAULT NULL,
   `end_date` DATETIME NULL DEFAULT NULL,
   `start_date` DATETIME NULL DEFAULT NULL,
-  `employee_id` BIGINT(20) NULL DEFAULT NULL,
+  `approver_id` BIGINT(20) NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_approver_employee_id` (`employee_id` ASC),
-  CONSTRAINT `fk_approver_employee_id`
-    FOREIGN KEY (`employee_id`)
+  INDEX `fk_approver_approver_id` (`approver_id` ASC),
+  CONSTRAINT `fk_approver_approver_id`
+    FOREIGN KEY (`approver_id`)
     REFERENCES `eleavedb`.`employee` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;

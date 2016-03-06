@@ -24,6 +24,7 @@ import com.company.eleave.employee.entity.Employee;
 import com.company.eleave.employee.rest.dto.AnnualBalanceLeaveDTO;
 import com.company.eleave.employee.rest.dto.ApproverDTO;
 import com.company.eleave.employee.rest.dto.EmployeeDTO;
+import com.company.eleave.employee.rest.dto.EmployeeDTOBuilder;
 import com.company.eleave.employee.rest.dto.LeaveTypeDTO;
 import com.company.eleave.employee.service.ApproverService;
 import com.company.eleave.employee.service.EmployeeService;
@@ -39,14 +40,12 @@ public class EmployeeController {
 
   @Autowired
   ApproverService approverService;
-  
-  private ModelMapper mapper = new ModelMapper();
 
   private static final SimpleDateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss a");
 
   @RequestMapping(method = RequestMethod.GET)
   public ResponseEntity<List<EmployeeDTO>> getAll() {
-    List<EmployeeDTO> result = employeeService.getAll().stream().map(employee -> convertToDto(employee)).collect(Collectors.toList());
+    List<EmployeeDTO> result = employeeService.getAll().stream().map(employee -> EmployeeDTOBuilder.convertToDto(employee)).collect(Collectors.toList());
 
     return new ResponseEntity<List<EmployeeDTO>>(result, HttpStatus.OK);
   }
@@ -140,15 +139,4 @@ public class EmployeeController {
     return new ResponseEntity<Void>(HttpStatus.OK);
   }
 
-  private EmployeeDTO convertToDto(Employee employee) {
-    EmployeeDTO employeeDto = mapper.map(employee, EmployeeDTO.class);
-    employeeDto.setAnnualBalanceLeave(employee.getAnnualBalanceLeave().stream().map(annualBalance -> convertToDto(annualBalance)).collect(Collectors.toList()));
-    return employeeDto;
-  }
-  
-  private AnnualBalanceLeaveDTO convertToDto(AnnualBalanceLeave balanceLeave) {
-    AnnualBalanceLeaveDTO annualBalanceDto = mapper.map(balanceLeave, AnnualBalanceLeaveDTO.class);
-    annualBalanceDto.setLeaveType(mapper.map(balanceLeave.getLeaveType(), LeaveTypeDTO.class));
-    return annualBalanceDto;
-  }
 }
