@@ -83,21 +83,22 @@ public class EmployeeController {
     return new ResponseEntity<Employee>(currentEmployee, HttpStatus.OK);
   }
 
+  @SuppressWarnings("rawtypes")
   @RequestMapping(value = "/{id}/approver", method = RequestMethod.PUT)
-  public ResponseEntity<Void> assignApprover(final @PathVariable("id") Long employeeId, @RequestBody ApproverDTO approverDTO) {
+  public ResponseEntity<String> assignApprover(final @PathVariable("id") Long employeeId, @RequestBody ApproverDTO approverDTO) {
     final Employee currentEmployee = employeeService.getById(employeeId);
     if (currentEmployee == null) {
-      return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Employee with id: " + approverDTO.getApproverId() + " has not been found");
     }
 
     final Employee newApprover = employeeService.getById(approverDTO.getApproverId());
     if (newApprover == null) {
-      return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Approver with id: " + approverDTO.getApproverId() + " has not been found");
     }
 
     if (StringUtils.isNotBlank(approverDTO.getStartDate())
         || StringUtils.isNotBlank(approverDTO.getEndDate())) {
-      return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+      return ResponseEntity.badRequest().body("Start date and end date must be set");
     }
 
     final Approver approver = new Approver();
@@ -107,12 +108,12 @@ public class EmployeeController {
       approver.setStartDate(FORMATTER.parse(approverDTO.getStartDate()));
       approver.setEndDate(FORMATTER.parse(approverDTO.getEndDate()));
     } catch (ParseException e) {
-      return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+      return ResponseEntity.badRequest().body("Start date or end date for approver assigment could not be parsed ");
     }
 
     approverService.assignApprover(approver);
 
-    return new ResponseEntity<Void>(HttpStatus.OK);
+    return ResponseEntity.ok("Assign end successful");
   }
 
   @RequestMapping(value = "/{id}/approver/{approverId}", method = RequestMethod.DELETE)
