@@ -53,11 +53,11 @@ public class EmployeeController {
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
   public ResponseEntity<EmployeeDTO> getById(@PathVariable("id") final Long employeeId) {
     final Employee result = employeeService.getById(employeeId);
-    if (result != null) {
-      return new ResponseEntity<EmployeeDTO>(mapper.toDto(employeeService.getById(employeeId)), HttpStatus.OK);
+    if (result == null) {
+      throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);
     }
 
-    throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);
+    return new ResponseEntity<EmployeeDTO>(mapper.toDto(result), HttpStatus.OK);
   }
 
   @RequestMapping(method = RequestMethod.POST)

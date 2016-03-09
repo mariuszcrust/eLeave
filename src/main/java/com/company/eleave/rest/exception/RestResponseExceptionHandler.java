@@ -1,5 +1,7 @@
 package com.company.eleave.rest.exception;
 
+import java.text.MessageFormat;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,13 +13,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler {
 
-  private static final String MESSAGE_FORMAT_NOT_FOUND = "Element with id: %d of type: %s has not been found";
+  private static final String MESSAGE_FORMAT_NOT_FOUND = "Element with id: {0} of type: {1} has not been found";
 
-  private static final String MESSAGE_FORMAT_BAD_PARAMETER = "Element with value: %s of type: %s has invalid value. Root cause: %s";
+  private static final String MESSAGE_FORMAT_BAD_PARAMETER = "Element with value: {0} of type: {1} has invalid value. Root cause: {2}";
 
   @ExceptionHandler(ElementNotFoundException.class)
   protected ResponseEntity<Object> notFoundException(ElementNotFoundException ex, WebRequest request) {
-    return handleExceptionInternal(ex, String.format(MESSAGE_FORMAT_NOT_FOUND, ex.getElementId(), ex.getClazzType()), new HttpHeaders(), HttpStatus.CONFLICT, request);
+    return handleExceptionInternal(ex, MessageFormat.format(MESSAGE_FORMAT_NOT_FOUND, ex.getElementId().toString(), ex.getClazzType()), new HttpHeaders(), HttpStatus.CONFLICT, request);
   }
 
   @ExceptionHandler(BadParameterException.class)
