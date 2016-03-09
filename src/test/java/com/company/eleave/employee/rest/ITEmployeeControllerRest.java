@@ -16,7 +16,7 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import com.company.eleave.employee.entity.Employee;
-import com.company.eleave.employee.rest.dto.EmployeeDTO;
+import com.company.eleave.rest.dto.EmployeeDTO;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 

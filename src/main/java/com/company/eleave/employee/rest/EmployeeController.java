@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,15 +22,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.company.eleave.employee.entity.Approver;
 import com.company.eleave.employee.entity.Employee;
-import com.company.eleave.employee.rest.dto.AnnualBalanceLeaveDTO;
-import com.company.eleave.employee.rest.dto.ApproverDTO;
-import com.company.eleave.employee.rest.dto.EmployeeDTO;
-import com.company.eleave.employee.rest.dto.EmployeeDTOBuilder;
-import com.company.eleave.employee.rest.dto.LeaveTypeDTO;
 import com.company.eleave.employee.service.ApproverService;
 import com.company.eleave.employee.service.EmployeeService;
 import com.company.eleave.leave.entity.AnnualBalanceLeave;
 import com.company.eleave.leave.entity.LeaveType;
+import com.company.eleave.rest.dto.AnnualBalanceLeaveDTO;
+import com.company.eleave.rest.dto.ApproverDTO;
+import com.company.eleave.rest.dto.EmployeeDTO;
+import com.company.eleave.rest.dto.LeaveTypeDTO;
+import com.company.eleave.rest.mapper.EmployeeMapper;
 
 @RestController
 @RequestMapping(value = "/employees")
@@ -40,22 +41,25 @@ public class EmployeeController {
 
   @Autowired
   ApproverService approverService;
+  
+  @Autowired
+  EmployeeMapper mapper;
 
   private static final SimpleDateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss a");
-
+  
   @RequestMapping(method = RequestMethod.GET)
   public ResponseEntity<List<EmployeeDTO>> getAll() {
-    List<EmployeeDTO> result = employeeService.getAll().stream().map(employee -> EmployeeDTOBuilder.convertToDto(employee)).collect(Collectors.toList());
+    List<EmployeeDTO> result = employeeService.getAll().stream().map(employee -> mapper.toDto(employee)).collect(Collectors.toList());
 
     return new ResponseEntity<List<EmployeeDTO>>(result, HttpStatus.OK);
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-  public ResponseEntity<Employee> getById(@PathVariable("id") final Long employeeId) {
+  public ResponseEntity<EmployeeDTO> getById(@PathVariable("id") final Long employeeId) {
     final Employee result = employeeService.getById(employeeId);
     return result != null
-        ? new ResponseEntity<Employee>(employeeService.getById(employeeId), HttpStatus.OK)
-        : new ResponseEntity<Employee>(HttpStatus.NOT_FOUND);
+        ? new ResponseEntity<EmployeeDTO>(mapper.toDto(employeeService.getById(employeeId)), HttpStatus.OK)
+        : new ResponseEntity<EmployeeDTO>(HttpStatus.NOT_FOUND);
   }
 
   @RequestMapping(method = RequestMethod.POST)
@@ -66,11 +70,11 @@ public class EmployeeController {
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-  public ResponseEntity<Employee> update(final @PathVariable("id") Long employeeId, final Employee employee) {
+  public ResponseEntity<EmployeeDTO> update(final @PathVariable("id") Long employeeId, final Employee employee) {
     final Employee currentEmployee = employeeService.getById(employeeId);
 
     if (currentEmployee == null) {
-      return new ResponseEntity<Employee>(HttpStatus.NOT_FOUND);
+      return new ResponseEntity<EmployeeDTO>(HttpStatus.NOT_FOUND);
     }
 
     // TODO make some propagate methods
@@ -80,7 +84,7 @@ public class EmployeeController {
 
     employeeService.update(currentEmployee);
 
-    return new ResponseEntity<Employee>(currentEmployee, HttpStatus.OK);
+    return new ResponseEntity<EmployeeDTO>(mapper.toDto(currentEmployee), HttpStatus.OK);
   }
 
   @SuppressWarnings("rawtypes")

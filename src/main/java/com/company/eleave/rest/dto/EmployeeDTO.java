@@ -1,4 +1,4 @@
-package com.company.eleave.employee.rest.dto;
+package com.company.eleave.rest.dto;
 
 import java.util.List;
 
