@@ -13,28 +13,28 @@ import com.google.common.collect.Lists;
 
 @Service("employeeService")
 @Transactional
-public class EmployeeService{
+public class EmployeeService {
 
-	@Autowired
-	private EmployeeRepository employeeRepo;
+  @Autowired
+  private EmployeeRepository employeeRepo;
 
-	public List<Employee> getAll() {
-		return Lists.newArrayList(employeeRepo.findAll());
-	}
+  public List<Employee> getAll() {
+    return Lists.newArrayList(employeeRepo.findAll());
+  }
 
-	public Employee getById(Long employeeId) {
-		return employeeRepo.findOne(employeeId);
-	}
+  public Employee getById(Long employeeId) {
+    return employeeRepo.findOne(employeeId);
+  }
 
-	public void delete(Long employeeId) {
-		employeeRepo.delete(employeeId);
-	}
+  public void delete(Long employeeId) {
+    employeeRepo.delete(employeeId);
+  }
 
-	public void update(Employee currentEmployee) {
-		employeeRepo.save(currentEmployee);
-	}
+  public void update(Employee currentEmployee) {
+    employeeRepo.save(currentEmployee);
+  }
 
-	public long create(Employee employee) {
-		return employeeRepo.save(employee).getId();
-	}
+  public long create(Employee employee) {
+    return employeeRepo.save(employee).getId();
+  }
 }

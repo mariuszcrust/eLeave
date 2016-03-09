@@ -22,6 +22,15 @@ public class EmployeeMapper {
 				.map(annualBalance -> toDto(annualBalance)).collect(Collectors.toList()));
 		return employeeDto;
 	}
+	
+	public Employee toEntity(EmployeeDTO employeeDto) {
+      Employee employee = mapper.map(employeeDto, Employee.class);
+      
+      //skip for now
+      //employee.setAnnualBalanceLeave(employee.getAnnualBalanceLeave().stream()
+      //        .map(annualBalance -> toDto(annualBalance)).collect(Collectors.toList()));
+      return employee;
+  }
 
 	private AnnualBalanceLeaveDTO toDto(AnnualBalanceLeave balanceLeave) {
 		AnnualBalanceLeaveDTO annualBalanceDto = mapper.map(balanceLeave, AnnualBalanceLeaveDTO.class);

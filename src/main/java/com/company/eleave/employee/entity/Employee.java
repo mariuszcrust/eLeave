@@ -5,6 +5,8 @@ import com.company.eleave.leave.entity.AnnualBalanceLeave;
 import com.company.eleave.security.entity.User;
 import java.io.Serializable;
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -36,7 +38,7 @@ public class Employee extends BaseEntity implements Serializable {
     @OneToMany(mappedBy = "employee", fetch = FetchType.EAGER)
     private List<AnnualBalanceLeave> annualBalanceLeave;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id",nullable = false)
     private User user;
 
