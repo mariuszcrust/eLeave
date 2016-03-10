@@ -1,40 +1,38 @@
 package com.company.eleave.employee.rest;
-import java.sql.DriverManager;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
+
 import java.util.List;
 
-import org.hsqldb.jdbcDriver;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.springframework.test.web.servlet.MockMvc;
 
-import com.company.eleave.employee.entity.Employee;
 import com.company.eleave.rest.dto.EmployeeDTO;
-import com.github.springtestdbunit.DbUnitTestExecutionListener;
-import com.github.springtestdbunit.annotation.DatabaseSetup;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
-      DirtiesContextTestExecutionListener.class,
-      TransactionalTestExecutionListener.class,
-      DbUnitTestExecutionListener.class })
-@ContextConfiguration("file:src/main/resources/test/context-test.xml")
-//@DatabaseSetup("toDoData.xml")
-public class ITEmployeeControllerRest{
-    
-    @Autowired
-    EmployeeController employeeController;
-  
-      @Test
-      public void testFindAll() throws Exception {
-        ResponseEntity<List<EmployeeDTO>> response = employeeController.getAll();
-        Assert.assertTrue("size of list should be 1", response.getBody().size() == 0);
-      }
+public class ITEmployeeControllerRest extends IntegrationTest {
+
+  @Autowired
+  EmployeeController employeeController;
+
+  private MockMvc mockMvc;
+
+  @Before
+  public void before() {
+    mockMvc = standaloneSetup(employeeController).build();
+  }
+
+  @Test
+  public void test_get_all() throws Exception {
+
+    mockMvc.perform(get("/employees")).andExpect(status().isOk());
+
+    ResponseEntity<List<EmployeeDTO>> response = employeeController.getAll();
+    Assert.assertTrue(response.getBody().size() == 10);
+  }
 }

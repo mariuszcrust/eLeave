@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<!-- LEAVE_TYPE -->
+	<leave_type id="1" version="1" default_days_allowed="4" leave_type_name="On demand" comment="No comment"/>
+	<leave_type id="2" version="1" default_days_allowed="2" leave_type_name="Special holiday" comment="No comment"/>
+	<leave_type id="3" version="1" default_days_allowed="2" leave_type_name="Paid child care" comment="No comment"/>
+	<leave_type id="4" version="1" default_days_allowed="5" leave_type_name="Unpaid holiday" comment="No comment"/>
+	<leave_type id="5" version="1" default_days_allowed="1" leave_type_name="Blood donation" comment="No comment"/>
+	<leave_type id="6" version="1" default_days_allowed="1" leave_type_name="Justified paid absence" comment="No comment"/>
+	<leave_type id="7" version="1" default_days_allowed="1" leave_type_name="Justified unpaid absence" comment="No comment"/>
+	<leave_type id="8" version="1" default_days_allowed="1" leave_type_name="Overtime" comment="No comment"/>
+	<leave_type id="9" version="1" default_days_allowed="1" leave_type_name="Other" comment="No comment"/>
+
+	<!-- USER_ROLE -->
+	<user_role id="1" version="1" role_name="SUPER_USER" comment="Designed for administrative purposes. Do not assign for any employee!"/>
+	<user_role id="2" version="1" role_name="HR" comment="For employees from Human Resources department."/>
+	<user_role id="3" version="1" role_name="APPROVER" comment="For employees who can act as approver."/>
+	<user_role id="4" version="1" role_name="EMPLOYEE" comment="Simply for employees."/>
+	
+	<!-- PRIVILEGE -->
+	<privilege id="1" version="1" privilege_name="REQUEST_LEAVE"/>
+	<privilege id="2" version="1" privilege_name="APPROVED_LEAVE"/>
+	<privilege id="3" version="1" privilege_name="ADD_EMPLOYEE"/>
+	<privilege id="4" version="1" privilege_name="ADD_LEAVE_TYPE"/>
+	<privilege id="5" version="1" privilege_name="REMOVE_LEAVE_TYPE"/>
+	<privilege id="6" version="1" privilege_name="REMOVE_EMPLOYEE"/>
+
+	<!-- USER -->
+	<user id="1" version="1" password="password" user_name = "user1"/>
+	<user id="2" version="1" password="password" user_name = "user2"/>
+	<user id="3" version="1" password="password" user_name = "user3"/>
+	<user id="4" version="1" password="password" user_name = "user4"/>
+	<user id="5" version="1" password="password" user_name = "user5"/>
+	<user id="6" version="1" password="password" user_name = "user6"/>
+	<user id="7" version="1" password="password" user_name = "user7"/>
+	<user id="8" version="1" password="password" user_name = "user8"/>
+	<user id="9" version="1" password="password" user_name = "user9"/>
+	<user id="10" version="1" password="password" user_name = "user10"/>
+	
+	<!-- EMPLOYEE -->
+    <employee id="1" version="1" email="doe1@mail.com" first_name="john" last_name="doe1" user_id="1"/>
+    <employee id="2" version="1" email="doe2@mail.com" first_name="john" last_name="doe2" user_id="2"/>
+    <employee id="3" version="1" email="doe3@mail.com" first_name="john" last_name="doe3" user_id="3"/>
+    <employee id="4" version="1" email="doe4@mail.com" first_name="john" last_name="doe4" user_id="4"/>
+    <employee id="5" version="1" email="doe5Approver@mail.com" first_name="john" last_name="doe5Approver" user_id="5"/>
+    <employee id="6" version="1" email="doe6@mail.com" first_name="john" last_name="doe6" user_id="6"/>
+    <employee id="7" version="1" email="doe7@mail.com" first_name="john" last_name="doe7" user_id="7"/>
+    <employee id="8" version="1" email="doe8@mail.com" first_name="john" last_name="doe8" user_id="8"/>
+    <employee id="9" version="1" email="doe9@mail.com" first_name="john" last_name="doe9" user_id="9"/>
+    <employee id="10" version="1" email="doe10Approver@mail.com" first_name="john" last_name="doeApprover10" user_id="10"/>
+    
+    <!-- APPROVER -->
+    <approver id="1" version="1" end_date="2016-01-01" start_date="2017-01-01" approver_id="5"/>
+    <approver id="2" version="1" end_date="2016-01-01" start_date="2017-01-01" approver_id="5"/>
+    <approver id="3" version="1" end_date="2016-01-01" start_date="2017-01-01" approver_id="5"/>
+    <approver id="4" version="1" end_date="2016-01-01" start_date="2017-01-01" approver_id="5"/>
+    <approver id="5" version="1" end_date="2016-01-01" start_date="2017-01-01" approver_id="10"/>
+    <approver id="6" version="1" end_date="2016-01-01" start_date="2017-01-01" approver_id="5"/>
+    <approver id="7" version="1" end_date="2016-01-01" start_date="2017-01-01" approver_id="5"/>
+    <approver id="8" version="1" end_date="2016-01-01" start_date="2017-01-01" approver_id="5"/>
+    <approver id="9" version="1" end_date="2016-01-01" start_date="2017-01-01" approver_id="5"/>
+    
+    <!-- USER_ROLE_PRIVILEGE -->
+    <user_role_privilege user_role_id="1" privilege_id="2"/>
+    <user_role_privilege user_role_id="1" privilege_id="3"/>
+    <user_role_privilege user_role_id="1" privilege_id="4"/>
+    <user_role_privilege user_role_id="1" privilege_id="5"/>
+    <user_role_privilege user_role_id="1" privilege_id="6"/>
+    <user_role_privilege user_role_id="2" privilege_id="1"/>
+    <user_role_privilege user_role_id="2" privilege_id="2"/>
+    <user_role_privilege user_role_id="2" privilege_id="3"/>
+    <user_role_privilege user_role_id="2" privilege_id="4"/>
+    <user_role_privilege user_role_id="3" privilege_id="1"/>
+    <user_role_privilege user_role_id="3" privilege_id="2"/>
+    <user_role_privilege user_role_id="4" privilege_id="1"/>
+    
+    <!-- USER_USER_ROLE -->
+    <user_user_role user_id="1" user_role_id="4"/>
+    <user_user_role user_id="2" user_role_id="4"/>
+    <user_user_role user_id="3" user_role_id="4"/>
+    <user_user_role user_id="4" user_role_id="4"/>
+    <user_user_role user_id="5" user_role_id="3"/>
+    <user_user_role user_id="6" user_role_id="4"/>
+    <user_user_role user_id="7" user_role_id="4"/>
+    <user_user_role user_id="8" user_role_id="4"/>
+    <user_user_role user_id="9" user_role_id="4"/>
+    <user_user_role user_id="10" user_role_id="3"/>
+    
+</dataset>
