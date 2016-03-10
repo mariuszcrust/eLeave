@@ -36,6 +36,9 @@ public class LeaveTypeService {
 
   public void delete(Long leaveTypeId) {
     leaveTypeRepo.delete(getById(leaveTypeId));
+  }
 
+  public void update(LeaveType leaveType) {
+    leaveTypeRepo.save(leaveType);
   }
 }

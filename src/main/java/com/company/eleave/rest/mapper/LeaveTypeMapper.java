@@ -7,7 +7,7 @@ import com.company.eleave.leave.entity.LeaveType;
 import com.company.eleave.rest.dto.LeaveTypeDTO;
 
 @Component
-public class LeaveTypeMapper {
+public class LeaveTypeMapper implements ModelMapping<LeaveTypeDTO, LeaveType>{
 
   private ModelMapper mapper = new ModelMapper();
 

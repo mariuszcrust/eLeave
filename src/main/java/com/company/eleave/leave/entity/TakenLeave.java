@@ -16,73 +16,75 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "taken_leave")
-public class TakenLeave extends BaseEntity{
-    
-    @Embedded
-    private LeaveStatus leaveStatus;
-    
-    @OneToOne
-    @JoinColumn(name = "approver_id")
-    private Employee approver;
-    
-    @OneToOne
-    @JoinColumn(name = "annual_balance_leave_id", nullable = false)
-    private AnnualBalanceLeave annualBalanceLeave;
-    
-    @Column(name = "leave_days_taken")
-    private int leaveDaysTaken;
-    
-    @Column(name = "leave_from")
-    private Date leaveFrom;
-    
-    @Column(name = "leave_to")
-    private Date leaveTo;
+public class TakenLeave extends BaseEntity {
 
-    public LeaveStatus getLeaveStatus() {
-        return leaveStatus;
-    }
+  private static final long serialVersionUID = 1L;
 
-    public void setLeaveStatus(LeaveStatus leaveStatus) {
-        this.leaveStatus = leaveStatus;
-    }
+  @Embedded
+  private LeaveStatus leaveStatus;
 
-    public Employee getApprover() {
-        return approver;
-    }
+  @OneToOne
+  @JoinColumn(name = "approver_id")
+  private Employee approver;
 
-    public void setApprover(Employee approver) {
-        this.approver = approver;
-    }
+  @OneToOne
+  @JoinColumn(name = "annual_balance_leave_id", nullable = false)
+  private AnnualBalanceLeave annualBalanceLeave;
 
-    public AnnualBalanceLeave getAnnualBalanceLeave() {
-        return annualBalanceLeave;
-    }
+  @Column(name = "leave_days_taken")
+  private int leaveDaysTaken;
 
-    public void setAnnualBalanceLeave(AnnualBalanceLeave annualBalanceLeave) {
-        this.annualBalanceLeave = annualBalanceLeave;
-    }
+  @Column(name = "leave_from")
+  private Date leaveFrom;
 
-    public int getLeaveDaysTaken() {
-        return leaveDaysTaken;
-    }
+  @Column(name = "leave_to")
+  private Date leaveTo;
 
-    public void setLeaveDaysTaken(int leaveDaysTaken) {
-        this.leaveDaysTaken = leaveDaysTaken;
-    }
+  public LeaveStatus getLeaveStatus() {
+    return leaveStatus;
+  }
 
-    public Date getLeaveFrom() {
-        return leaveFrom;
-    }
+  public void setLeaveStatus(LeaveStatus leaveStatus) {
+    this.leaveStatus = leaveStatus;
+  }
 
-    public void setLeaveFrom(Date leaveFrom) {
-        this.leaveFrom = leaveFrom;
-    }
+  public Employee getApprover() {
+    return approver;
+  }
 
-    public Date getLeaveTo() {
-        return leaveTo;
-    }
+  public void setApprover(Employee approver) {
+    this.approver = approver;
+  }
 
-    public void setLeaveTo(Date leaveTo) {
-        this.leaveTo = leaveTo;
-    }  
+  public AnnualBalanceLeave getAnnualBalanceLeave() {
+    return annualBalanceLeave;
+  }
+
+  public void setAnnualBalanceLeave(AnnualBalanceLeave annualBalanceLeave) {
+    this.annualBalanceLeave = annualBalanceLeave;
+  }
+
+  public int getLeaveDaysTaken() {
+    return leaveDaysTaken;
+  }
+
+  public void setLeaveDaysTaken(int leaveDaysTaken) {
+    this.leaveDaysTaken = leaveDaysTaken;
+  }
+
+  public Date getLeaveFrom() {
+    return leaveFrom;
+  }
+
+  public void setLeaveFrom(Date leaveFrom) {
+    this.leaveFrom = leaveFrom;
+  }
+
+  public Date getLeaveTo() {
+    return leaveTo;
+  }
+
+  public void setLeaveTo(Date leaveTo) {
+    this.leaveTo = leaveTo;
+  }
 }

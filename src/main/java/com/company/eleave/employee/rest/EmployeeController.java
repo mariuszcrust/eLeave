@@ -88,7 +88,6 @@ public class EmployeeController {
     return new ResponseEntity<EmployeeDTO>(mapper.toDto(currentEmployee), HttpStatus.OK);
   }
 
-  @SuppressWarnings("rawtypes")
   @RequestMapping(value = "/{id}/approver", method = RequestMethod.PUT)
   public ResponseEntity<Void> assignApprover(final @PathVariable("id") Long employeeId, @RequestBody ApproverDTO approverDTO) {
     final Employee currentEmployee = employeeService.getById(employeeId);

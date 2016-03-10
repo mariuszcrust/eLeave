@@ -13,40 +13,42 @@ import javax.persistence.Table;
 @Table(name = "leave_type")
 public class LeaveType extends BaseEntity {
 
-    @Column(name = "leave_type_name")
-    private String leaveTypeName;
-    
-    @Column(name = "default_days_allowed")
-    private int defaultDaysAllowed;
-    
-    private String comment;
+  private static final long serialVersionUID = 1L;
 
-    public String getLeaveTypeName() {
-        return leaveTypeName;
-    }
+  @Column(name = "leave_type_name")
+  private String leaveTypeName;
 
-    public void setLeaveTypeName(String leaveTypeName) {
-        this.leaveTypeName = leaveTypeName;
-    }
+  @Column(name = "default_days_allowed")
+  private int defaultDaysAllowed;
 
-    public int getDefaultDaysAllowed() {
-        return defaultDaysAllowed;
-    }
+  private String comment;
 
-    public void setDefaultDaysAllowed(int defaultDaysAllowed) {
-        this.defaultDaysAllowed = defaultDaysAllowed;
-    }
+  public String getLeaveTypeName() {
+    return leaveTypeName;
+  }
 
-    public String getComment() {
-        return comment;
-    }
+  public void setLeaveTypeName(String leaveTypeName) {
+    this.leaveTypeName = leaveTypeName;
+  }
 
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
+  public int getDefaultDaysAllowed() {
+    return defaultDaysAllowed;
+  }
 
-    @Override
-    public String toString() {
-        return "LeaveType{" + "leaveTypeName=" + leaveTypeName + ", defaultDaysAllowed=" + defaultDaysAllowed + ", comment=" + comment + '}';
-    }
+  public void setDefaultDaysAllowed(int defaultDaysAllowed) {
+    this.defaultDaysAllowed = defaultDaysAllowed;
+  }
+
+  public String getComment() {
+    return comment;
+  }
+
+  public void setComment(String comment) {
+    this.comment = comment;
+  }
+
+  @Override
+  public String toString() {
+    return "LeaveType{" + "leaveTypeName=" + leaveTypeName + ", defaultDaysAllowed=" + defaultDaysAllowed + ", comment=" + comment + '}';
+  }
 }

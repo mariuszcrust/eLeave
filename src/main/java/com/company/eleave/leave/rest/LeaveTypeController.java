@@ -1,6 +1,5 @@
 package com.company.eleave.leave.rest;
 
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -56,12 +55,28 @@ public class LeaveTypeController {
     return new ResponseEntity<LeaveTypeDTO>(mapper.toDto(leaveType), HttpStatus.OK);
   }
 
-  @RequestMapping(method = POST)
+  @RequestMapping(method = RequestMethod.POST)
   public ResponseEntity<Long> createNewLeaveType(@RequestBody LeaveTypeDTO leaveType) {
     LOGGER.log(Level.INFO, "Received leave type: {0}", leaveType.toString());
     final Long leaveTypeId = leaveTypeService.createNewLeaveType(mapper.toEntity(leaveType));
     LOGGER.log(Level.INFO, "Leave type stored with id: {0}", leaveTypeId);
     return new ResponseEntity<>(leaveTypeId, HttpStatus.CREATED);
+  }
+
+  @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+  public ResponseEntity<LeaveTypeDTO> updateLeaveType(@PathVariable("id") final Long leaveTypeId, final LeaveTypeDTO leaveTypeDTO) {
+    LeaveType leaveType = leaveTypeService.getById(leaveTypeId);
+    if (leaveType == null) {
+      throw new ElementNotFoundException(leaveTypeId, ExceptionElementType.LEAVE_TYPE);
+    }
+
+    leaveType.setComment(leaveTypeDTO.getComment());
+    leaveType.setDefaultDaysAllowed(leaveTypeDTO.getDefaultDaysAllowed());
+    leaveType.setLeaveTypeName(leaveTypeDTO.getLeaveTypeName());
+
+    leaveTypeService.update(leaveType);
+
+    return new ResponseEntity<LeaveTypeDTO>(mapper.toDto(leaveType), HttpStatus.CREATED);
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

@@ -8,7 +8,6 @@ public class EmployeeDTO {
   private String lastName;
   private String email;
   private List<AnnualBalanceLeaveDTO> annualBalanceLeave;
-  private UserDTO user;
 
   public String getFirstName() {
     return firstName;
@@ -40,13 +39,5 @@ public class EmployeeDTO {
 
   public void setAnnualBalanceLeave(List<AnnualBalanceLeaveDTO> annualBalanceLeave) {
     this.annualBalanceLeave = annualBalanceLeave;
-  }
-
-  public UserDTO getUser() {
-    return user;
-  }
-
-  public void setUser(UserDTO user) {
-    this.user = user;
   }
 }

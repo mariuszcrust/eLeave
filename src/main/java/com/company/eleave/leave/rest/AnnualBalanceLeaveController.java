@@ -1,11 +1,12 @@
 package com.company.eleave.leave.rest;
 
-import com.company.eleave.employee.entity.Employee;
 import com.company.eleave.leave.entity.AnnualBalanceLeave;
+import com.company.eleave.leave.service.AnnualBalanceService;
+
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +21,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/annualBalanceLeaves")
 public class AnnualBalanceLeaveController {
 
-    @RequestMapping(path = "/employee/{id}", method = GET)
-    public ResponseEntity<List<AnnualBalanceLeave>> getAnnualBalanceLeavesForEmployee(@PathVariable("id") long employeeId) {
-        
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+  @Autowired
+  AnnualBalanceService annualBalanceService;
+
+  @RequestMapping(path = "/employee/{id}", method = GET)
+  public ResponseEntity<List<AnnualBalanceLeave>> getLeaves(@PathVariable("id") long employeeId) {
+    List<AnnualBalanceLeave> leavesForUser = annualBalanceService.getLeavesForUser(employeeId);
+
+    return new ResponseEntity<List<AnnualBalanceLeave>>(leavesForUser, HttpStatus.OK);
+  }
+
+  public ResponseEntity<Void> addLeave() {
+    return null;
+  }
+
+  public ResponseEntity<Void> removeLeave() {
+    return null;
+  }
+
+  public ResponseEntity<Void> updateLeave() {
+    return null;
+  }
 }

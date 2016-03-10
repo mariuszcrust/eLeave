@@ -12,7 +12,7 @@ import com.company.eleave.rest.dto.EmployeeDTO;
 import com.company.eleave.rest.dto.LeaveTypeDTO;
 
 @Component
-public class EmployeeMapper {
+public class EmployeeMapper implements ModelMapping<EmployeeDTO, Employee>{
 	
 	private ModelMapper mapper = new ModelMapper();
 
