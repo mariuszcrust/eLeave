@@ -14,7 +14,7 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class, DbUnitTestExecutionListener.class})
 @ContextConfiguration("file:src/main/resources/test/context-test.xml")
-@DatabaseSetup("/data/mockData.xml")
+@DatabaseSetup("data.xml")
 public abstract class IntegrationTest {
 
 }
