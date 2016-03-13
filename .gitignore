@@ -1,3 +1,9 @@
 /target/
 nb-configuration.xml
 src/main/webapp/META-INF/context.xml
+/eLeave-core/target/
+/eLeave-core/nbproject/private/
+
+/eLeave-ui/nbproject/private/
+/eLeave-ui/app/lib/
+/eLeave-ui/node_modules
