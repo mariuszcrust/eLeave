@@ -6,7 +6,7 @@
     <display-name>eLeave</display-name>
 
     <welcome-file-list>
-        <welcome-file>/resources/index.html</welcome-file>
+        <welcome-file>/index.html</welcome-file>
     </welcome-file-list>
 
 
