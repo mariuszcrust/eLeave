@@ -15,7 +15,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class, DbUnitTestExecutionListener.class})
 @ContextConfiguration(locations={"file:src/main/resources/test/context-test.xml"})
-@DatabaseSetup("data.xml")
+@DatabaseSetup(value = "file:src/main/resources/test/data.xml")
 @WebAppConfiguration
 public abstract class IntegrationTest {
 

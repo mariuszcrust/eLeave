@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.company.eleave.rest.dto.EmployeeDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+
 public class ITEmployeeControllerRest extends IntegrationTest {
 
   @Autowired
@@ -25,7 +26,6 @@ public class ITEmployeeControllerRest extends IntegrationTest {
 
   @Before
   public void before() {
-      //mockMvc = MockMvcBuilders.standaloneSetup(new EmployeeController()).build();
     mockMvc = standaloneSetup(employeeController).build();
   }
 
@@ -35,11 +35,6 @@ public class ITEmployeeControllerRest extends IntegrationTest {
         .getResponse().getContentAsString();
     List<EmployeeDTO> result = new ObjectMapper().readValue(contentAsString, List.class);
 
-
-
-    // System.out.println(contentAsString);
-    // ResponseEntity<List<EmployeeDTO>> response = employeeController.getAll();
-    // Assert.assertTrue(response.getBody().size() == 10);
   }
 
 }
