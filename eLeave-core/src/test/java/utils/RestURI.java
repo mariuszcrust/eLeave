@@ -9,7 +9,7 @@ import java.text.MessageFormat;
 
 public class RestURI {
     
-    public static final String GET_ALL_EMPLOYEES = "/employees";
+    public static final String EMPLOYEES = "/employees";
     
     public static final String GET_EMPLOYEE_BY_ID = "/employees/{0}";
     

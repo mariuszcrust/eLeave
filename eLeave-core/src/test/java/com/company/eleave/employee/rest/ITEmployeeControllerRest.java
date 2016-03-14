@@ -1,6 +1,8 @@
 package com.company.eleave.employee.rest;
 
+import com.company.eleave.rest.dto.AnnualBalanceLeaveDTO;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
@@ -12,10 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.company.eleave.rest.dto.EmployeeDTO;
+import com.company.eleave.rest.dto.LeaveTypeDTO;
 import com.company.eleave.rest.exception.RestResponseExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Arrays;
 import org.junit.Assert;
 import utils.RestURI;
+import utils.TestObjectConverter;
 
 public class ITEmployeeControllerRest extends IntegrationTest {
 
@@ -33,7 +38,7 @@ public class ITEmployeeControllerRest extends IntegrationTest {
 
     @Test
     public void testGetAllEmployees() throws Exception {
-        contentAsString = mockMvc.perform(get(RestURI.GET_ALL_EMPLOYEES)).andExpect(status().isOk()).andReturn()
+        contentAsString = mockMvc.perform(get(RestURI.EMPLOYEES)).andExpect(status().isOk()).andReturn()
                 .getResponse().getContentAsString();
 
         List<EmployeeDTO> result = new ObjectMapper().readValue(contentAsString, List.class);
@@ -56,10 +61,33 @@ public class ITEmployeeControllerRest extends IntegrationTest {
     @Test
     public void testGetEmployeeByIdWhenNotExists() throws Exception {
         final long employeeId = 123;
-        String asas = RestURI.request(RestURI.GET_EMPLOYEE_BY_ID, employeeId);
         contentAsString = mockMvc.perform(get(RestURI.request(RestURI.GET_EMPLOYEE_BY_ID, employeeId))).andExpect(status().isNotFound()).andReturn().getResponse().getContentAsString();
 
         Assert.assertTrue("Element with id: 123 of type: Employee has not been found".equals(contentAsString));
+    }
+
+    //@Test
+    public void testCreateEmployee() throws Exception {
+        final EmployeeDTO newEmployee = new EmployeeDTO();
+        newEmployee.setFirstName("jan");
+        newEmployee.setLastName("kowalski");
+        newEmployee.setEmail("kowalski@gmail.com");
+
+        final LeaveTypeDTO leaveType = new LeaveTypeDTO();
+        leaveType.setComment("normal holidays");
+        leaveType.setDefaultDaysAllowed(26);
+        leaveType.setLeaveTypeName("NormalHolidays");
+
+        final AnnualBalanceLeaveDTO normalHolidays = new AnnualBalanceLeaveDTO();
+        normalHolidays.setLeaveDaysAllowed(20);
+        normalHolidays.setLeaveDaysRemaining(15);
+        normalHolidays.setLeaveType(leaveType);
+
+        final List<AnnualBalanceLeaveDTO> leaves = Arrays.asList(normalHolidays);
+
+        newEmployee.setAnnualBalanceLeave(leaves);
+
+        contentAsString = mockMvc.perform(post(RestURI.EMPLOYEES).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(newEmployee))).andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
     }
 
 }
