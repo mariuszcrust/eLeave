@@ -32,116 +32,116 @@ import com.company.eleave.rest.mapper.EmployeeMapper;
 @RequestMapping(value = "/employees")
 public class EmployeeController {
 
-  @Autowired
-  EmployeeService employeeService;
+    @Autowired
+    EmployeeService employeeService;
 
-  @Autowired
-  ApproverService approverService;
+    @Autowired
+    ApproverService approverService;
 
-  @Autowired
-  EmployeeMapper mapper;
+    @Autowired
+    EmployeeMapper mapper;
 
-  private static final SimpleDateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
 
-  @RequestMapping(method = RequestMethod.GET)
-  public ResponseEntity<List<EmployeeDTO>> getAll() {
-    List<EmployeeDTO> result = employeeService.getAll().stream().map(employee -> mapper.toDto(employee)).collect(Collectors.toList());
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<EmployeeDTO>> getAll() {
+        List<EmployeeDTO> result = employeeService.getAll().stream().map(employee -> mapper.toDto(employee)).collect(Collectors.toList());
 
-    return new ResponseEntity<List<EmployeeDTO>>(result, HttpStatus.OK);
-  }
-
-  @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-  public ResponseEntity<EmployeeDTO> getById(@PathVariable("id") final Long employeeId) {
-    final Employee result = employeeService.getById(employeeId);
-    if (result == null) {
-      throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);
+        return new ResponseEntity<List<EmployeeDTO>>(result, HttpStatus.OK);
     }
 
-    return new ResponseEntity<EmployeeDTO>(mapper.toDto(result), HttpStatus.OK);
-  }
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<EmployeeDTO> getById(@PathVariable("id") final Long employeeId) {
+        final Employee result = employeeService.getById(employeeId);
+        if (result == null) {
+            throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);
+        }
 
-  @RequestMapping(method = RequestMethod.POST)
-  public ResponseEntity<Long> create(@RequestBody EmployeeDTO employee) {
-    final long employeeId = employeeService.create(mapper.toEntity(employee));
-
-    HttpHeaders headers = new HttpHeaders();
-    headers.setLocation(UriComponentsBuilder.fromPath("/employees/{id}").buildAndExpand(employeeId).toUri());
-
-    return new ResponseEntity<Long>(headers, HttpStatus.CREATED);
-  }
-
-  @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-  public ResponseEntity<EmployeeDTO> update(final @PathVariable("id") Long employeeId, final EmployeeDTO employeeDTO) {
-    final Employee currentEmployee = employeeService.getById(employeeId);
-
-    if (currentEmployee == null) {
-      return new ResponseEntity<EmployeeDTO>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<EmployeeDTO>(mapper.toDto(result), HttpStatus.OK);
     }
 
-    // TODO make some propagate methods
-    currentEmployee.setEmail(employeeDTO.getEmail());
-    currentEmployee.setFirstName(employeeDTO.getFirstName());
-    currentEmployee.setLastName(employeeDTO.getLastName());
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<Long> create(@RequestBody EmployeeDTO employee) {
+        final long employeeId = employeeService.create(mapper.toEntity(employee));
 
-    employeeService.update(currentEmployee);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(UriComponentsBuilder.fromPath("/employees/{id}").buildAndExpand(employeeId).toUri());
 
-    return new ResponseEntity<EmployeeDTO>(mapper.toDto(currentEmployee), HttpStatus.OK);
-  }
-
-  @RequestMapping(value = "/{id}/approver", method = RequestMethod.PUT)
-  public ResponseEntity<Void> assignApprover(final @PathVariable("id") Long employeeId, @RequestBody ApproverDTO approverDTO) {
-    final Employee currentEmployee = employeeService.getById(employeeId);
-    if (currentEmployee == null) {
-      throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);
+        return new ResponseEntity<Long>(headers, HttpStatus.CREATED);
     }
 
-    final Employee newApprover = employeeService.getById(approverDTO.getApproverId());
-    if (newApprover == null) {
-      throw new ElementNotFoundException(approverDTO.getApproverId(), ExceptionElementType.EMPLOYEE);
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<EmployeeDTO> update(final @PathVariable("id") Long employeeId, final EmployeeDTO employeeDTO) {
+        final Employee currentEmployee = employeeService.getById(employeeId);
+
+        if (currentEmployee == null) {
+            return new ResponseEntity<EmployeeDTO>(HttpStatus.NOT_FOUND);
+        }
+
+        // TODO make some propagate methods
+        currentEmployee.setEmail(employeeDTO.getEmail());
+        currentEmployee.setFirstName(employeeDTO.getFirstName());
+        currentEmployee.setLastName(employeeDTO.getLastName());
+
+        employeeService.update(currentEmployee);
+
+        return new ResponseEntity<EmployeeDTO>(mapper.toDto(currentEmployee), HttpStatus.OK);
     }
 
-    final Approver approver = new Approver();
-    approver.setEmployee(currentEmployee);
-    approver.setApprover(newApprover);
-    try {
-      approver.setStartDate(FORMATTER.parse(approverDTO.getStartDate()));
-      approver.setEndDate(FORMATTER.parse(approverDTO.getEndDate()));
-    } catch (ParseException e) {
-      throw new BadParameterException(approverDTO.getStartDate(), ExceptionParameterType.START_END_DATE_FOR_APPROVER.getName(), e.getMessage());
+    @RequestMapping(value = "/{id}/approver", method = RequestMethod.PUT)
+    public ResponseEntity<Void> assignApprover(final @PathVariable("id") Long employeeId, @RequestBody ApproverDTO approverDTO) {
+        final Employee currentEmployee = employeeService.getById(employeeId);
+        if (currentEmployee == null) {
+            throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);
+        }
+
+        final Employee newApprover = employeeService.getById(approverDTO.getApproverId());
+        if (newApprover == null) {
+            throw new ElementNotFoundException(approverDTO.getApproverId(), ExceptionElementType.EMPLOYEE);
+        }
+
+        final Approver approver = new Approver();
+        approver.setEmployee(currentEmployee);
+        approver.setApprover(newApprover);
+        try {
+            approver.setStartDate(FORMATTER.parse(approverDTO.getStartDate()));
+            approver.setEndDate(FORMATTER.parse(approverDTO.getEndDate()));
+        } catch (ParseException e) {
+            throw new BadParameterException(approverDTO.getStartDate(), ExceptionParameterType.START_END_DATE_FOR_APPROVER.getName(), e.getMessage());
+        }
+
+        approverService.assignApprover(approver);
+
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    approverService.assignApprover(approver);
+    @RequestMapping(value = "/{id}/approver/{approverId}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> removeApproverForEmployee(final @PathVariable("id") Long employeeId, final @PathVariable("approverId") Long approverId) {
+        final Employee employee = employeeService.getById(employeeId);
+        if (employee == null) {
+            throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);
+        }
 
-    return new ResponseEntity<Void>(HttpStatus.OK);
-  }
+        final Employee approver = employeeService.getById(approverId);
+        if (approver == null) {
+            throw new ElementNotFoundException(approverId, ExceptionElementType.EMPLOYEE);
+        }
 
-  @RequestMapping(value = "/{id}/approver/{approverId}", method = RequestMethod.DELETE)
-  public ResponseEntity<Void> removeApproverForEmployee(final @PathVariable("id") Long employeeId, final @PathVariable("approverId") Long approverId) {
-    final Employee employee = employeeService.getById(employeeId);
-    if (employee == null) {
-      throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);
+        approverService.removeApproverForEmployee(employeeId);
+
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    final Employee approver = employeeService.getById(approverId);
-    if (approver == null) {
-      throw new ElementNotFoundException(approverId, ExceptionElementType.EMPLOYEE);
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> delete(@PathVariable("id") final Long employeeId) {
+        final Employee currentEmployee = employeeService.getById(employeeId);
+
+        if (currentEmployee == null) {
+            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+        }
+
+        employeeService.delete(employeeId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
-
-    approverService.removeApproverForEmployee(employeeId);
-
-    return new ResponseEntity<Void>(HttpStatus.OK);
-  }
-
-  @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-  public ResponseEntity<Void> delete(@PathVariable("id") final Long employeeId) {
-    final Employee currentEmployee = employeeService.getById(employeeId);
-
-    if (currentEmployee == null) {
-      return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-    }
-
-    employeeService.delete(employeeId);
-    return new ResponseEntity<Void>(HttpStatus.OK);
-  }
 
 }

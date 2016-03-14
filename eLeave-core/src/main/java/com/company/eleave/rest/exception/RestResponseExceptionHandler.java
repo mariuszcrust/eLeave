@@ -19,7 +19,7 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
 
   @ExceptionHandler(ElementNotFoundException.class)
   protected ResponseEntity<Object> notFoundException(ElementNotFoundException ex, WebRequest request) {
-    return handleExceptionInternal(ex, MessageFormat.format(MESSAGE_FORMAT_NOT_FOUND, ex.getElementId().toString(), ex.getClazzType()), new HttpHeaders(), HttpStatus.CONFLICT, request);
+    return handleExceptionInternal(ex, MessageFormat.format(MESSAGE_FORMAT_NOT_FOUND, ex.getElementId().toString(), ex.getClazzType()), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
   }
 
   @ExceptionHandler(BadParameterException.class)
