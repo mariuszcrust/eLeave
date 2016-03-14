@@ -2,20 +2,14 @@ package com.company.eleave.employee.rest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 import java.util.List;
 
-import javax.swing.text.AbstractDocument.Content;
-
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.ContentResultMatchers;
 
 import com.company.eleave.rest.dto.EmployeeDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,6 +25,7 @@ public class ITEmployeeControllerRest extends IntegrationTest {
 
   @Before
   public void before() {
+      //mockMvc = MockMvcBuilders.standaloneSetup(new EmployeeController()).build();
     mockMvc = standaloneSetup(employeeController).build();
   }
 

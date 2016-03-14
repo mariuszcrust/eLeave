@@ -10,11 +10,13 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class, TransactionalTestExecutionListener.class, DbUnitTestExecutionListener.class})
-@ContextConfiguration("file:src/main/resources/test/context-test.xml")
+@ContextConfiguration(locations={"file:src/main/resources/test/context-test.xml"})
 @DatabaseSetup("data.xml")
+@WebAppConfiguration
 public abstract class IntegrationTest {
 
 }
