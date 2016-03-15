@@ -13,7 +13,7 @@ public class RestURI {
     
     public static final String EMPLOYEE_WITH_ID = "/employees/{0}";
     
-    public static final String EMPLOYEE_ASSIGN_APPROVER = "/employees/{0}/approver"
+    public static final String EMPLOYEE_ASSIGN_APPROVER = "/employees/{0}/approver";
     
     public static String request(String pattern, Object... arguments) {
         return MessageFormat.format(pattern, arguments);
