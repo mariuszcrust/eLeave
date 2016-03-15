@@ -47,7 +47,7 @@ public class EmployeeController {
     public ResponseEntity<List<EmployeeDTO>> getAll() {
         List<EmployeeDTO> result = employeeService.getAll().stream().map(employee -> mapper.toDto(employee)).collect(Collectors.toList());
 
-        return new ResponseEntity<List<EmployeeDTO>>(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -57,7 +57,7 @@ public class EmployeeController {
             throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);
         }
 
-        return new ResponseEntity<EmployeeDTO>(mapper.toDto(result), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.toDto(result), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -71,11 +71,11 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<EmployeeDTO> update(final @PathVariable("id") Long employeeId, final EmployeeDTO employeeDTO) {
+    public ResponseEntity<EmployeeDTO> update(final @PathVariable("id") Long employeeId, final @RequestBody EmployeeDTO employeeDTO) {
         final Employee currentEmployee = employeeService.getById(employeeId);
 
         if (currentEmployee == null) {
-            return new ResponseEntity<EmployeeDTO>(HttpStatus.NOT_FOUND);
+            throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);
         }
 
         // TODO make some propagate methods
@@ -85,11 +85,11 @@ public class EmployeeController {
 
         employeeService.update(currentEmployee);
 
-        return new ResponseEntity<EmployeeDTO>(mapper.toDto(currentEmployee), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.toDto(currentEmployee), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}/approver", method = RequestMethod.PUT)
-    public ResponseEntity<Void> assignApprover(final @PathVariable("id") Long employeeId, @RequestBody ApproverDTO approverDTO) {
+    public ResponseEntity<Void> assignApprover(final @PathVariable("id") Long employeeId, final @RequestBody ApproverDTO approverDTO) {
         final Employee currentEmployee = employeeService.getById(employeeId);
         if (currentEmployee == null) {
             throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);
