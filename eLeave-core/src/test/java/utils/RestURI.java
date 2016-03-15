@@ -11,9 +11,11 @@ public class RestURI {
     
     public static final String EMPLOYEES = "/employees";
     
-    public static final String EMPLOYEE_WITH_ID = "/employees/{0}";
+    public static final String EMPLOYEE_BY_ID = "/employees/{0}";
     
     public static final String EMPLOYEE_ASSIGN_APPROVER = "/employees/{0}/approver";
+    
+    public static final String EMPLOYEE_REASSIGN_APPROVER = "/employees/{0}/approver/{1}";
     
     public static String request(String pattern, Object... arguments) {
         return MessageFormat.format(pattern, arguments);

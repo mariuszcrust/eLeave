@@ -42,7 +42,7 @@ public class LeaveTypeController {
   public ResponseEntity<List<LeaveTypeDTO>> getAll() {
     List<LeaveTypeDTO> leaveTypes = leaveTypeService.getAll().stream().map(employee -> mapper.toDto(employee)).collect(Collectors.toList());;
 
-    return new ResponseEntity<List<LeaveTypeDTO>>(leaveTypes, HttpStatus.OK);
+    return new ResponseEntity<>(leaveTypes, HttpStatus.OK);
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -52,7 +52,7 @@ public class LeaveTypeController {
       throw new ElementNotFoundException(leaveTypeId, ExceptionElementType.LEAVE_TYPE);
     }
 
-    return new ResponseEntity<LeaveTypeDTO>(mapper.toDto(leaveType), HttpStatus.OK);
+    return new ResponseEntity<>(mapper.toDto(leaveType), HttpStatus.OK);
   }
 
   @RequestMapping(method = RequestMethod.POST)
@@ -76,7 +76,7 @@ public class LeaveTypeController {
 
     leaveTypeService.update(leaveType);
 
-    return new ResponseEntity<LeaveTypeDTO>(mapper.toDto(leaveType), HttpStatus.CREATED);
+    return new ResponseEntity<>(mapper.toDto(leaveType), HttpStatus.CREATED);
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -88,7 +88,7 @@ public class LeaveTypeController {
     }
 
     leaveTypeService.delete(leaveTypeId);
-    return new ResponseEntity<Void>(HttpStatus.OK);
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 
 }

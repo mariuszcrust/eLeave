@@ -27,6 +27,7 @@ import com.company.eleave.rest.exception.ElementNotFoundException;
 import com.company.eleave.rest.exception.ExceptionElementType;
 import com.company.eleave.rest.exception.ExceptionParameterType;
 import com.company.eleave.rest.mapper.EmployeeMapper;
+import java.util.Date;
 
 @RestController
 @RequestMapping(value = "/employees")
@@ -67,7 +68,7 @@ public class EmployeeController {
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(UriComponentsBuilder.fromPath("/employees/{id}").buildAndExpand(employeeId).toUri());
 
-        return new ResponseEntity<Long>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
@@ -104,15 +105,15 @@ public class EmployeeController {
         approver.setEmployee(currentEmployee);
         approver.setApprover(newApprover);
         try {
-            approver.setStartDate(FORMATTER.parse(approverDTO.getStartDate()));
-            approver.setEndDate(FORMATTER.parse(approverDTO.getEndDate()));
+            approver.setStartDate(formatDateTime(approverDTO.getStartDate()));
+            approver.setEndDate(formatDateTime(approverDTO.getEndDate()));
         } catch (ParseException e) {
             throw new BadParameterException(approverDTO.getStartDate(), ExceptionParameterType.START_END_DATE_FOR_APPROVER.getName(), e.getMessage());
         }
 
         approverService.assignApprover(approver);
 
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}/approver/{approverId}", method = RequestMethod.DELETE)
@@ -129,7 +130,7 @@ public class EmployeeController {
 
         approverService.removeApproverForEmployee(employeeId);
 
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -137,11 +138,15 @@ public class EmployeeController {
         final Employee currentEmployee = employeeService.getById(employeeId);
 
         if (currentEmployee == null) {
-            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+            throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);
         }
 
         employeeService.delete(employeeId);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    private Date formatDateTime(final String dateOrNull) throws ParseException {
+        return dateOrNull == null ? null : FORMATTER.parse(dateOrNull);
     }
 
 }

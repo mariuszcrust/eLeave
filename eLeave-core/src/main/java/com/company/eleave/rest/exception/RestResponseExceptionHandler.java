@@ -24,6 +24,6 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
 
   @ExceptionHandler(BadParameterException.class)
   protected ResponseEntity<Object> badParameterException(BadParameterException ex, WebRequest request) {
-    return handleExceptionInternal(ex, String.format(MESSAGE_FORMAT_BAD_PARAMETER, ex.getValue(), ex.getType(), ex.getElement(), ex.getMessage()), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    return handleExceptionInternal(ex, MessageFormat.format(MESSAGE_FORMAT_BAD_PARAMETER, ex.getValue(), ex.getType(), ex.getElement(), ex.getMessage()), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
   }
 }

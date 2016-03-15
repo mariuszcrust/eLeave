@@ -4,6 +4,7 @@ import com.company.eleave.rest.dto.AnnualBalanceLeaveDTO;
 import com.company.eleave.rest.dto.ApproverDTO;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
@@ -19,12 +20,17 @@ import com.company.eleave.rest.dto.EmployeeDTO;
 import com.company.eleave.rest.dto.LeaveTypeDTO;
 import com.company.eleave.rest.exception.RestResponseExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import org.junit.Assert;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import utils.RestURI;
 import utils.TestObjectConverter;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 public class ITEmployeeControllerRest extends IntegrationTest {
 
@@ -54,7 +60,7 @@ public class ITEmployeeControllerRest extends IntegrationTest {
     @Test
     public void testGetEmployeeByIdWhenExists() throws Exception {
         final long employeeId = 1;
-        contentAsString = mockMvc.perform(get(RestURI.request(RestURI.EMPLOYEE_WITH_ID, employeeId)))
+        contentAsString = mockMvc.perform(get(RestURI.request(RestURI.EMPLOYEE_BY_ID, employeeId)))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse().getContentAsString();
@@ -69,7 +75,7 @@ public class ITEmployeeControllerRest extends IntegrationTest {
     @Test
     public void testGetEmployeeByIdWhenNotExists() throws Exception {
         final long employeeId = 123;
-        contentAsString = mockMvc.perform(get(RestURI.request(RestURI.EMPLOYEE_WITH_ID, employeeId)))
+        contentAsString = mockMvc.perform(get(RestURI.request(RestURI.EMPLOYEE_BY_ID, employeeId)))
                 .andExpect(status().isNotFound())
                 .andReturn()
                 .getResponse().getContentAsString();
@@ -111,7 +117,7 @@ public class ITEmployeeControllerRest extends IntegrationTest {
         List<EmployeeDTO> result = new ObjectMapper().readValue(contentAsString, List.class);
         Assert.assertEquals(11, result.size());
     }
-    
+
     @Test
     public void testUpdateEmployeeWhenExists() throws Exception {
         final long employeeId = 1;
@@ -119,21 +125,21 @@ public class ITEmployeeControllerRest extends IntegrationTest {
         updateEmployee.setEmail("newDoe1@mail.com");
         updateEmployee.setFirstName("newJohn");
         updateEmployee.setLastName("newDoe1");
-        
-        contentAsString = mockMvc.perform(put(RestURI.request(RestURI.EMPLOYEE_WITH_ID, employeeId)).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(updateEmployee)))
+
+        contentAsString = mockMvc.perform(put(RestURI.request(RestURI.EMPLOYEE_BY_ID, employeeId)).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(updateEmployee)))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse().getContentAsString();
-        
+
         EmployeeDTO result = new ObjectMapper().readValue(contentAsString, EmployeeDTO.class);
 
         Assert.assertNotNull(result);
         Assert.assertTrue("wrong first name", "newJohn".equals(result.getFirstName()));
         Assert.assertTrue("wrong last name", "newDoe1".equals(result.getLastName()));
         Assert.assertTrue("wrong email", "newDoe1@mail.com".equals(result.getEmail()));
-        
+
     }
-    
+
     @Test
     public void testUpdateEmployeeWhenNotExists() throws Exception {
         final long employeeId = 123;
@@ -141,59 +147,148 @@ public class ITEmployeeControllerRest extends IntegrationTest {
         updateEmployee.setEmail("newDoe1@mail.com");
         updateEmployee.setFirstName("newJohn");
         updateEmployee.setLastName("newDoe1");
-        
-        contentAsString = mockMvc.perform(put(RestURI.request(RestURI.EMPLOYEE_WITH_ID, employeeId)).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(updateEmployee)))
+
+        contentAsString = mockMvc.perform(put(RestURI.request(RestURI.EMPLOYEE_BY_ID, employeeId)).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(updateEmployee)))
                 .andExpect(status().isNotFound())
                 .andReturn()
                 .getResponse().getContentAsString();
 
         Assert.assertTrue("Element with id: 123 of type: Employee has not been found".equals(contentAsString));
     }
-    
+
     @Test
     public void testAssignApproverWhenEmployeeNotExists() throws Exception {
         final long employeeId = 123;
         final long approverId = 5;
-        
+
         final ApproverDTO approverDTO = new ApproverDTO();
         approverDTO.setApproverId(approverId);
         approverDTO.setStartDate(new Date().toString());
         approverDTO.setEndDate(null);
-        
+
         contentAsString = mockMvc.perform(put(RestURI.request(RestURI.EMPLOYEE_ASSIGN_APPROVER, employeeId)).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(approverDTO)))
                 .andExpect(status().isNotFound())
                 .andReturn()
                 .getResponse().getContentAsString();
-        
+
         Assert.assertTrue("Element with id: 123 of type: Employee has not been found".equals(contentAsString));
     }
-    
+
     @Test
     public void testAssignApproverWhenApproverNotExists() throws Exception {
         final long employeeId = 1;
         final long approverId = 123;
-        
+
         final ApproverDTO approverDTO = new ApproverDTO();
         approverDTO.setApproverId(approverId);
         approverDTO.setStartDate(new Date().toString());
         approverDTO.setEndDate(null);
-        
+
         contentAsString = mockMvc.perform(put(RestURI.request(RestURI.EMPLOYEE_ASSIGN_APPROVER, employeeId)).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(approverDTO)))
                 .andExpect(status().isNotFound())
                 .andReturn()
                 .getResponse().getContentAsString();
-        
+
+        Assert.assertTrue("Element with id: 123 of type: Employee has not been found".equals(contentAsString));
+    }
+
+    @Test
+    public void testAssignApproverWhenStartDateHasWrongValue() throws Exception {
+        final long employeeId = 1;
+        final long approverId = 5;
+
+        final ApproverDTO approverDTO = new ApproverDTO();
+        approverDTO.setApproverId(approverId);
+        approverDTO.setStartDate("1-April-2016");
+        approverDTO.setEndDate(null);
+
+        contentAsString = mockMvc.perform(put(RestURI.request(RestURI.EMPLOYEE_ASSIGN_APPROVER, employeeId)).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(approverDTO)))
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse().getContentAsString();
+
+        Assert.assertTrue("Element with value: 1-April-2016 of type: Date has invalid value. Root cause: Unparseable date: \"1-April-2016\"".equals(contentAsString));
+    }
+
+    @Test
+    public void testAssignApproverSuccessfuly() throws Exception {
+        final long employeeId = 1;
+        final long approverId = 5;
+
+        final ApproverDTO approverDTO = new ApproverDTO();
+        approverDTO.setApproverId(approverId);
+        approverDTO.setStartDate("2016-01-1");
+        approverDTO.setEndDate(null);
+
+        contentAsString = mockMvc.perform(put(RestURI.request(RestURI.EMPLOYEE_ASSIGN_APPROVER, employeeId)).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(approverDTO)))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse().getContentAsString();
+    }
+
+    @Test
+    public void testReassignApproverWhenEmployeeNotExists() throws Exception {
+        final long employeeId = 123;
+        final long approverId = 5;
+
+        final ApproverDTO approverDTO = new ApproverDTO();
+        approverDTO.setApproverId(approverId);
+        approverDTO.setStartDate(new Date().toString());
+        approverDTO.setEndDate(null);
+
+        contentAsString = mockMvc.perform(delete(RestURI.request(RestURI.EMPLOYEE_REASSIGN_APPROVER, employeeId, approverId)))
+                .andExpect(status().isNotFound())
+                .andReturn()
+                .getResponse().getContentAsString();
+
+        Assert.assertTrue("Element with id: 123 of type: Employee has not been found".equals(contentAsString));
+    }
+
+    @Test
+    public void testReassignApproverWhenApproverNotExists() throws Exception {
+        final long employeeId = 1;
+        final long approverId = 123;
+
+        final ApproverDTO approverDTO = new ApproverDTO();
+        approverDTO.setApproverId(approverId);
+        approverDTO.setStartDate(new Date().toString());
+        approverDTO.setEndDate(null);
+
+        contentAsString = mockMvc.perform(delete(RestURI.request(RestURI.EMPLOYEE_REASSIGN_APPROVER, employeeId, approverId)))
+                .andExpect(status().isNotFound())
+                .andReturn()
+                .getResponse().getContentAsString();
+
         Assert.assertTrue("Element with id: 123 of type: Employee has not been found".equals(contentAsString));
     }
     
-    //@Test
-    public void testAssignApproverWhenStartDateHasWrongValue() {
-        
+    @Test
+    public void testDeleteEmployeeWhenNotExists() throws Exception {
+        final long employeeId = 123;
+
+        contentAsString = mockMvc.perform(delete(RestURI.request(RestURI.EMPLOYEE_BY_ID, employeeId)))
+                .andExpect(status().isNotFound())
+                .andReturn()
+                .getResponse().getContentAsString();
+
+        Assert.assertTrue("Element with id: 123 of type: Employee has not been found".equals(contentAsString));
     }
     
-    //@Test
-    public void testAssignApproverSuccessfuly() {
-        
-    }
+    @Test
+    public void testDeleteEmployeeSuccessfully() throws Exception {
+        final long employeeId = 1;
 
+        mockMvc.perform(delete(RestURI.request(RestURI.EMPLOYEE_BY_ID, employeeId)))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse().getContentAsString();
+
+        contentAsString = mockMvc.perform(get(RestURI.EMPLOYEES))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse().getContentAsString();
+
+        List<EmployeeDTO> result = new ObjectMapper().readValue(contentAsString, List.class);
+        Assert.assertTrue("Wrong size of all employees" + result.size(), result.size() == 9);
+    }
 }
