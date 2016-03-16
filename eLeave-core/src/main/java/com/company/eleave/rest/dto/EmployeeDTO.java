@@ -4,40 +4,49 @@ import java.util.List;
 
 public class EmployeeDTO {
 
-  private String firstName;
-  private String lastName;
-  private String email;
-  private List<AnnualBalanceLeaveDTO> annualBalanceLeave;
+    private long id;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private List<AnnualBalanceLeaveDTO> annualBalanceLeave;
 
-  public String getFirstName() {
-    return firstName;
-  }
+    public long getId() {
+        return id;
+    }
+    
+    public void setId(long id) {
+        this.id = id;
+    }
+    
+    public String getFirstName() {
+        return firstName;
+    }
 
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-  public String getLastName() {
-    return lastName;
-  }
+    public String getLastName() {
+        return lastName;
+    }
 
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
-  }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-  public String getEmail() {
-    return email;
-  }
+    public String getEmail() {
+        return email;
+    }
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-  public List<AnnualBalanceLeaveDTO> getAnnualBalanceLeave() {
-    return annualBalanceLeave;
-  }
+    public List<AnnualBalanceLeaveDTO> getAnnualBalanceLeave() {
+        return annualBalanceLeave;
+    }
 
-  public void setAnnualBalanceLeave(List<AnnualBalanceLeaveDTO> annualBalanceLeave) {
-    this.annualBalanceLeave = annualBalanceLeave;
-  }
+    public void setAnnualBalanceLeave(List<AnnualBalanceLeaveDTO> annualBalanceLeave) {
+        this.annualBalanceLeave = annualBalanceLeave;
+    }
 }

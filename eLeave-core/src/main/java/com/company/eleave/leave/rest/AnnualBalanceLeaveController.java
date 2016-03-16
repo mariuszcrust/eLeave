@@ -10,6 +10,7 @@ import com.company.eleave.rest.exception.ExceptionElementType;
 import com.company.eleave.rest.mapper.AnnualBalanceLeaveMapper;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,17 +45,17 @@ public class AnnualBalanceLeaveController {
     AnnualBalanceLeaveMapper mapper;
     
     @RequestMapping(method = GET)
-    public ResponseEntity<List<AnnualBalanceLeave>> getAllLeaves() {
-        List<AnnualBalanceLeave> annualBalanceLeaves = annualBalanceService.getAllLeaves();
+    public ResponseEntity<List<AnnualBalanceLeaveDTO>> getAllLeaves() {
+        List<AnnualBalanceLeaveDTO> annualBalanceLeaves = annualBalanceService.getAllLeaves().stream().map(annualBalanceLeave -> mapper.toDto(annualBalanceLeave)).collect(Collectors.toList());
         
         return new ResponseEntity<>(annualBalanceLeaves, HttpStatus.OK);
     }
 
     @RequestMapping(path = "/employee/{id}", method = GET)
-    public ResponseEntity<List<AnnualBalanceLeave>> getLeavesForEmployee(@PathVariable("id") long employeeId) {
+    public ResponseEntity<List<AnnualBalanceLeaveDTO>> getLeavesForEmployee(@PathVariable("id") long employeeId) {
         List<AnnualBalanceLeave> leavesForUser = annualBalanceService.getLeavesForUser(employeeId);
 
-        return new ResponseEntity<>(leavesForUser, HttpStatus.OK);
+        return new ResponseEntity<>(leavesForUser.stream().map(annualBalanceLeave -> mapper.toDto(annualBalanceLeave)).collect(Collectors.toList()), HttpStatus.OK);
     }
 
     //TODO - needs to be checked what if we wane to add two types of the same annual type
@@ -76,8 +77,8 @@ public class AnnualBalanceLeaveController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    @RequestMapping(path="/employee/{id}", method = DELETE)
-    public ResponseEntity<Void> removeLeaveForEmployeeByType() {
+    @RequestMapping(path="/employee/{id}/leaveType/{leaveTypeId}", method = DELETE)
+    public ResponseEntity<Void> removeLeaveForEmployeeByType(@PathVariable("id") long employeeId, @PathVariable("leaveTypeId") long leaveTypeId) {
         return null;
     }
     
