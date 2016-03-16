@@ -5,6 +5,9 @@ DROP PROCEDURE IF EXISTS eleavedb.createUser;
 DROP PROCEDURE IF EXISTS eleavedb.createUserHasRole;
 DROP PROCEDURE IF EXISTS eleavedb.createLeaveType;
 DROP PROCEDURE IF EXISTS eleavedb.createEmployee;
+DROP PROCEDURE IF EXISTS eleavedb.createApprover;
+DROP PROCEDURE IF EXISTS eleavedb.createAnnualBalanceLeave;
+DROP PROCEDURE IF EXISTS eleavedb.createLeaveTaken;
 
 delimiter //
 create procedure eleavedb.createPrivilege ($name varchar(30))
@@ -36,14 +39,34 @@ begin
     insert into user_user_role (user_id, user_role_id) values ($user_id, $role_id);
 end //
 
-create procedure eleavedb.createLeaveType($leave_type_name varchar(50), $days smallint)
+create procedure eleavedb.createLeaveType($leave_type_name varchar(50), $days smallint, out $id int)
 begin
     insert into leave_type (version, leave_type_name, default_days_allowed, comment) values (1, $leave_type_name, $days, 'No comment');
+    set $id := last_insert_id();
 end //
 
-create procedure eleavedb.createEmployee($email varchar(255), $first_name varchar(255), $last_name varchar(255), $user_id smallint)
+create procedure eleavedb.createEmployee($email varchar(255), $first_name varchar(255), $last_name varchar(255), $user_id smallint, out $id int)
 begin
     insert into employee (version, email, first_name, last_name, user_id) values (1, $email, $first_name, $last_name, $user_id);
+    set $id := last_insert_id();
+end //
+
+create procedure eleavedb.createApprover($employee_id int, $end_date datetime, $start_date datetime, $approver_id int)
+begin
+    insert into approver(id, version, end_date, start_date, approver_id) values ($employee_id, 1, $end_date, $start_date, $approver_id);
+end //
+
+create procedure eleavedb.createAnnualBalanceLeave($leave_days_allowed int, $leave_days_remaining int, $validity_date datetime, $year int, $employee_id int, $leave_type_id int, out $id int)
+begin
+    insert into annual_balance_leave(version, leave_days_allowed, leave_days_remaining, validity_date, year, employee_id, leave_type_id)
+                values(1, $leave_days_allowed, $leave_days_remaining, $validity_date, $year, $employee_id, $leave_type_id);
+    set $id := last_insert_id();
+end //
+
+create procedure eleavedb.createTakenLeave($leave_days_taken int, $leave_from datetime, $comment varchar(255), $status_name varchar(255), $leave_to datetime, $annual_balance_leave_id int, $approver_id int)
+begin
+    insert into taken_leave(version, leave_days_taken, leave_from, comment, status_name, leave_to, annual_balance_leave_id, approver_id)
+                values(1, $leave_days_taken, $leave_from, $comment, $status_name, $leave_to, $annual_balance_leave_id, $approver_id);
 end //
 
 delimiter ;
@@ -109,27 +132,51 @@ call eleavedb.createUser('liubomir', @liubomir_user_id);
 call eleavedb.createUserHasRole(@liubomir_user_id, @employee_role_id);
 
 -- Create employees
-call eleavedb.createEmployee('admin@softserve.com','super','admin', @admin_user_id);
-call eleavedb.createEmployee('rita@softserve.com','rita','prockow', @rita_user_id);
-call eleavedb.createEmployee('beata@softserve.com','beata','kepska', @beata_user_id);
-call eleavedb.createEmployee('maciek@softserve.com','maciek','urynowicz', @maciek_user_id);
-call eleavedb.createEmployee('pawel@softserve.com','pawel','lopatka', @pawel_user_id);
-call eleavedb.createEmployee('mariusz@softserve.com','mariusz','danielewski', @mariusz_user_id);
-call eleavedb.createEmployee('sebastian@softserve.com','sebastian','szlachetka', @seba_user_id);
-call eleavedb.createEmployee('alex@softserve.com','alex','belugorov', @alex_user_id);
-call eleavedb.createEmployee('liubomir@softserve.com','liubomir','mir', @admin_user_id);
+call eleavedb.createEmployee('admin@softserve.com','super','admin', @admin_user_id, @admin_employee_id);
+call eleavedb.createEmployee('rita@softserve.com','rita','prockow', @rita_user_id, @rita_employee_id);
+call eleavedb.createEmployee('beata@softserve.com','beata','kepska', @beata_user_id, @beata_employee_id);
+call eleavedb.createEmployee('maciek@softserve.com','maciek','urynowicz', @maciek_user_id, @maciek_employee_id);
+call eleavedb.createEmployee('pawel@softserve.com','pawel','lopatka', @pawel_user_id, @pawel_employee_id);
+call eleavedb.createEmployee('mariusz@softserve.com','mariusz','danielewski', @mariusz_user_id, @mariusz_employee_id);
+call eleavedb.createEmployee('sebastian@softserve.com','sebastian','szlachetka', @seba_user_id, @seba_employee_id);
+call eleavedb.createEmployee('alex@softserve.com','alex','belugorov', @alex_user_id, @alex_employee_id);
+call eleavedb.createEmployee('liubomir@softserve.com','liubomir','mir', @liubomir_user_id, @liubomir_employee_id);
+
+-- Create approvers
+call eleavedb.createApprover(@mariusz_employee_id, '2016-01-01', null, @maciek_employee_id);
+call eleavedb.createApprover(@seba_employee_id, '2016-01-01', null, @maciek_employee_id);
+call eleavedb.createApprover(@alex_employee_id, '2016-01-01', null, @maciek_employee_id);
+
+call eleavedb.createApprover(@maciek_employee_id, '2016-01-01', null, @rita_employee_id);
+call eleavedb.createApprover(@rita_employee_id, '2016-01-01', null, @pawel_employee_id);
 
 -- Create leave types
-call eleavedb.createLeaveType('Annual holiday', 24);
-call eleavedb.createLeaveType('On demand', 4);
-call eleavedb.createLeaveType('Special holiday', 2);
-call eleavedb.createLeaveType('Paid child care', 2);
-call eleavedb.createLeaveType('Unpaid holiday', 5);
-call eleavedb.createLeaveType('Blood donation', 1);
-call eleavedb.createLeaveType('Justified paid absence', 1);
-call eleavedb.createLeaveType('Justified unpaid absence', 1);
-call eleavedb.createLeaveType('Overtime', 1);
-call eleavedb.createLeaveType('Other', 1);
+call eleavedb.createLeaveType('Annual holiday', 24, @annual_leave_type_id);
+call eleavedb.createLeaveType('On demand', 4, @on_demand_leave_type_id);
+call eleavedb.createLeaveType('Special holiday', 2, @special_holiday_leave_type_id);
+call eleavedb.createLeaveType('Paid child care', 2, @paid_child_leave_type_id);
+call eleavedb.createLeaveType('Unpaid holiday', 5, @unpaid_holiday_leave_type_id);
+call eleavedb.createLeaveType('Blood donation', 1, @blood_donation_leave_type_id);
+call eleavedb.createLeaveType('Justified paid absence', 1, @justified_paid_absence_leave_type_id);
+call eleavedb.createLeaveType('Justified unpaid absence', 1, @justified_unpaid_absence_leave_type_id);
+call eleavedb.createLeaveType('Overtime', 1, @overtime_leave_type_id);
+call eleavedb.createLeaveType('Other', 1, @other_leave_type_id);
+
+-- Create annual balance leaves
+call eleavedb.createAnnualBalanceLeave (26, 20, '2016-12-12', 2016, @mariusz_employee_id, @annual_leave_type_id, @mariusz_annual_leave);
+call eleavedb.createAnnualBalanceLeave (2, 2, '2016-12-12', 2016, @mariusz_employee_id, @special_holiday_leave_type_id, @mariusz_special_holiday_annual_leave);
+call eleavedb.createAnnualBalanceLeave (2, 0, '2016-12-12', 2016, @mariusz_employee_id, @paid_child_leave_type_id, @mariusz_paid_child_care_annual_leave);
+
+call eleavedb.createAnnualBalanceLeave (26, 20, '2015-12-12', 2015, @seba_employee_id, @annual_leave_type_id, @seba_annual_leave_2015);
+call eleavedb.createAnnualBalanceLeave (26, 26, '2016-12-12', 2016, @seba_employee_id, @annual_leave_type_id, @seba_annual_leave_2016);
+
+-- Create taken leaves
+call eleavedb.createTakenLeave(1, '2016-01-01', 'some holiday', 'REJECTED', '2016-01-01', @mariusz_annual_leave, @pawel_employee_id);
+call eleavedb.createTakenLeave(1, '2016-01-01', 'some holiday', 'APPROVED', '2016-01-01', @mariusz_annual_leave, @maciek_employee_id);
+call eleavedb.createTakenLeave(5, '2016-02-02', 'some holiday', 'APPROVED', '2016-01-06', @mariusz_annual_leave, @maciek_employee_id);
+call eleavedb.createTakenLeave(2, '2016-02-02', 'some holiday', 'APPROVED', '2016-01-03', @mariusz_paid_child_care_annual_leave, @maciek_employee_id);
+
+call eleavedb.createTakenLeave(6, '2016-02-02', 'some holiday', 'APPROVED', '2016-01-06', @seba_annual_leave_2015, @maciek_employee_id);
 
 DROP PROCEDURE IF EXISTS eleavedb.createPrivilege;
 DROP PROCEDURE IF EXISTS eleavedb.createUserRole;
@@ -137,3 +184,7 @@ DROP PROCEDURE IF EXISTS eleavedb.createUserRoleHasPrivilege;
 DROP PROCEDURE IF EXISTS eleavedb.createUser;
 DROP PROCEDURE IF EXISTS eleavedb.createUserHasRole;
 DROP PROCEDURE IF EXISTS eleavedb.createLeaveType;
+DROP PROCEDURE IF EXISTS eleavedb.createEmployee;
+DROP PROCEDURE IF EXISTS eleavedb.createApprover;
+DROP PROCEDURE IF EXISTS eleavedb.createAnnualBalanceLeave;
+DROP PROCEDURE IF EXISTS eleavedb.createTakenLeave;

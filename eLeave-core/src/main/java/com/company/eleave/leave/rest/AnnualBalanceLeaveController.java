@@ -59,7 +59,7 @@ public class AnnualBalanceLeaveController {
 
     //TODO - needs to be checked what if we wane to add two types of the same annual type
     @RequestMapping(path="/employee/{id}", method = POST)
-    public ResponseEntity<Void> addLeaveforEmployee(@PathVariable("id") long employeeId, final @RequestBody AnnualBalanceLeaveDTO annualBalanceLeaveDTO) {
+    public ResponseEntity<Void> addLeaveForEmployee(@PathVariable("id") long employeeId, final @RequestBody AnnualBalanceLeaveDTO annualBalanceLeaveDTO) {
         final Employee employee = employeeService.getById(employeeId);
         if(employee == null) {
             throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);

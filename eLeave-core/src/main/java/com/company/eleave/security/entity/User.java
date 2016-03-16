@@ -26,7 +26,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  *
  * @author Sebastian Szlachetka
  */
-@Entity
+                                                                                                                                                                                                                                  @Entity
 @Table(name = "user")
 public class User extends BaseEntity implements UserDetails {
 

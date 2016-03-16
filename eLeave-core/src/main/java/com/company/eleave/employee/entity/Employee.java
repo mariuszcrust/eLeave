@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 /**
  *
@@ -21,6 +23,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "employee")
 public class Employee extends BaseEntity implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Column(name = "first_name")
@@ -29,38 +32,39 @@ public class Employee extends BaseEntity implements Serializable {
     @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "email")
     private String email;
-    
+
     @OneToMany(mappedBy = "employee", fetch = FetchType.EAGER)
     private List<AnnualBalanceLeave> annualBalanceLeave;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id",nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public List<AnnualBalanceLeave> getAnnualBalanceLeave() {
         return annualBalanceLeave;

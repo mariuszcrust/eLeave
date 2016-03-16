@@ -12,6 +12,7 @@ import com.company.eleave.employee.repository.EmployeeRepository;
 import com.company.eleave.leave.entity.TakenLeave;
 import com.company.eleave.leave.repository.TakenLeaveRepository;
 import com.company.eleave.security.entity.User;
+import com.company.eleave.security.repository.UserRepository;
 import com.google.common.collect.Lists;
 
 @Service("employeeService")
@@ -23,6 +24,10 @@ public class EmployeeService {
 
     @Autowired
     private TakenLeaveRepository takenLeaveRepository;
+    
+    @Autowired
+    private UserRepository userRepository;
+    
 
     public List<Employee> getAll() {
         return Lists.newArrayList(employeeRepo.findAll());
@@ -35,7 +40,7 @@ public class EmployeeService {
     public void delete(Long employeeId) {
         final List<TakenLeave> leavesForEmployee = takenLeaveRepository.findAllTakenLeavesByEmployeeId(employeeId);
         takenLeaveRepository.delete(leavesForEmployee);
-
+        
         employeeRepo.delete(employeeId);
     }
 
