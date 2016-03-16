@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.company.eleave.employee.entity.Employee;
 import com.company.eleave.employee.repository.EmployeeRepository;
+import com.company.eleave.leave.entity.TakenLeave;
+import com.company.eleave.leave.repository.TakenLeaveRepository;
 import com.company.eleave.security.entity.User;
 import com.google.common.collect.Lists;
 
@@ -19,6 +21,9 @@ public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepo;
 
+    @Autowired
+    private TakenLeaveRepository takenLeaveRepository;
+
     public List<Employee> getAll() {
         return Lists.newArrayList(employeeRepo.findAll());
     }
@@ -28,6 +33,9 @@ public class EmployeeService {
     }
 
     public void delete(Long employeeId) {
+        final List<TakenLeave> leavesForEmployee = takenLeaveRepository.findAllTakenLeavesByEmployeeId(employeeId);
+        takenLeaveRepository.delete(leavesForEmployee);
+
         employeeRepo.delete(employeeId);
     }
 

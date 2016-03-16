@@ -11,8 +11,10 @@ import org.springframework.data.repository.CrudRepository;
  *
  * @author Sebastian Szlachetka
  */
+
 public interface EmployeeRepository extends CrudRepository<Employee, Long>{
     
   @Query("SELECT e FROM Employee e")
   List<Employee> findAllEmployeesWithoutUser();
+  
 }

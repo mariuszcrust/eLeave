@@ -27,7 +27,6 @@ public class TakenLeave extends BaseEntity {
   @JoinColumn(name = "approver_id")
   private Employee approver;
 
-  @OneToOne
   @JoinColumn(name = "annual_balance_leave_id", nullable = false)
   private AnnualBalanceLeave annualBalanceLeave;
 
