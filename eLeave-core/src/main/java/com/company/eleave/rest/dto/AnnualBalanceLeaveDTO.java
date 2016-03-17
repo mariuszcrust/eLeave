@@ -5,25 +5,18 @@ import java.util.Date;
 public class AnnualBalanceLeaveDTO {
 
     private long id;
-    private LeaveTypeDTO leaveType;
     private int leaveDaysRemaining;
     private int leaveDaysAllowed;
     private Date validityDate;
-
+    private String leaveTypeName;
+    private long leaveTypeId;
+    
     public long getId() {
         return id;
     }
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public LeaveTypeDTO getLeaveType() {
-        return leaveType;
-    }
-
-    public void setLeaveType(LeaveTypeDTO leaveType) {
-        this.leaveType = leaveType;
     }
 
     public int getLeaveDaysRemaining() {
@@ -48,5 +41,21 @@ public class AnnualBalanceLeaveDTO {
 
     public void setValidityDate(Date validityDate) {
         this.validityDate = validityDate;
+    }
+    
+    public String getLeaveTypeName() {
+        return leaveTypeName;
+    }
+    
+    public void setLeaveTypeName(String leaveTypeName) {
+        this.leaveTypeName = leaveTypeName;
+    }
+    
+    public void setLeaveTypeId(long leaveTypeId) {
+        this.leaveTypeId = leaveTypeId;
+    }
+    
+    public long getLeaveTypeId() {
+        return leaveTypeId;
     }
 }

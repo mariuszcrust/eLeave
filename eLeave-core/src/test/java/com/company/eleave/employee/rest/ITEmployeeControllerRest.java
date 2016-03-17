@@ -90,7 +90,6 @@ public class ITEmployeeControllerRest extends IntegrationTest {
         final AnnualBalanceLeaveDTO normalHolidays = new AnnualBalanceLeaveDTO();
         normalHolidays.setLeaveDaysAllowed(20);
         normalHolidays.setLeaveDaysRemaining(15);
-        normalHolidays.setLeaveType(leaveType);
         normalHolidays.setValidityDate(new Date());
 
         final List<AnnualBalanceLeaveDTO> leaves = Arrays.asList(normalHolidays);

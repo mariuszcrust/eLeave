@@ -34,7 +34,8 @@ public class EmployeeMapper implements ModelMapping<EmployeeDTO, Employee> {
 
     private AnnualBalanceLeaveDTO toDto(AnnualBalanceLeave balanceLeave) {
         AnnualBalanceLeaveDTO annualBalanceDto = mapper.map(balanceLeave, AnnualBalanceLeaveDTO.class);
-        annualBalanceDto.setLeaveType(mapper.map(balanceLeave.getLeaveType(), LeaveTypeDTO.class));
+        annualBalanceDto.setLeaveTypeId(balanceLeave.getLeaveType().getId());
+        annualBalanceDto.setLeaveTypeName(balanceLeave.getLeaveType().getLeaveTypeName());
         return annualBalanceDto;
     }
 }
