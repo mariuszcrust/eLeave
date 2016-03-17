@@ -5,6 +5,7 @@
  */
 package com.company.eleave.leave.service;
 
+import com.company.eleave.leave.entity.TakenLeave;
 import com.company.eleave.leave.repository.TakenLeaveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,5 +22,9 @@ public class TakenLeaveService {
     
     @Autowired
     TakenLeaveRepository takenLeaveRepository;
+
+    public TakenLeave getById(Long takenLeaveId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
