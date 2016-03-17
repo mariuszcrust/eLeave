@@ -17,14 +17,15 @@ public class AnnualBalanceLeaveMapper implements ModelMapping<AnnualBalanceLeave
 
     @Override
     public AnnualBalanceLeaveDTO toDto(AnnualBalanceLeave annualBalance) {
-        AnnualBalanceLeaveDTO employeeDTO = mapper.map(annualBalance, AnnualBalanceLeaveDTO.class);
-        return employeeDTO;
+        AnnualBalanceLeaveDTO annualBalanceLeaveDTO = mapper.map(annualBalance, AnnualBalanceLeaveDTO.class);
+        annualBalanceLeaveDTO.setLeaveTypeId(annualBalance.getLeaveType().getId());
+        annualBalanceLeaveDTO.setLeaveTypeName(annualBalance.getLeaveType().getLeaveTypeName());
+        return annualBalanceLeaveDTO;
     }
 
     @Override
     public AnnualBalanceLeave toEntity(AnnualBalanceLeaveDTO annualBalanceLeaveDTO) {
         AnnualBalanceLeave annualBalanceLeave = mapper.map(annualBalanceLeaveDTO, AnnualBalanceLeave.class);
-        
         annualBalanceLeave.setLeaveType(leaveTypeRepository.findOne(annualBalanceLeaveDTO.getLeaveTypeId()));
         
         return annualBalanceLeave;

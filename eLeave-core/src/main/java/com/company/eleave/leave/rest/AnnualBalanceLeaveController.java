@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -35,17 +33,18 @@ public class AnnualBalanceLeaveController {
 
     @Autowired
     AnnualBalanceService annualBalanceService;
-    
+
     @Autowired
     EmployeeService employeeService;
-    
+
     @Autowired
     AnnualBalanceLeaveMapper mapper;
-    
+
     @RequestMapping(method = GET)
     public ResponseEntity<List<AnnualBalanceLeaveDTO>> getAllLeaves() {
+        List<AnnualBalanceLeave> allLeaves = annualBalanceService.getAllLeaves();
         List<AnnualBalanceLeaveDTO> annualBalanceLeaves = annualBalanceService.getAllLeaves().stream().map(annualBalanceLeave -> mapper.toDto(annualBalanceLeave)).collect(Collectors.toList());
-        
+
         return new ResponseEntity<>(annualBalanceLeaves, HttpStatus.OK);
     }
 
@@ -57,16 +56,16 @@ public class AnnualBalanceLeaveController {
     }
 
     //TODO - needs to be checked what if we wane to add two types of the same annual type
-    @RequestMapping(path="/employee/{id}", method = RequestMethod.POST)
+    @RequestMapping(path = "/employee/{id}", method = RequestMethod.POST)
     public ResponseEntity<Void> addLeaveForEmployee(@PathVariable("id") long employeeId, final @RequestBody AnnualBalanceLeaveDTO annualBalanceLeaveDTO) {
         final Employee employee = employeeService.getById(employeeId);
-        if(employee == null) {
+        if (employee == null) {
             throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);
         }
-        
+
         final AnnualBalanceLeave annualBalanceLeave = mapper.toEntity(annualBalanceLeaveDTO);
         annualBalanceLeave.setEmployee(employee);
-        
+
         final long annualBalanceId = annualBalanceService.createLeave(annualBalanceLeave);
 
         HttpHeaders headers = new HttpHeaders();
@@ -75,13 +74,15 @@ public class AnnualBalanceLeaveController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    @RequestMapping(path="/employee/{id}/leaveType/{leaveTypeId}", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> removeLeaveForEmployeeByType(@PathVariable("id") long employeeId, @PathVariable("leaveTypeId") long leaveTypeId) {
-        return null;
-    }
-    
-    @RequestMapping(path="/employee/{id}", method = PUT)
-    public ResponseEntity<Void> updateLeave() {
-        return null;
+    @RequestMapping(path = "/employee/{id}/leave/{leaveId}", method = DELETE)
+    public ResponseEntity<Void> deleteLeaveForEmployeeByLeaveId(@PathVariable("id") long employeeId, @PathVariable("leaveId") long leaveId) {
+        final Employee employee = employeeService.getById(employeeId);
+        if (employee == null) {
+            throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);
+        }
+        
+        annualBalanceService.deleteLeave(leaveId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
