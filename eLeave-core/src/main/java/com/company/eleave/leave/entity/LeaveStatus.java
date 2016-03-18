@@ -13,7 +13,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  */
 @Embeddable
 public class LeaveStatus {
-    
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status_name")
     private StatusName statusName;
@@ -59,8 +59,19 @@ public class LeaveStatus {
     public String toString() {
         return "LeaveStatus{statusName=" + statusName + ", comment=" + comment + '}';
     }
-    
+
     public enum StatusName {
         PENDING, APPROVED, REJECTED, WITHDRAW;
+
+        public static boolean contains(String test) {
+
+            for (StatusName c : StatusName.values()) {
+                if (c.name().equals(test)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

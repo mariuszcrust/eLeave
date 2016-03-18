@@ -17,9 +17,14 @@ public class TakenLeaveDTO {
     private int leaveDaysTaken;
     private Date leaveFrom;
     private Date leaveTo;
+    
+    private LeaveStatusDTO status;
+    
+    private long annualBalanceLeaveId;
+    private String leaveType;
+    
     private long approverId;
     private long approverName;
-    private String leaveType;
 
     public long getId() {
         return id;
@@ -77,4 +82,20 @@ public class TakenLeaveDTO {
         this.leaveType = leaveType;
     }
   
+    public LeaveStatusDTO getStatus() {
+        return status;
+    }
+    
+    public void setStatus(LeaveStatusDTO status) {
+        this.status = status;
+    }
+    
+    public long annualBalanceLeaveId() {
+        return annualBalanceLeaveId;
+    }
+    
+    public void setAnnualBalanceLeaveId(long annualBalanceLeaveId) {
+        this.annualBalanceLeaveId = annualBalanceLeaveId;
+    }
+    
 }

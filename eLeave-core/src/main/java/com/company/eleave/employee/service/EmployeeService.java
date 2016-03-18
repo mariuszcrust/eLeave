@@ -42,7 +42,7 @@ public class EmployeeService {
     }
     
     public void delete(Long employeeId) {
-        final List<TakenLeave> leavesForEmployee = takenLeaveRepository.findAllTakenLeavesByEmployeeId(employeeId);
+        final List<TakenLeave> leavesForEmployee = takenLeaveRepository.findTakenLeavesForEmployeeId(employeeId);
         takenLeaveRepository.delete(leavesForEmployee);
         
         final List<AnnualBalanceLeave> annualBalanceLeaves = annualBalanceLeaveRepository.findByEmployee(employeeId);

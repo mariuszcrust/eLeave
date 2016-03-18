@@ -18,9 +18,12 @@ import org.springframework.data.repository.query.Param;
 public interface TakenLeaveRepository extends CrudRepository<TakenLeave, Long> {
 
     @Query("FROM TakenLeave tl WHERE tl.annualBalanceLeave.employee.id = :employeeId")
-    public List<TakenLeave> findAllTakenLeavesByEmployeeId(@Param("employeeId") Long employeeId);
+    public List<TakenLeave> findTakenLeavesForEmployeeId(@Param("employeeId") Long employeeId);
     
     @Query("FROM TakenLeave tl WHERE tl.annualBalanceLeave.id = :annualBalanceLeaveId")
     public List<TakenLeave> findTakenLeavesByAnnualLeave(@Param("annualBalanceLeaveId") long annualBalanceLeaveId);
+    
+    @Query("FROM TakenLeave tl WHERE tl.approver.id = :approverId")
+    public List<TakenLeave> findTakenLeavesForApproverId(@Param("approverId") long approverId);
     
 }

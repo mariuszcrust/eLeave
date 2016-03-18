@@ -9,7 +9,6 @@ import com.company.eleave.employee.entity.Employee;
 import com.company.eleave.leave.entity.AnnualBalanceLeave;
 import com.company.eleave.rest.dto.AnnualBalanceLeaveDTO;
 import com.company.eleave.rest.dto.EmployeeDTO;
-import com.company.eleave.rest.dto.LeaveTypeDTO;
 
 @Component
 public class EmployeeMapper implements ModelMapping<EmployeeDTO, Employee> {

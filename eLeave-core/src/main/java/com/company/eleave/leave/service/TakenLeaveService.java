@@ -5,8 +5,10 @@
  */
 package com.company.eleave.leave.service;
 
+import com.company.eleave.leave.entity.LeaveStatus;
 import com.company.eleave.leave.entity.TakenLeave;
 import com.company.eleave.leave.repository.TakenLeaveRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +26,28 @@ public class TakenLeaveService {
     TakenLeaveRepository takenLeaveRepository;
 
     public TakenLeave getById(Long takenLeaveId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return takenLeaveRepository.findOne(takenLeaveId);
+    }
+
+    public long create(final TakenLeave takenLeave) {
+        TakenLeave newTakenLeave = takenLeaveRepository.save(takenLeave);
+        return newTakenLeave.getId();
+    }
+
+    public void update(TakenLeave takenLeave) {
+        takenLeaveRepository.save(takenLeave);
+    }
+
+    public void delete(TakenLeave takenLeave) {
+        takenLeaveRepository.delete(takenLeave);
+    }
+    
+    public List<TakenLeave> findTakenLeavesByEmployeeId(final long employeeId) {
+        return takenLeaveRepository.findTakenLeavesForEmployeeId(employeeId);
+    }
+    
+    public List<TakenLeave> findTakenLeavesByApproverId(final long approverId) {
+        return takenLeaveRepository.findTakenLeavesForApproverId(approverId);
     }
     
 }
