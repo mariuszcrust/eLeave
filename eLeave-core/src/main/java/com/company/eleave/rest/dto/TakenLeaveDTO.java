@@ -24,7 +24,7 @@ public class TakenLeaveDTO {
     private String leaveType;
     
     private long approverId;
-    private long approverName;
+    private String approverName;
 
     public long getId() {
         return id;
@@ -66,11 +66,11 @@ public class TakenLeaveDTO {
         this.approverId = approverId;
     }
 
-    public long getApproverName() {
+    public String getApproverName() {
         return approverName;
     }
 
-    public void setApproverName(long approverName) {
+    public void setApproverName(String approverName) {
         this.approverName = approverName;
     }
 

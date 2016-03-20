@@ -27,6 +27,10 @@ public class LeaveStatus {
     public void setStatusName(StatusName statusName) {
         this.statusName = statusName;
     }
+    
+    public void setStatusName(String status) {
+        this.statusName = StatusName.valueOf(status);
+    }
 
     public String getComment() {
         return comment;
