@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AnnualBalanceLeaveMapper implements ModelMapping<AnnualBalanceLeaveDTO, AnnualBalanceLeave> {
+public class AnnualBalanceLeaveMapper implements Mapper<AnnualBalanceLeaveDTO, AnnualBalanceLeave> {
 
     private final ModelMapper mapper = new ModelMapper();
     

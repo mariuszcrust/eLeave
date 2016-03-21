@@ -9,7 +9,7 @@ import javax.annotation.PostConstruct;
 import org.modelmapper.PropertyMap;
 
 @Component
-public class LeaveTypeMapper implements ModelMapping<LeaveTypeDTO, LeaveType> {
+public class LeaveTypeMapper implements Mapper<LeaveTypeDTO, LeaveType> {
 
     private ModelMapper mapper = new ModelMapper();
 

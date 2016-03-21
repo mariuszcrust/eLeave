@@ -11,7 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LeaveStatusMapper implements ModelMapping<LeaveStatusDTO, LeaveStatus> {
+public class LeaveStatusMapper implements Mapper<LeaveStatusDTO, LeaveStatus> {
 
     private ModelMapper mapper = new ModelMapper();
     

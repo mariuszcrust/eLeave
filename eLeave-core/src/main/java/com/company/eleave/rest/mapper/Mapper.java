@@ -1,6 +1,6 @@
 package com.company.eleave.rest.mapper;
 
-public interface ModelMapping<D, E> {
+public interface Mapper<D, E> {
 
   public D toDto(E e);
 

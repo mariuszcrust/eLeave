@@ -4,6 +4,7 @@ import com.company.eleave.BaseEntity;
 import com.company.eleave.leave.entity.AnnualBalanceLeave;
 import com.company.eleave.security.entity.User;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,7 +35,7 @@ public class Employee extends BaseEntity implements Serializable {
     private String email;
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.EAGER)
-    private List<AnnualBalanceLeave> annualBalanceLeave;
+    private List<AnnualBalanceLeave> annualBalanceLeave = new ArrayList<AnnualBalanceLeave>(0);
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)

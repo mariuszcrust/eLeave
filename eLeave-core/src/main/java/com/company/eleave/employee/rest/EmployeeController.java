@@ -27,7 +27,11 @@ import com.company.eleave.rest.exception.ElementNotFoundException;
 import com.company.eleave.rest.exception.ExceptionElementType;
 import com.company.eleave.rest.exception.ExceptionParameterType;
 import com.company.eleave.rest.mapper.EmployeeMapper;
+import com.company.eleave.rest.mapper.Mapper;
+import com.google.common.annotations.VisibleForTesting;
 import java.util.Date;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 @RestController
 @RequestMapping(value = "/employees")
@@ -144,9 +148,24 @@ public class EmployeeController {
         employeeService.delete(employeeId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     private Date formatDateTime(final String dateOrNull) throws ParseException {
         return dateOrNull == null ? null : FORMATTER.parse(dateOrNull);
+    }
+
+    @VisibleForTesting
+    public void setEmployeeServie(final EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
+
+    @VisibleForTesting
+    public void setApproverService(final ApproverService approverService) {
+        this.approverService = approverService;
+    }
+    
+    @VisibleForTesting
+    public void setMapper(final EmployeeMapper mapper) {
+        this.mapper = mapper;
     }
 
 }

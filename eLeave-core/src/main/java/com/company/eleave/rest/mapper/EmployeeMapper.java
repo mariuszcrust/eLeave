@@ -11,7 +11,7 @@ import com.company.eleave.rest.dto.AnnualBalanceLeaveDTO;
 import com.company.eleave.rest.dto.EmployeeDTO;
 
 @Component
-public class EmployeeMapper implements ModelMapping<EmployeeDTO, Employee> {
+public class EmployeeMapper implements Mapper<EmployeeDTO, Employee> {
 
     private ModelMapper mapper = new ModelMapper();
 

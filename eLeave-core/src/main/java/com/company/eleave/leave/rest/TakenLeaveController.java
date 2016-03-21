@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping(value = "/takenLeaves")
+@RequestMapping(path = "/takenLeaves")
 public class TakenLeaveController {
 
     @Autowired

@@ -13,7 +13,7 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TakenLeaveMapper implements ModelMapping<TakenLeaveDTO, TakenLeave>{
+public class TakenLeaveMapper implements Mapper<TakenLeaveDTO, TakenLeave>{
 
     private final ModelMapper mapper = new ModelMapper();
     
