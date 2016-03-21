@@ -1,21 +1,5 @@
 package com.company.eleave.employee.rest;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
-
 import com.company.eleave.employee.entity.Approver;
 import com.company.eleave.employee.entity.Employee;
 import com.company.eleave.employee.service.ApproverService;
@@ -27,11 +11,22 @@ import com.company.eleave.rest.exception.ElementNotFoundException;
 import com.company.eleave.rest.exception.ExceptionElementType;
 import com.company.eleave.rest.exception.ExceptionParameterType;
 import com.company.eleave.rest.mapper.EmployeeMapper;
-import com.company.eleave.rest.mapper.Mapper;
 import com.google.common.annotations.VisibleForTesting;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Qualifier;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping(value = "/employees")
@@ -121,7 +116,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/{id}/approver/{approverId}", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> removeApproverForEmployee(final @PathVariable("id") Long employeeId, final @PathVariable("approverId") Long approverId) {
+    public ResponseEntity<Void> reassignApproverForEmployee(final @PathVariable("id") Long employeeId, final @PathVariable("approverId") Long approverId) {
         final Employee employee = employeeService.getById(employeeId);
         if (employee == null) {
             throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);
