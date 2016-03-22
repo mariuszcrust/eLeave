@@ -5,19 +5,18 @@
  */
 package utils;
 
-import java.text.MessageFormat;
-
 public class RestURI {
-    
+
     public static final String EMPLOYEES = "/employees";
-    
-    public static final String EMPLOYEE_BY_ID = "/employees/{0}";
-    
-    public static final String EMPLOYEE_ASSIGN_APPROVER = "/employees/{0}/approver";
-    
-    public static final String EMPLOYEE_REASSIGN_APPROVER = "/employees/{0}/approver/{1}";
-    
-    public static String request(String pattern, Object... arguments) {
-        return MessageFormat.format(pattern, arguments);
-    }
+
+    public static final String EMPLOYEE_BY_ID = EMPLOYEES + "/{0}";
+
+    public static final String EMPLOYEE_ASSIGN_APPROVER = EMPLOYEES + "/{0}/approver";
+
+    public static final String EMPLOYEE_REASSIGN_APPROVER = EMPLOYEES + "/{0}/approver/{1}";
+
+    public static final String ANNUAL_BALANCE_LEAVES = "/annualBalanceLeaves";
+
+    public static final String ANNUAL_BALANCE_LEAVES_BY_EMPLOYEE = ANNUAL_BALANCE_LEAVES + "/employee/{0}";
+
 }
