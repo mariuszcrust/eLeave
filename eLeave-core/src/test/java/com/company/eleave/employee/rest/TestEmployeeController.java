@@ -63,9 +63,6 @@ public class TestEmployeeController {
         Mockito.when(employeeServiceMock.getById(EMPLOYEE_ID)).thenReturn(null);
 
         //when
-        ResponseEntity<EmployeeDTO> result = testedObject.getById(EMPLOYEE_ID);
-
-        //then
         try {
             testedObject.getById(EMPLOYEE_ID);
         } catch (ElementNotFoundException e) {
