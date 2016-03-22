@@ -1,0 +1,13 @@
+/* Center align the text within the three columns below the carousel */
+.about .col-lg-6 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+.about h2 {
+  font-weight: normal;
+}
+.about .col-lg-6 p {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+

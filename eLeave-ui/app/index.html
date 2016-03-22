@@ -8,24 +8,36 @@
         <!-- build:css app/built/app.min.css -->
         <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/app.css">
+        <link rel="stylesheet" href="modules/about/css/about.css">
         <!-- endbuild -->
     </head>
     <body>
         <!-- NAVIGATION -->
         <nav class="navbar navbar-inverse" role="navigation">
-            <div class="navbar-header">
-                <a class="navbar-brand" ui-sref="#">The eLeave - Sloth</a>
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" ui-sref="#">The eLeave - Sloth</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li><a ui-sref="home">Home</a></li>
+                    <li><a ui-sref="about">About</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administration <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a ui-sref="leaveTypes">Leave Types</a></li>
+                        </ul>
+                    </li>
+                    
+                </ul>
             </div>
-            <ul class="nav navbar-nav">
-                <li><a ui-sref="home">Home</a></li>
-                <li><a ui-sref="about">About</a></li>
-            </ul>
         </nav>
+
 
         <div class="container" ng-cloak>
             <br/>  	
         </div>
         <div ui-view class="main-content">Loading . . .</div>
+
     </body>
 
     <!-- build:js app/built/app.min.js -->
@@ -46,8 +58,15 @@
     <script src="js/filters.js"></script>
     <script src="js/services.js"></script>
 
-    <script src="modules/leaves/leavesModule.js"></script>
-    <script src="modules/leaves/js/controllers.js"></script>
+    <script src="modules/about/aboutModule.js"></script>
+    <script src="modules/about/js/controllers.js"></script>
+
+    <script src="modules/home/homeModule.js"></script>
+    <script src="modules/home/js/controllers.js"></script>
+
+    <script src="modules/admin/adminModule.js"></script>
+    <script src="modules/admin/js/controllers.js"></script>
+    <script src="modules/admin/js/services.js"></script>
 
     <!-- endbuild -->
 </html>
