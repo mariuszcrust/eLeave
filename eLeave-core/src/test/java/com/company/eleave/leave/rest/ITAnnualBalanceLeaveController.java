@@ -10,6 +10,8 @@ import com.company.eleave.rest.dto.AnnualBalanceLeaveDTO;
 import com.company.eleave.rest.dto.EmployeeDTO;
 import com.company.eleave.rest.exception.RestResponseExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.sql.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
@@ -29,6 +31,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import utils.TestObjectConverter;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 /**
  *
@@ -41,7 +52,9 @@ public class ITAnnualBalanceLeaveController extends IntegrationTest {
 
     private MockMvc mockMvc;
 
-    private String contentAsString;
+    private static final long EMPLOYEE_ID = 1l;
+
+    private static final long EMPLOYEE_ID_NOT_EXISTING = 200l;
 
     @Before
     public void before() {
@@ -50,7 +63,7 @@ public class ITAnnualBalanceLeaveController extends IntegrationTest {
 
     @Test
     public void testGetAllLeaves() throws Exception {
-        contentAsString = mockMvc.perform(get(RestURI.ANNUAL_BALANCE_LEAVES))
+        final String contentAsString = mockMvc.perform(get(RestURI.ANNUAL_BALANCE_LEAVES))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse().getContentAsString();
@@ -58,43 +71,108 @@ public class ITAnnualBalanceLeaveController extends IntegrationTest {
         List<AnnualBalanceLeaveDTO> result = new ObjectMapper().readValue(contentAsString, List.class);
         Assert.assertTrue("Wrong size of all annual balance leaves ", result.size() == 5);
     }
-    
+
     @Test
     public void testGetLeavesForEmployee() throws Exception {
-        final long employeeId = 1;
-        
-        contentAsString = mockMvc.perform(get(request(RestURI.ANNUAL_BALANCE_LEAVES_BY_EMPLOYEE, employeeId)))
+        final String contentAsString = mockMvc.perform(get(request(RestURI.ANNUAL_BALANCE_LEAVES_BY_EMPLOYEE, EMPLOYEE_ID)))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse().getContentAsString();
-        
-        List<AnnualBalanceLeaveDTO> result = new ObjectMapper().readValue(contentAsString, List.class);
-        Assert.assertEquals(3, result.size());
-        
-        final AnnualBalanceLeaveDTO firstAnnualBalanceLeave = result.stream().filter(a -> a.getId() == 1).findAny().get();
-        
-        Assert.assertEquals(1l, firstAnnualBalanceLeave.getId());
-        Assert.assertEquals(20, firstAnnualBalanceLeave.getLeaveDaysAllowed());
-        Assert.assertEquals(15, firstAnnualBalanceLeave.getLeaveDaysRemaining());
-        Assert.assertEquals(10, firstAnnualBalanceLeave.getLeaveTypeId());
-        Assert.assertEquals("", firstAnnualBalanceLeave.getLeaveTypeName());
-        Assert.assertTrue("2016-12-12".equals(firstAnnualBalanceLeave.getValidityDate()));
-        
-    }
-    /*
-    @Test
-    public void testAddLeaveForEmployeeWhenEmployeeNotExists() {
-        
-    }
-    
-    @Test
-    public void testAddLeaveForEmployeeSuccessfully() {
-        
-    }
-    
-    @Test
-    public void testDeleteLeaveForEmployee(){
 
-}
-*/
+        List<LinkedHashMap> result = new ObjectMapper().readValue(contentAsString, List.class);
+        Assert.assertEquals(3, result.size());
+
+        final LinkedHashMap firstAnnualBalanceLeave = result.stream().filter(map -> ((int) map.get("id") == 1)).findAny().get();
+        Assert.assertEquals(20, (int) firstAnnualBalanceLeave.get("leaveDaysAllowed"));
+        Assert.assertEquals(15, (int) firstAnnualBalanceLeave.get("leaveDaysRemaining"));
+        Assert.assertEquals(10, (int) firstAnnualBalanceLeave.get("leaveTypeId"));
+        Assert.assertEquals("Standard holiday", firstAnnualBalanceLeave.get("leaveTypeName"));
+        Assert.assertEquals(1481497200000l, (long) firstAnnualBalanceLeave.get("validityDate"));
+    }
+
+    @Test
+    public void testGetLeavesForEmployeeWhenEmployeeNotExists() throws Exception {
+        final String contentAsString = mockMvc.perform(get(request(RestURI.ANNUAL_BALANCE_LEAVES_BY_EMPLOYEE, EMPLOYEE_ID_NOT_EXISTING)))
+                .andExpect(status().isNotFound())
+                .andReturn()
+                .getResponse().getContentAsString();
+
+        Assert.assertEquals("Element with id: 200 of type: Employee has not been found", contentAsString);
+    }
+
+    @Test
+    public void testAddLeaveForEmployeeWhenEmployeeNotExists() throws Exception {
+        final AnnualBalanceLeaveDTO newAnnualBalanceLeaveDTO = new AnnualBalanceLeaveDTO();
+
+        final String contentAsString = mockMvc.perform(post(request(RestURI.ANNUAL_BALANCE_LEAVES_BY_EMPLOYEE, EMPLOYEE_ID_NOT_EXISTING))
+                .contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(newAnnualBalanceLeaveDTO)))
+                .andExpect(status().isNotFound())
+                .andReturn()
+                .getResponse().getContentAsString();
+
+        Assert.assertEquals("Element with id: 200 of type: Employee has not been found", contentAsString);
+    }
+
+    @Test
+    public void testAddLeaveForEmployeeSuccessfully() throws Exception {
+        final long overtimeLeaveTypeId = 8;
+        final int leaveDaysAllowed = 6;
+        final int leaveDaysRemaining = 6;
+        final String leaveTypeName = "Overtime";
+        final Date validityDate = Date.valueOf("2016-12-12");
+
+        final AnnualBalanceLeaveDTO newAnnualBalanceLeaveDTO = new AnnualBalanceLeaveDTO();
+        newAnnualBalanceLeaveDTO.setLeaveDaysAllowed(leaveDaysAllowed);
+        newAnnualBalanceLeaveDTO.setLeaveDaysRemaining(leaveDaysRemaining);
+        newAnnualBalanceLeaveDTO.setLeaveTypeId(overtimeLeaveTypeId);
+        newAnnualBalanceLeaveDTO.setLeaveTypeName(leaveTypeName);
+        newAnnualBalanceLeaveDTO.setValidityDate(validityDate);
+
+        mockMvc.perform(post(request(RestURI.ANNUAL_BALANCE_LEAVES_BY_EMPLOYEE, EMPLOYEE_ID))
+                .contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(newAnnualBalanceLeaveDTO)))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("location", "/annualBalanceLeaves/6"));
+
+        //check if size of annual balance leaves has increased
+        final String contentAsString = mockMvc.perform(get(request(RestURI.ANNUAL_BALANCE_LEAVES_BY_EMPLOYEE, EMPLOYEE_ID)))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse().getContentAsString();
+
+        List<LinkedHashMap> result = new ObjectMapper().readValue(contentAsString, List.class);
+        Assert.assertEquals(4, result.size());
+
+        final LinkedHashMap firstAnnualBalanceLeave = result.stream().filter(map -> ((int) map.get("id") == 6)).findAny().get();
+        Assert.assertEquals(leaveDaysAllowed, (int) firstAnnualBalanceLeave.get("leaveDaysAllowed"));
+        Assert.assertEquals(leaveDaysRemaining, (int) firstAnnualBalanceLeave.get("leaveDaysRemaining"));
+        Assert.assertEquals(overtimeLeaveTypeId, (int) firstAnnualBalanceLeave.get("leaveTypeId"));
+        Assert.assertEquals(leaveTypeName, firstAnnualBalanceLeave.get("leaveTypeName"));
+        Assert.assertEquals(Date.valueOf("2016-12-12").getTime(), (long) firstAnnualBalanceLeave.get("validityDate"));
+    }
+
+    @Test
+    public void testDeleteLeaveForEmployeeSuccessfully() throws Exception {
+        final long leaveId = 1;
+
+        mockMvc.perform(delete(request(RestURI.ANNUAL_BALANCE_LEAVES_BY_EMPLOYEE_AND_LEAVE_ID, EMPLOYEE_ID, leaveId)))
+                .andExpect(status().isOk());
+
+        //check if size of annual balance leaves has decreased
+        final String contentAsString = mockMvc.perform(get(request(RestURI.ANNUAL_BALANCE_LEAVES_BY_EMPLOYEE, EMPLOYEE_ID)))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse().getContentAsString();
+
+        List<LinkedHashMap> result = new ObjectMapper().readValue(contentAsString, List.class);
+        Assert.assertEquals(2, result.size());
+    }
+
+    @Test
+    public void testDeleteLeaveForEmployeeWhenEmployeeNotExists() throws Exception {
+        final long leaveId = 1;
+
+        mockMvc.perform(delete(request(RestURI.ANNUAL_BALANCE_LEAVES_BY_EMPLOYEE_AND_LEAVE_ID, EMPLOYEE_ID_NOT_EXISTING, leaveId)))
+                .andExpect(status().isNotFound());
+    }
+
 }

@@ -31,8 +31,6 @@ public class ITEmployeeControllerRest extends IntegrationTest {
 
     private MockMvc mockMvc;
 
-    private String contentAsString;
-
     @Before
     public void before() {
         mockMvc = standaloneSetup(employeeController).setControllerAdvice(new RestResponseExceptionHandler()).build();
@@ -40,7 +38,7 @@ public class ITEmployeeControllerRest extends IntegrationTest {
 
     @Test
     public void testGetAllEmployees() throws Exception {
-        contentAsString = mockMvc.perform(get(RestURI.EMPLOYEES))
+        final String contentAsString = mockMvc.perform(get(RestURI.EMPLOYEES))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse().getContentAsString();
@@ -52,7 +50,7 @@ public class ITEmployeeControllerRest extends IntegrationTest {
     @Test
     public void testGetEmployeeByIdWhenExists() throws Exception {
         final long employeeId = 1;
-        contentAsString = mockMvc.perform(get(request(RestURI.EMPLOYEE_BY_ID, employeeId)))
+        final String contentAsString = mockMvc.perform(get(request(RestURI.EMPLOYEE_BY_ID, employeeId)))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse().getContentAsString();
@@ -67,7 +65,7 @@ public class ITEmployeeControllerRest extends IntegrationTest {
     @Test
     public void testGetEmployeeByIdWhenNotExists() throws Exception {
         final long employeeId = 123;
-        contentAsString = mockMvc.perform(get(request(RestURI.EMPLOYEE_BY_ID, employeeId)))
+        final String contentAsString = mockMvc.perform(get(request(RestURI.EMPLOYEE_BY_ID, employeeId)))
                 .andExpect(status().isNotFound())
                 .andReturn()
                 .getResponse().getContentAsString();
@@ -100,7 +98,7 @@ public class ITEmployeeControllerRest extends IntegrationTest {
                 .andExpect(header().string("location", "/employees/11"));
 
         //check if size of all employees has increased by one
-        contentAsString = mockMvc.perform(get(RestURI.EMPLOYEES))
+        final String contentAsString = mockMvc.perform(get(RestURI.EMPLOYEES))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse().getContentAsString();
@@ -117,7 +115,7 @@ public class ITEmployeeControllerRest extends IntegrationTest {
         updateEmployee.setFirstName("newJohn");
         updateEmployee.setLastName("newDoe1");
 
-        contentAsString = mockMvc.perform(put(request(RestURI.EMPLOYEE_BY_ID, employeeId)).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(updateEmployee)))
+        final String contentAsString = mockMvc.perform(put(request(RestURI.EMPLOYEE_BY_ID, employeeId)).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(updateEmployee)))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse().getContentAsString();
@@ -139,7 +137,7 @@ public class ITEmployeeControllerRest extends IntegrationTest {
         updateEmployee.setFirstName("newJohn");
         updateEmployee.setLastName("newDoe1");
 
-        contentAsString = mockMvc.perform(put(request(RestURI.EMPLOYEE_BY_ID, employeeId)).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(updateEmployee)))
+        final String contentAsString = mockMvc.perform(put(request(RestURI.EMPLOYEE_BY_ID, employeeId)).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(updateEmployee)))
                 .andExpect(status().isNotFound())
                 .andReturn()
                 .getResponse().getContentAsString();
@@ -157,7 +155,7 @@ public class ITEmployeeControllerRest extends IntegrationTest {
         approverDTO.setStartDate(new Date().toString());
         approverDTO.setEndDate(null);
 
-        contentAsString = mockMvc.perform(put(request(RestURI.EMPLOYEE_ASSIGN_APPROVER, employeeId)).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(approverDTO)))
+        final String contentAsString = mockMvc.perform(put(request(RestURI.EMPLOYEE_ASSIGN_APPROVER, employeeId)).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(approverDTO)))
                 .andExpect(status().isNotFound())
                 .andReturn()
                 .getResponse().getContentAsString();
@@ -175,7 +173,7 @@ public class ITEmployeeControllerRest extends IntegrationTest {
         approverDTO.setStartDate(new Date().toString());
         approverDTO.setEndDate(null);
 
-        contentAsString = mockMvc.perform(put(request(RestURI.EMPLOYEE_ASSIGN_APPROVER, employeeId)).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(approverDTO)))
+        final String contentAsString = mockMvc.perform(put(request(RestURI.EMPLOYEE_ASSIGN_APPROVER, employeeId)).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(approverDTO)))
                 .andExpect(status().isNotFound())
                 .andReturn()
                 .getResponse().getContentAsString();
@@ -193,7 +191,7 @@ public class ITEmployeeControllerRest extends IntegrationTest {
         approverDTO.setStartDate("1-April-2016");
         approverDTO.setEndDate(null);
 
-        contentAsString = mockMvc.perform(put(request(RestURI.EMPLOYEE_ASSIGN_APPROVER, employeeId)).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(approverDTO)))
+        final String contentAsString = mockMvc.perform(put(request(RestURI.EMPLOYEE_ASSIGN_APPROVER, employeeId)).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(approverDTO)))
                 .andExpect(status().isBadRequest())
                 .andReturn()
                 .getResponse().getContentAsString();
@@ -211,7 +209,7 @@ public class ITEmployeeControllerRest extends IntegrationTest {
         approverDTO.setStartDate("2016-01-1");
         approverDTO.setEndDate(null);
 
-        contentAsString = mockMvc.perform(put(request(RestURI.EMPLOYEE_ASSIGN_APPROVER, employeeId)).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(approverDTO)))
+        final String contentAsString = mockMvc.perform(put(request(RestURI.EMPLOYEE_ASSIGN_APPROVER, employeeId)).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(approverDTO)))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse().getContentAsString();
@@ -227,7 +225,7 @@ public class ITEmployeeControllerRest extends IntegrationTest {
         approverDTO.setStartDate(new Date().toString());
         approverDTO.setEndDate(null);
 
-        contentAsString = mockMvc.perform(delete(request(RestURI.EMPLOYEE_REASSIGN_APPROVER, employeeId, approverId)))
+        final String contentAsString = mockMvc.perform(delete(request(RestURI.EMPLOYEE_REASSIGN_APPROVER, employeeId, approverId)))
                 .andExpect(status().isNotFound())
                 .andReturn()
                 .getResponse().getContentAsString();
@@ -245,26 +243,26 @@ public class ITEmployeeControllerRest extends IntegrationTest {
         approverDTO.setStartDate(new Date().toString());
         approverDTO.setEndDate(null);
 
-        contentAsString = mockMvc.perform(delete(request(RestURI.EMPLOYEE_REASSIGN_APPROVER, employeeId, approverId)))
+        final String contentAsString = mockMvc.perform(delete(request(RestURI.EMPLOYEE_REASSIGN_APPROVER, employeeId, approverId)))
                 .andExpect(status().isNotFound())
                 .andReturn()
                 .getResponse().getContentAsString();
 
         Assert.assertTrue("Element with id: 123 of type: Employee has not been found".equals(contentAsString));
     }
-    
+
     @Test
     public void testDeleteEmployeeWhenNotExists() throws Exception {
         final long employeeId = 123;
 
-        contentAsString = mockMvc.perform(delete(request(RestURI.EMPLOYEE_BY_ID, employeeId)))
+        final String contentAsString = mockMvc.perform(delete(request(RestURI.EMPLOYEE_BY_ID, employeeId)))
                 .andExpect(status().isNotFound())
                 .andReturn()
                 .getResponse().getContentAsString();
 
         Assert.assertTrue("Element with id: 123 of type: Employee has not been found".equals(contentAsString));
     }
-    
+
     @Test
     public void testDeleteEmployeeSuccessfully() throws Exception {
         final long employeeId = 1;
@@ -274,7 +272,7 @@ public class ITEmployeeControllerRest extends IntegrationTest {
                 .andReturn()
                 .getResponse().getContentAsString();
 
-        contentAsString = mockMvc.perform(get(RestURI.EMPLOYEES))
+        final String contentAsString = mockMvc.perform(get(RestURI.EMPLOYEES))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse().getContentAsString();

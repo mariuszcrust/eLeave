@@ -50,6 +50,10 @@ public class AnnualBalanceLeaveController {
 
     @RequestMapping(path = "/employee/{id}", method = RequestMethod.GET)
     public ResponseEntity<List<AnnualBalanceLeaveDTO>> getLeavesForEmployee(@PathVariable("id") long employeeId) {
+        if (employeeService.getById(employeeId) == null) {
+            throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);
+        }
+
         List<AnnualBalanceLeave> leavesForUser = annualBalanceService.getLeavesForUser(employeeId);
 
         return new ResponseEntity<>(leavesForUser.stream().map(annualBalanceLeave -> mapper.toDto(annualBalanceLeave)).collect(Collectors.toList()), HttpStatus.OK);
@@ -80,7 +84,7 @@ public class AnnualBalanceLeaveController {
         if (employee == null) {
             throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);
         }
-        
+
         annualBalanceService.deleteLeave(leaveId);
 
         return new ResponseEntity<>(HttpStatus.OK);

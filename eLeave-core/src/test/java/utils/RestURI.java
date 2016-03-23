@@ -18,5 +18,7 @@ public class RestURI {
     public static final String ANNUAL_BALANCE_LEAVES = "/annualBalanceLeaves";
 
     public static final String ANNUAL_BALANCE_LEAVES_BY_EMPLOYEE = ANNUAL_BALANCE_LEAVES + "/employee/{0}";
+    
+    public static final String ANNUAL_BALANCE_LEAVES_BY_EMPLOYEE_AND_LEAVE_ID = ANNUAL_BALANCE_LEAVES_BY_EMPLOYEE +"/leave/{1}";
 
 }
