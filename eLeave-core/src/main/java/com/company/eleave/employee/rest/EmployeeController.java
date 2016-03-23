@@ -107,7 +107,7 @@ public class EmployeeController {
             approver.setStartDate(formatDateTime(approverDTO.getStartDate()));
             approver.setEndDate(formatDateTime(approverDTO.getEndDate()));
         } catch (ParseException e) {
-            throw new BadParameterException(approverDTO.getStartDate(), ExceptionParameterType.START_END_DATE_FOR_APPROVER.getName(), e.getMessage());
+            throw new BadParameterException(approverDTO.getStartDate(), ExceptionParameterType.START_END_DATE_FOR_APPROVER.getName(), e.getMessage(), BadParameterException.ExceptionType.BAD_VALUE);
         }
 
         approverService.assignApprover(approver);

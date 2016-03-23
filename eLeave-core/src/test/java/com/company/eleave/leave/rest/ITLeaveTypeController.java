@@ -18,7 +18,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import utils.RestURI;
+import utils.TestObjectConverter;
 
 /**
  *
@@ -27,9 +31,11 @@ import utils.RestURI;
 public class ITLeaveTypeController extends IntegrationTest {
 
     @Autowired
-    AnnualBalanceLeaveController leaveTypeController;
+    LeaveTypeController leaveTypeController;
 
     private MockMvc mockMvc;
+
+    private static final long STANDARD_HOLIDAY_LEAVE_TYPE = 10;
 
     @Before
     public void before() {
@@ -47,25 +53,61 @@ public class ITLeaveTypeController extends IntegrationTest {
         Assert.assertTrue("Wrong size of all leave types ", result.size() == 10);
     }
 
-    /*
     @Test
-    public void testGetByIdWhenLeaveTypeNotExists() {
+    public void testGetByIdWhenLeaveTypeNotExists() throws Exception {
+        final long nonExistingLeaveType = 123;
+        final String contentAsString = mockMvc.perform(get(request(RestURI.LEAVE_TYPES_BY_ID, nonExistingLeaveType)))
+                .andExpect(status().isNotFound())
+                .andReturn()
+                .getResponse().getContentAsString();
 
+        Assert.assertTrue("Element with id: 123 of type: LeaveType has not been found".equals(contentAsString));
     }
 
     @Test
-    public void testGetByIdSuccessfully() {
+    public void testGetByIdSuccessfully() throws Exception {
+        final String contentAsString = mockMvc.perform(get(request(RestURI.LEAVE_TYPES_BY_ID, STANDARD_HOLIDAY_LEAVE_TYPE)))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse().getContentAsString();
 
+        LeaveTypeDTO result = new ObjectMapper().readValue(contentAsString, LeaveTypeDTO.class);
+        Assert.assertNotNull(result);
+        Assert.assertEquals("No comment", result.getComment());
+        Assert.assertEquals(20, result.getDefaultDaysAllowed());
+        Assert.assertEquals("Standard holiday", result.getLeaveTypeName());
     }
 
     @Test
-    public void testCreateNewLeaveType() {
+    public void testCreateNewLeaveType() throws Exception {
+        final LeaveTypeDTO leaveTypeDTO = new LeaveTypeDTO();
+        leaveTypeDTO.setComment("java is better then CF");
+        leaveTypeDTO.setDefaultDaysAllowed(25);
+        leaveTypeDTO.setLeaveTypeName("Devox");
 
+        mockMvc.perform(post(RestURI.LEAVE_TYPES).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(leaveTypeDTO)))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("location", "/leaveTypes/11"));
+
+        //check if size of all leave types has increased by one
+        final String contentAsString = mockMvc.perform(get(RestURI.LEAVE_TYPES))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse().getContentAsString();
+
+        List<LeaveTypeDTO> result = new ObjectMapper().readValue(contentAsString, List.class);
+        Assert.assertTrue("Wrong size of all leave types ", result.size() == 11);
     }
 
     @Test
-    public void testUpdateLeaveTypeWhenLeaveTypeNotExists() {
+    public void testUpdateLeaveTypeWhenLeaveTypeNotExists() throws Exception {
+        final long leaveTypeNotExisting = 123;
+        final String contentAsString = mockMvc.perform(get(request(RestURI.LEAVE_TYPES_BY_ID, leaveTypeNotExisting)))
+                .andExpect(status().isNotFound())
+                .andReturn()
+                .getResponse().getContentAsString();
 
+        Assert.assertTrue("Element with id: 123 of type: LeaveType has not been found".equals(contentAsString));
     }
 
     @Test
@@ -74,13 +116,28 @@ public class ITLeaveTypeController extends IntegrationTest {
     }
 
     @Test
-    public void testDeleteWhenLeaveTypeNotExists() {
+    public void testDeleteWhenLeaveTypeNotExists() throws Exception {
+        final long leaveTypeNotExisting = 123;
+        final String contentAsString = mockMvc.perform(get(request(RestURI.LEAVE_TYPES_BY_ID, leaveTypeNotExisting)))
+                .andExpect(status().isNotFound())
+                .andReturn()
+                .getResponse().getContentAsString();
 
+        Assert.assertTrue("Element with id: 123 of type: LeaveType has not been found".equals(contentAsString));
     }
 
     @Test
-    public void testDeleteSuccesfully() {
+    public void testDeleteSuccesfully() throws Exception {
+        mockMvc.perform(delete(request(RestURI.LEAVE_TYPES_BY_ID, STANDARD_HOLIDAY_LEAVE_TYPE)))
+                .andExpect(status().isOk());
 
+        final String contentAsString = mockMvc.perform(get(RestURI.LEAVE_TYPES))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse().getContentAsString();
+
+        List<LeaveTypeDTO> result = new ObjectMapper().readValue(contentAsString, List.class);
+        Assert.assertTrue("Wrong size of all leave types ", result.size() == 11);
     }
-*/
+
 }

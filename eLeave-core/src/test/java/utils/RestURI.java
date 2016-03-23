@@ -22,5 +22,7 @@ public class RestURI {
     public static final String ANNUAL_BALANCE_LEAVES_BY_EMPLOYEE_AND_LEAVE_ID = ANNUAL_BALANCE_LEAVES_BY_EMPLOYEE +"/leave/{1}";
     
     public static final String LEAVE_TYPES = "/leaveTypes";
+    
+    public static final String LEAVE_TYPES_BY_ID = LEAVE_TYPES + "/{0}";
 
 }

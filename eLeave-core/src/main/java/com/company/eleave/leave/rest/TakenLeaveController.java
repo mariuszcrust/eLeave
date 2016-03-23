@@ -62,9 +62,9 @@ public class TakenLeaveController {
             throw new ElementNotFoundException(takenLeaveId, ExceptionElementType.TAKEN_LEAVE);
         }
 
-        if (!LeaveStatus.StatusName.contains(leaveStatusDTO.getStatus())) {
-            throw new BadParameterException(leaveStatusDTO.getStatus(), ExceptionParameterType.ANNUAL_BALANCE_LEAVE_TYPE_STATUS.getName(), "");
-        }
+        //if (!LeaveStatus.StatusName.contains(leaveStatusDTO.getStatus())) {
+        //    throw new BadParameterException(leaveStatusDTO.getStatus(), ExceptionParameterType.ANNUAL_BALANCE_LEAVE_TYPE_STATUS.getName(), "");
+        //}
 
         takenLeave.setLeaveStatus(leaveStatusMapper.toEntity(leaveStatusDTO));
         takenLeaveService.update(takenLeave);
