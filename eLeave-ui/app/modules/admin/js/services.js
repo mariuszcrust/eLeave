@@ -1,25 +1,13 @@
 'use strict'
 
-angular.module('eleave.admin.services', []).factory('adminLeaveTypesService', function() {
-    return {
-        leaveTypes: [
-            {
-                id: 1,
-                name: 'Name 1'
-            },
-            {
-                id: 2,
-                name: 'Name 2'
+angular.module('eleave.admin.services', []).factory('adminLeaveTypesService', ['GET_LEAVE_TYPES_ENDPOINT', '$http', function (GET_LEAVE_TYPES_ENDPOINT, $http) {
+        return {
+            getLeaveTypesData: function () {
+                return $http.get(GET_LEAVE_TYPES_ENDPOINT);
             }
-        ],
-        getAll: function() {
-            return this.leaveTypes;
-        },
-        getLeaveTypeById: function(id) {
-            return this.leaveTypes.find(function(element){
-                return element.id === id;
-            });
-        }
-    };
-});
+        };
+    }]);
 
+//angular.module('eleave.admin.services').value('GET_LEAVE_TYPES_ENDPOINT', 'http://localhost:8084/eLeave/leaveTypes');
+
+angular.module('eleave.admin.services').value('GET_LEAVE_TYPES_ENDPOINT', '/eLeave/leaveTypes');
