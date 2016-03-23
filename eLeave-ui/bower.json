@@ -17,6 +17,7 @@
     "angular-sanitize": "^1.5.2",
     "angular-animate": "^1.5.2",
     "angular-cookies": "^1.5.2",
-    "angular-smart-table": "^2.1.7"
+    "angular-smart-table": "^2.1.7",
+    "fontawesome": "4.5.0"
   }
 }

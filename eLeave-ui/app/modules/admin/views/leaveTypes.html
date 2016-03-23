@@ -1,30 +1,36 @@
 <div class="container" ng-controller="AdminLeaveTypesController">
-    <div class="panel panel-default">
+    <div class="panel panel-primary">
         <!-- Default panel contents -->
         <div class="panel-heading">
-            <h2>Leave Types</h2>
-        </div>
-        <div class="panel-body">
-            <p>List of the leave types which can be used.</p>
+            <div class="fa fa-header">
+                <h4>Leave Types</h4>
+            </div>
         </div>
 
-        <table st-table="leaveTypes" class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Days Allowed</th>
-                    <th>Comment</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="leaveType in leaveTypes">
-                    <td>{{leaveType.id}}</td>
-                    <td>{{leaveType.leaveTypeName}}</td>
-                    <td>{{leaveType.defaultDaysAllowed}}</td>
-                    <td>{{leaveType.comment}}</td>
-                </tr>
-            </tbody>    
-        </table>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+
+                    <table st-table="leaveTypes" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Name</th>
+                                <th>Days Allowed</th>
+                                <th>Comment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="leaveType in leaveTypes">
+                                <td>{{leaveType.id}}</td>
+                                <td>{{leaveType.leaveTypeName}}</td>
+                                <td>{{leaveType.defaultDaysAllowed}}</td>
+                                <td>{{leaveType.comment}}</td>
+                            </tr>
+                        </tbody>    
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
