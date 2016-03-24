@@ -107,7 +107,10 @@ public class EmployeeController {
             approver.setStartDate(formatDateTime(approverDTO.getStartDate()));
             approver.setEndDate(formatDateTime(approverDTO.getEndDate()));
         } catch (ParseException e) {
-            throw new BadParameterException(approverDTO.getStartDate(), ExceptionParameterType.START_END_DATE_FOR_APPROVER.getName(), e.getMessage(), BadParameterException.ExceptionType.BAD_VALUE);
+            throw new BadParameterException.BadParameterExceptionBuilder()
+                    .withValue(approverDTO.getStartDate())
+                    .withType(ExceptionParameterType.START_END_DATE_FOR_APPROVER.getName())
+                    .withElement(e.getMessage()).withExceptionType(BadParameterException.ExceptionType.BAD_VALUE).createException();
         }
 
         approverService.assignApprover(approver);
@@ -157,7 +160,7 @@ public class EmployeeController {
     public void setApproverService(final ApproverService approverService) {
         this.approverService = approverService;
     }
-    
+
     @VisibleForTesting
     public void setMapper(final EmployeeMapper mapper) {
         this.mapper = mapper;

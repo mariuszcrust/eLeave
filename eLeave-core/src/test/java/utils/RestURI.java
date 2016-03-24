@@ -24,5 +24,13 @@ public class RestURI {
     public static final String LEAVE_TYPES = "/leaveTypes";
     
     public static final String LEAVE_TYPES_BY_ID = LEAVE_TYPES + "/{0}";
+    
+    public static final String TAKEN_LEAVES = "/takenLeaves";
+    
+    public static final String TAKEN_LEAVES_BY_ID = TAKEN_LEAVES + "/{0}";
+    
+    public static final String TAKEN_LEAVES_BY_EMPLOYEE = TAKEN_LEAVES + "/employee/{0}";
+    
+    public static final String TAKEN_LEAVES_BY_APPROVER = TAKEN_LEAVES + "/approver/{0}";
 
 }

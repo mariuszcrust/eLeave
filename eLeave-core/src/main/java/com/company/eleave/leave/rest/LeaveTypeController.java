@@ -1,19 +1,5 @@
 package com.company.eleave.leave.rest;
 
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.company.eleave.leave.entity.LeaveType;
 import com.company.eleave.leave.service.LeaveTypeService;
 import com.company.eleave.rest.dto.LeaveTypeDTO;
@@ -21,7 +7,19 @@ import com.company.eleave.rest.exception.BadParameterException;
 import com.company.eleave.rest.exception.ElementNotFoundException;
 import com.company.eleave.rest.exception.ExceptionElementType;
 import com.company.eleave.rest.mapper.LeaveTypeMapper;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
@@ -71,7 +69,7 @@ public class LeaveTypeController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<LeaveTypeDTO> updateLeaveType(@PathVariable("id") final Long leaveTypeId, final LeaveTypeDTO leaveTypeDTO) {
+    public ResponseEntity<LeaveTypeDTO> updateLeaveType(@PathVariable("id") final Long leaveTypeId, final @RequestBody LeaveTypeDTO leaveTypeDTO) {
         LeaveType leaveType = leaveTypeService.getById(leaveTypeId);
         if (leaveType == null) {
             throw new ElementNotFoundException(leaveTypeId, ExceptionElementType.LEAVE_TYPE);
@@ -83,7 +81,7 @@ public class LeaveTypeController {
 
         leaveTypeService.update(leaveType);
 
-        return new ResponseEntity<>(mapper.toDto(leaveType), HttpStatus.CREATED);
+        return new ResponseEntity<>(mapper.toDto(leaveType), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -93,10 +91,13 @@ public class LeaveTypeController {
         if (leaveType == null) {
             throw new ElementNotFoundException(leaveTypeId, ExceptionElementType.LEAVE_TYPE);
         }
-        
-       // if(leaveTypeService.isLeaveTypeAssignedToAnyLeave(leaveTypeId)) {
-        //    throw new BadParameterException(leaveTypeId.toString(), null, null);
-        //}
+
+        if (leaveTypeService.isLeaveTypeAssignedToAnyLeave(leaveTypeId)) {
+            throw new BadParameterException.BadParameterExceptionBuilder()
+                    .withValue(leaveTypeId.toString())
+                    .withExceptionType(BadParameterException.ExceptionType.NOT_POSSIBLE_TO_REMOVE)
+                    .createException();
+        }
 
         leaveTypeService.delete(leaveTypeId);
         return new ResponseEntity<>(HttpStatus.OK);

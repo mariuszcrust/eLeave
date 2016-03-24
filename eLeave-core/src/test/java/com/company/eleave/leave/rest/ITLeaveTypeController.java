@@ -21,6 +21,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import utils.RestURI;
 import utils.TestObjectConverter;
 
@@ -111,8 +112,22 @@ public class ITLeaveTypeController extends IntegrationTest {
     }
 
     @Test
-    public void testUpdateLeaveSuccessfully() {
+    public void testUpdateLeaveSuccessfully() throws Exception {
+        final LeaveTypeDTO leaveTypeDTO = new LeaveTypeDTO();
+        leaveTypeDTO.setComment("java is better then CF");
+        leaveTypeDTO.setDefaultDaysAllowed(40);
+        leaveTypeDTO.setLeaveTypeName("Standard holiday in SS");
 
+        final String contentAsString = mockMvc.perform(put(request(RestURI.LEAVE_TYPES_BY_ID, STANDARD_HOLIDAY_LEAVE_TYPE)).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(leaveTypeDTO)))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse().getContentAsString();
+
+        LeaveTypeDTO result = new ObjectMapper().readValue(contentAsString, LeaveTypeDTO.class);
+        Assert.assertNotNull(result);
+        Assert.assertEquals("java is better then CF", result.getComment());
+        Assert.assertEquals(40, result.getDefaultDaysAllowed());
+        Assert.assertEquals("Standard holiday in SS", result.getLeaveTypeName());
     }
 
     @Test
@@ -128,7 +143,8 @@ public class ITLeaveTypeController extends IntegrationTest {
 
     @Test
     public void testDeleteSuccesfully() throws Exception {
-        mockMvc.perform(delete(request(RestURI.LEAVE_TYPES_BY_ID, STANDARD_HOLIDAY_LEAVE_TYPE)))
+        final long leaveTypeNotUsesAnywhere = 1;
+        mockMvc.perform(delete(request(RestURI.LEAVE_TYPES_BY_ID, leaveTypeNotUsesAnywhere)))
                 .andExpect(status().isOk());
 
         final String contentAsString = mockMvc.perform(get(RestURI.LEAVE_TYPES))
@@ -137,7 +153,7 @@ public class ITLeaveTypeController extends IntegrationTest {
                 .getResponse().getContentAsString();
 
         List<LeaveTypeDTO> result = new ObjectMapper().readValue(contentAsString, List.class);
-        Assert.assertTrue("Wrong size of all leave types ", result.size() == 11);
+        Assert.assertTrue("Wrong size of all leave types ", result.size() == 9);
     }
 
 }

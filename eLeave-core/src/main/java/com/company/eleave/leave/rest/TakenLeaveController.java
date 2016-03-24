@@ -2,15 +2,12 @@ package com.company.eleave.leave.rest;
 
 import com.company.eleave.employee.entity.Employee;
 import com.company.eleave.employee.service.EmployeeService;
-import com.company.eleave.leave.entity.LeaveStatus;
 import com.company.eleave.leave.entity.TakenLeave;
 import com.company.eleave.leave.service.TakenLeaveService;
 import com.company.eleave.rest.dto.LeaveStatusDTO;
 import com.company.eleave.rest.dto.TakenLeaveDTO;
-import com.company.eleave.rest.exception.BadParameterException;
 import com.company.eleave.rest.exception.ElementNotFoundException;
 import com.company.eleave.rest.exception.ExceptionElementType;
-import com.company.eleave.rest.exception.ExceptionParameterType;
 import com.company.eleave.rest.mapper.LeaveStatusMapper;
 import com.company.eleave.rest.mapper.TakenLeaveMapper;
 import java.util.List;
@@ -77,6 +74,7 @@ public class TakenLeaveController {
     //public ResponseEntity<Void> updateLeave(@PathVariable("id") final long takenLeaveId) {
     //    return new ResponseEntity<>(HttpStatus.OK);
     //}
+    
     @RequestMapping(path = "/{id}", method = DELETE)
     public ResponseEntity<Void> deleteLeave(@PathVariable("id") final Long takenLeaveId) {
         final TakenLeave takenLeave = takenLeaveService.getById(takenLeaveId);

@@ -18,5 +18,5 @@ public interface AnnualBalanceLeaveRepository extends CrudRepository<AnnualBalan
   List<AnnualBalanceLeave> findByEmployee(final @Param("employeeId") long employeeId);
   
   @Query("SELECT abl FROM AnnualBalanceLeave abl WHERE abl.leaveType.id = :leaveTypeId")
-  List<AnnualBalanceLeave> findByLeaveTypeId(final @Param("leaveTypeId") long leaveTypeId);
+  List<AnnualBalanceLeave> findByLeaveType(final @Param("leaveTypeId") long leaveTypeId);
 }

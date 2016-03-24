@@ -1,5 +1,6 @@
 package com.company.eleave.leave.service;
 
+import com.company.eleave.leave.entity.AnnualBalanceLeave;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,6 @@ public class LeaveTypeService {
     }
 
     public boolean isLeaveTypeAssignedToAnyLeave(Long leaveTypeId) {
-        return annualBalanceLeaveTypeRepository.findByLeaveTypeId(leaveTypeId).size() > 0;
+        return annualBalanceLeaveTypeRepository.findByLeaveType(leaveTypeId).size() > 0;
     }
 }
