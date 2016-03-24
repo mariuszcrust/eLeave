@@ -72,7 +72,7 @@ public class ITAnnualBalanceLeaveController extends IntegrationTest {
         Assert.assertEquals(15, (int) firstAnnualBalanceLeave.get("leaveDaysRemaining"));
         Assert.assertEquals(10, (int) firstAnnualBalanceLeave.get("leaveTypeId"));
         Assert.assertEquals("Standard holiday", firstAnnualBalanceLeave.get("leaveTypeName"));
-        Assert.assertEquals(1481497200000l, (long) firstAnnualBalanceLeave.get("validityDate"));
+        Assert.assertEquals("2016-12-12", firstAnnualBalanceLeave.get("validityDate"));
     }
 
     @Test
@@ -132,7 +132,7 @@ public class ITAnnualBalanceLeaveController extends IntegrationTest {
         Assert.assertEquals(leaveDaysRemaining, (int) firstAnnualBalanceLeave.get("leaveDaysRemaining"));
         Assert.assertEquals(overtimeLeaveTypeId, (int) firstAnnualBalanceLeave.get("leaveTypeId"));
         Assert.assertEquals(leaveTypeName, firstAnnualBalanceLeave.get("leaveTypeName"));
-        Assert.assertEquals(Date.valueOf("2016-12-12").getTime(), (long) firstAnnualBalanceLeave.get("validityDate"));
+        Assert.assertEquals("2016-12-12", firstAnnualBalanceLeave.get("validityDate"));
     }
 
     @Test

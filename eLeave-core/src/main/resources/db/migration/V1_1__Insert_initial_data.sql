@@ -173,10 +173,10 @@ call eleavedb.createAnnualBalanceLeave (26, 26, '2016-12-12', 2016, @seba_employ
 -- Create taken leaves
 call eleavedb.createTakenLeave(1, '2016-01-01', 'some holiday', 'REJECTED', '2016-01-01', @mariusz_annual_leave, @pawel_employee_id);
 call eleavedb.createTakenLeave(1, '2016-01-01', 'some holiday', 'APPROVED', '2016-01-01', @mariusz_annual_leave, @maciek_employee_id);
-call eleavedb.createTakenLeave(5, '2016-02-02', 'some holiday', 'APPROVED', '2016-01-06', @mariusz_annual_leave, @maciek_employee_id);
-call eleavedb.createTakenLeave(2, '2016-02-02', 'some holiday', 'APPROVED', '2016-01-03', @mariusz_paid_child_care_annual_leave, @maciek_employee_id);
+call eleavedb.createTakenLeave(5, '2016-02-02', 'some holiday', 'APPROVED', '2016-02-06', @mariusz_annual_leave, @maciek_employee_id);
+call eleavedb.createTakenLeave(2, '2016-02-02', 'some holiday', 'APPROVED', '2016-02-03', @mariusz_paid_child_care_annual_leave, @maciek_employee_id);
 
-call eleavedb.createTakenLeave(6, '2016-02-02', 'some holiday', 'APPROVED', '2016-01-06', @seba_annual_leave_2015, @maciek_employee_id);
+call eleavedb.createTakenLeave(6, '2016-02-02', 'some holiday', 'APPROVED', '2016-02-07', @seba_annual_leave_2015, @maciek_employee_id);
 
 DROP PROCEDURE IF EXISTS eleavedb.createPrivilege;
 DROP PROCEDURE IF EXISTS eleavedb.createUserRole;

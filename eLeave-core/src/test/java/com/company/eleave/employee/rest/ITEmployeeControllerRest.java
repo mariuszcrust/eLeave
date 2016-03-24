@@ -206,7 +206,7 @@ public class ITEmployeeControllerRest extends IntegrationTest {
 
         final ApproverDTO approverDTO = new ApproverDTO();
         approverDTO.setApproverId(approverId);
-        approverDTO.setStartDate("2016-01-1");
+        approverDTO.setStartDate("2016-01-01");
         approverDTO.setEndDate(null);
 
         final String contentAsString = mockMvc.perform(put(request(RestURI.EMPLOYEE_ASSIGN_APPROVER, employeeId)).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(approverDTO)))

@@ -2,12 +2,15 @@ package com.company.eleave.leave.rest;
 
 import com.company.eleave.employee.entity.Employee;
 import com.company.eleave.employee.service.EmployeeService;
+import com.company.eleave.leave.entity.LeaveStatus;
 import com.company.eleave.leave.entity.TakenLeave;
 import com.company.eleave.leave.service.TakenLeaveService;
 import com.company.eleave.rest.dto.LeaveStatusDTO;
 import com.company.eleave.rest.dto.TakenLeaveDTO;
+import com.company.eleave.rest.exception.BadParameterException;
 import com.company.eleave.rest.exception.ElementNotFoundException;
 import com.company.eleave.rest.exception.ExceptionElementType;
+import com.company.eleave.rest.exception.ExceptionParameterType;
 import com.company.eleave.rest.mapper.LeaveStatusMapper;
 import com.company.eleave.rest.mapper.TakenLeaveMapper;
 import java.util.List;
@@ -59,9 +62,13 @@ public class TakenLeaveController {
             throw new ElementNotFoundException(takenLeaveId, ExceptionElementType.TAKEN_LEAVE);
         }
 
-        //if (!LeaveStatus.StatusName.contains(leaveStatusDTO.getStatus())) {
-        //    throw new BadParameterException(leaveStatusDTO.getStatus(), ExceptionParameterType.ANNUAL_BALANCE_LEAVE_TYPE_STATUS.getName(), "");
-        //}
+        if (!LeaveStatus.StatusName.contains(leaveStatusDTO.getStatus())) {
+            throw new BadParameterException.BadParameterExceptionBuilder()
+                    .withValue(leaveStatusDTO.getStatus())
+                    .withElement(ExceptionParameterType.ANNUAL_BALANCE_LEAVE_TYPE_STATUS.getName())
+                    .withExceptionType(BadParameterException.ExceptionType.BAD_VALUE)
+                    .createException();
+        }
 
         takenLeave.setLeaveStatus(leaveStatusMapper.toEntity(leaveStatusDTO));
         takenLeaveService.update(takenLeave);
@@ -69,12 +76,6 @@ public class TakenLeaveController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    //do we need it really ?
-    //@RequestMapping(path = "{id}", method = PUT)
-    //public ResponseEntity<Void> updateLeave(@PathVariable("id") final long takenLeaveId) {
-    //    return new ResponseEntity<>(HttpStatus.OK);
-    //}
-    
     @RequestMapping(path = "/{id}", method = DELETE)
     public ResponseEntity<Void> deleteLeave(@PathVariable("id") final Long takenLeaveId) {
         final TakenLeave takenLeave = takenLeaveService.getById(takenLeaveId);
@@ -105,9 +106,9 @@ public class TakenLeaveController {
         if (employee == null) {
             throw new ElementNotFoundException(approverId, ExceptionElementType.EMPLOYEE);
         }
-        
+
         List<TakenLeaveDTO> takenLeavesForApprover = takenLeaveService.findTakenLeavesByApproverId(approverId).stream().map(takenLeave -> takenLeaveMapper.toDto(takenLeave)).collect(Collectors.toList());
-        
+
         return new ResponseEntity<>(takenLeavesForApprover, HttpStatus.OK);
     }
 

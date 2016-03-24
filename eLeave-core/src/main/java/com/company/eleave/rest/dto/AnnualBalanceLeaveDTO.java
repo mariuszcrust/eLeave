@@ -1,5 +1,7 @@
 package com.company.eleave.rest.dto;
 
+import com.company.eleave.util.JsonDateSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.Date;
 
 public class AnnualBalanceLeaveDTO {
@@ -7,10 +9,13 @@ public class AnnualBalanceLeaveDTO {
     private long id;
     private int leaveDaysRemaining;
     private int leaveDaysAllowed;
+
+    @JsonSerialize(using = JsonDateSerializer.class)
     private Date validityDate;
+
     private String leaveTypeName;
     private long leaveTypeId;
-    
+
     public long getId() {
         return id;
     }
@@ -42,19 +47,19 @@ public class AnnualBalanceLeaveDTO {
     public void setValidityDate(Date validityDate) {
         this.validityDate = validityDate;
     }
-    
+
     public String getLeaveTypeName() {
         return leaveTypeName;
     }
-    
+
     public void setLeaveTypeName(String leaveTypeName) {
         this.leaveTypeName = leaveTypeName;
     }
-    
+
     public void setLeaveTypeId(long leaveTypeId) {
         this.leaveTypeId = leaveTypeId;
     }
-    
+
     public long getLeaveTypeId() {
         return leaveTypeId;
     }

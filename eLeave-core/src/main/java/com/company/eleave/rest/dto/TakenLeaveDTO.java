@@ -5,6 +5,8 @@
  */
 package com.company.eleave.rest.dto;
 
+import com.company.eleave.util.JsonDateSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.Date;
 
 /**
@@ -15,13 +17,18 @@ public class TakenLeaveDTO {
 
     private long id;
     private int leaveDaysTaken;
+    
+    @JsonSerialize(using=JsonDateSerializer.class)
     private Date leaveFrom;
+    
+    @JsonSerialize(using=JsonDateSerializer.class)
     private Date leaveTo;
     
     private LeaveStatusDTO status;
     
     private long annualBalanceLeaveId;
     private String leaveType;
+    private long leaveTypeId;
     
     private long approverId;
     private String approverName;
@@ -90,12 +97,20 @@ public class TakenLeaveDTO {
         this.status = status;
     }
     
-    public long annualBalanceLeaveId() {
+    public long getAnnualBalanceLeaveId() {
         return annualBalanceLeaveId;
     }
     
     public void setAnnualBalanceLeaveId(long annualBalanceLeaveId) {
         this.annualBalanceLeaveId = annualBalanceLeaveId;
+    }
+    
+    public long getLeaveTypeId() {
+        return leaveTypeId;
+    }
+    
+    public void setLeaveTypeId(long leaveTypeId) {
+        this.leaveTypeId = leaveTypeId;
     }
     
 }

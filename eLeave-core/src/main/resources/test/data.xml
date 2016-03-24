@@ -97,8 +97,8 @@
     
     <!-- TAKEN_LEAVE -->
     <taken_leave id="1" version="1" leave_days_taken="1" leave_from="2016-01-01" comment="something" status_name="APPROVED" leave_to="2016-01-01" annual_balance_leave_id="1" approver_id="5"/>
-    <taken_leave id="2" version="1" leave_days_taken="4" leave_from="2016-02-02" comment="something" status_name="REJECTED" leave_to="2016-01-01" annual_balance_leave_id="1" approver_id="5"/>
-    <taken_leave id="3" version="1" leave_days_taken="4" leave_from="2016-03-03" comment="something" status_name="APPROVED" leave_to="2016-03-04" annual_balance_leave_id="1" approver_id="5"/>
+    <taken_leave id="2" version="1" leave_days_taken="4" leave_from="2016-02-02" comment="something" status_name="REJECTED" leave_to="2016-02-05" annual_balance_leave_id="1" approver_id="5"/>
+    <taken_leave id="3" version="1" leave_days_taken="4" leave_from="2016-03-03" comment="something" status_name="APPROVED" leave_to="2016-03-06" annual_balance_leave_id="1" approver_id="5"/>
     <taken_leave id="4" version="1" leave_days_taken="1" leave_from="2016-02-02" comment="I need it" status_name="APPROVED" leave_to="2016-02-02" annual_balance_leave_id="3" approver_id="10"/>
     
     <taken_leave id="5" version="1" leave_days_taken="16" leave_from="2015-05-01" comment="holidaysInBieszczady" status_name="APPROVED" leave_to="2016-05-16" annual_balance_leave_id="4" approver_id="8"/> 
