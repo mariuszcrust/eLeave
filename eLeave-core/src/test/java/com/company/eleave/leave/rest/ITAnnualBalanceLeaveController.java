@@ -5,7 +5,7 @@
  */
 package com.company.eleave.leave.rest;
 
-import com.company.eleave.employee.rest.IntegrationTest;
+import utils.IntegrationTest;
 import com.company.eleave.rest.dto.AnnualBalanceLeaveDTO;
 import com.company.eleave.rest.exception.RestResponseExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;

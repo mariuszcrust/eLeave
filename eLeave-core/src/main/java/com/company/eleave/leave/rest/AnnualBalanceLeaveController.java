@@ -8,6 +8,7 @@ import com.company.eleave.rest.dto.AnnualBalanceLeaveDTO;
 import com.company.eleave.rest.exception.ElementNotFoundException;
 import com.company.eleave.rest.exception.ExceptionElementType;
 import com.company.eleave.rest.mapper.AnnualBalanceLeaveMapper;
+import com.google.common.annotations.VisibleForTesting;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,4 +90,20 @@ public class AnnualBalanceLeaveController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @VisibleForTesting
+    public void setAnnualBalanceService(AnnualBalanceService annualBalanceService) {
+        this.annualBalanceService = annualBalanceService;
+    }
+
+    @VisibleForTesting
+    public void setEmployeeService(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
+
+    @VisibleForTesting
+    public void setAnnualBalanceLeaveMapper(AnnualBalanceLeaveMapper mapper) {
+        this.mapper = mapper;
+    }
+
 }

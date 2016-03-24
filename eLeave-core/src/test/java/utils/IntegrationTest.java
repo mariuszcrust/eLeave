@@ -1,4 +1,4 @@
-package com.company.eleave.employee.rest;
+package utils;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
