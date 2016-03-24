@@ -27,6 +27,9 @@
                                 <td>{{leaveType.defaultDaysAllowed}}</td>
                                 <td>{{leaveType.comment}}</td>
                             </tr>
+                            <tr class="no-records-found" ng-show="!leaveTypes.length">
+                                <td colspan="4">No matching records found.</td>    
+                            </tr> 
                         </tbody>    
                     </table>
                 </div>
