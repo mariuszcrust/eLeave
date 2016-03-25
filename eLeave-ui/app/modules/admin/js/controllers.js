@@ -12,7 +12,7 @@ angular.module('eLeave.admin.controllers', []).controller('AdminLeaveTypesContro
         
         $scope.getAllLeaveTypes();
         
-        $scope.removeRow = function(row) {
+        $scope.removeLevaeType = function(row) {
             var index = $scope.leaveTypes.indexOf(row);
             if(index !== -1) {
                 $scope.leaveTypes.splice(index, 1);
