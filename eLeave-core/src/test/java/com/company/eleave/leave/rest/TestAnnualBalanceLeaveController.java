@@ -5,6 +5,7 @@
  */
 package com.company.eleave.leave.rest;
 
+import com.company.eleave.employee.entity.Employee;
 import com.company.eleave.employee.service.EmployeeService;
 import com.company.eleave.leave.entity.AnnualBalanceLeave;
 import com.company.eleave.leave.service.AnnualBalanceService;
@@ -83,31 +84,59 @@ public class TestAnnualBalanceLeaveController {
 
     }
 
-    /*
     @Test
     public void testGetLeavesForEmployeeSuccessfuly() {
         //given
+        Mockito.when(employeeServiceMock.getById(EMPLOYEE_ID)).thenReturn(new Employee());
+        Mockito.when(annualBalanceServiceMock.getLeavesForUser(EMPLOYEE_ID)).thenReturn(Lists.newArrayList(new AnnualBalanceLeave(), new AnnualBalanceLeave()));
 
         //when
+        ResponseEntity<List<AnnualBalanceLeaveDTO>> result = testedObject.getLeavesForEmployee(EMPLOYEE_ID);
+
         //then
+        Assert.assertEquals(HttpStatus.OK, result.getStatusCode());
+        Assert.assertEquals(2, result.getBody().size());
     }
 
     @Test
     public void testAddLeaveForEmployeeWhenNotExists() {
         //given
+        final AnnualBalanceLeaveDTO newAnnualBalance = new AnnualBalanceLeaveDTO();
+        Mockito.when(employeeServiceMock.getById(EMPLOYEE_ID)).thenReturn(null);
 
         //when
-        //then
+        try {
+            testedObject.addLeaveForEmployee(EMPLOYEE_ID, newAnnualBalance);
+        } catch (ElementNotFoundException e) {
+
+            //then
+            Assert.assertEquals(EMPLOYEE_ID, e.getElementId().longValue());
+            Assert.assertEquals(ExceptionElementType.EMPLOYEE.getName(), e.getClazzType());
+        }
     }
 
     @Test
     public void testaddLeaveForEmployeeSuccessfuly() {
         //given
+        final long createdAnnualBalanceId = 10l;
+        final AnnualBalanceLeaveDTO newAnnualBalanceDTO = new AnnualBalanceLeaveDTO();
+        
+        final AnnualBalanceLeave createdAnnualBalanceLeave = new AnnualBalanceLeave();
+        createdAnnualBalanceLeave.setId(createdAnnualBalanceId);
+        
+        Mockito.when(employeeServiceMock.getById(EMPLOYEE_ID)).thenReturn(new Employee());
+        Mockito.when(mapperMock.toEntity(newAnnualBalanceDTO)).thenReturn(createdAnnualBalanceLeave);
+        Mockito.when(annualBalanceServiceMock.createLeave(createdAnnualBalanceLeave)).thenReturn(createdAnnualBalanceId);
 
         //when
+        ResponseEntity<Void> result = testedObject.addLeaveForEmployee(EMPLOYEE_ID, newAnnualBalanceDTO);
+
         //then
+        Assert.assertEquals(HttpStatus.CREATED, result.getStatusCode());
+        Assert.assertEquals("/annualBalanceLeaves/10", result.getHeaders().getLocation().toString());
     }
 
+    /*
     @Test
     public void testDeleteLeaveForEmployeeByLeaveIdWhenLeaveNotExists() {
         //given
@@ -123,5 +152,5 @@ public class TestAnnualBalanceLeaveController {
         //when
         //then
     }
-*/
+     */
 }
