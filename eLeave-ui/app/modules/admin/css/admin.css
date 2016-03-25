@@ -1,9 +1,17 @@
-
 .no-records-found {
   text-align: center;
 }
 
 .table-eleave td:last-child {
   text-align: center;  
+}
+
+.panel-primary {
+    border-color: #444444 !important;
+}
+
+.panel-primary  > .panel-heading {
+     background-color: #444444 !important;
+     border-color: #444444 !important;
 }
 

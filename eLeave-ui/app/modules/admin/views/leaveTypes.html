@@ -28,16 +28,22 @@
                                 <td>{{leaveType.defaultDaysAllowed}}</td>
                                 <td>{{leaveType.comment}}</td>
                                 <td>
+                                    <button type="button" class="btn btn-sm btn-warning">
+                                        <i class="glyphicon glyphicon-pencil"></i>
+                                    </button>
                                     <button type="button" ng-click="removeLevaeType(leaveType)" class="btn btn-sm btn-danger">
-                                        <i class="glyphicon glyphicon-remove-circle"></i>
+                                        <i class="glyphicon glyphicon-trash"></i>
                                     </button>
                                 </td>
                             </tr>
                             <tr class="no-records-found" ng-show="!leaveTypes.length">
-                                <td colspan="4">No matching records found.</td>    
+                                <td colspan="5">No matching records found.</td>    
                             </tr> 
                         </tbody>    
                     </table>
+                    <button type="button" class="btn btn-success">
+                        <i class="glyphicon glyphicon-plus"></i>
+                    </button>
                 </div>
             </div>
         </div>
