@@ -40,6 +40,7 @@ public class TestAnnualBalanceLeaveController {
     public void before() {
         annualBalanceServiceMock = Mockito.mock(AnnualBalanceService.class);
         employeeServiceMock = Mockito.mock(EmployeeService.class);
+        mapperMock = Mockito.mock(AnnualBalanceLeaveMapper.class);
 
         testedObject = new AnnualBalanceLeaveController();
         testedObject.setAnnualBalanceLeaveMapper(mapperMock);
@@ -51,14 +52,17 @@ public class TestAnnualBalanceLeaveController {
     @Test
     public void testGetAllLeaves() {
         //given
-        ArrayList<AnnualBalanceLeave> allLeaves = Lists.newArrayList(new AnnualBalanceLeave(), new AnnualBalanceLeave());
+        AnnualBalanceLeave firstAnnualBalanceLeave = new AnnualBalanceLeave();
+        AnnualBalanceLeave secondAnnualBalanceLeave = new AnnualBalanceLeave();
+        ArrayList<AnnualBalanceLeave> allLeaves = Lists.newArrayList(firstAnnualBalanceLeave, secondAnnualBalanceLeave);
         Mockito.when(annualBalanceServiceMock.getAllLeaves()).thenReturn(allLeaves);
+        Mockito.when(mapperMock.toDto(firstAnnualBalanceLeave)).thenReturn(new AnnualBalanceLeaveDTO());
+        Mockito.when(mapperMock.toDto(secondAnnualBalanceLeave)).thenReturn(new AnnualBalanceLeaveDTO());
 
         //when
         ResponseEntity<List<AnnualBalanceLeaveDTO>> result = testedObject.getAllLeaves();
 
         //then
-        Mockito.verify(annualBalanceServiceMock).getAllLeaves();
         Assert.assertEquals(HttpStatus.OK, result.getStatusCode());
         Assert.assertEquals(2, result.getBody().size());
     }
@@ -74,7 +78,7 @@ public class TestAnnualBalanceLeaveController {
         } catch (ElementNotFoundException e) {
             //then
             Assert.assertEquals(EMPLOYEE_ID, e.getElementId().longValue());
-            Assert.assertEquals(ExceptionElementType.ANNUAL_BALANCE_LEAVE.getName(), e.getClazzType());
+            Assert.assertEquals(ExceptionElementType.EMPLOYEE.getName(), e.getClazzType());
         }
 
     }
