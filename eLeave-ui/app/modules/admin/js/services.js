@@ -4,6 +4,12 @@ angular.module('eleave.admin.services', []).factory('adminLeaveTypesService', ['
         return {
             getLeaveTypesData: function () {
                 return $http.get(GET_LEAVE_TYPES_ENDPOINT);
+            },
+            
+            checkDaysAllowed: function (value) {
+                if(!(/^[0-9]+$/.test(value))) {
+                    return "Days Allowed should be positive integer number e.g. 5.";
+                }
             }
         };
     }]);
