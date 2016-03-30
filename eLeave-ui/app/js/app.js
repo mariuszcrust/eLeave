@@ -7,7 +7,8 @@ eLeaveApp.config(['$urlRouterProvider', function($urlRouterProvider){
         $urlRouterProvider.deferIntercept();
 }]);
 
-eLeaveApp.run(['$state', '$urlRouter',function($state, $urlRouter){
+eLeaveApp.run(['$state', '$urlRouter', 'editableOptions', function($state, $urlRouter, editableOptions){
+      editableOptions.theme = 'bs3';
       $state.transitionTo('home');
       $urlRouter.listen();
 }]);

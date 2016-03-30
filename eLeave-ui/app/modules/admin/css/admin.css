@@ -15,3 +15,19 @@
      border-color: #444444 !important;
 }
 
+.breadcrumb {
+    background-color: #444444;
+}
+
+.breadcrumb > .active {
+    color: #fff;
+}
+
+.breadcrumb > li > a {
+    color: #9d9d9d;
+}
+
+.breadcrumb > li > a:hover, .breadcrumb > li > a:focus {
+    color: #fff;
+    background-color: transparent;
+}

@@ -8,7 +8,7 @@ angular.module('eleave.admin.services', []).factory('adminLeaveTypesService', ['
             
             checkDaysAllowed: function (value) {
                 if(!(/^[0-9]+$/.test(value))) {
-                    return "Days Allowed should be positive integer number e.g. 5.";
+                    return "Days Allowed should be a counting number e.g. 5.";
                 }
             }
         };
