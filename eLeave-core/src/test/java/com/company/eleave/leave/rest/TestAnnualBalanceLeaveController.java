@@ -30,6 +30,7 @@ import org.springframework.http.ResponseEntity;
 public class TestAnnualBalanceLeaveController {
 
     private static final long EMPLOYEE_ID = 1;
+    private static final long LEAVE_ID = 5;
 
     private AnnualBalanceService annualBalanceServiceMock;
     private EmployeeService employeeServiceMock;
@@ -120,10 +121,10 @@ public class TestAnnualBalanceLeaveController {
         //given
         final long createdAnnualBalanceId = 10l;
         final AnnualBalanceLeaveDTO newAnnualBalanceDTO = new AnnualBalanceLeaveDTO();
-        
+
         final AnnualBalanceLeave createdAnnualBalanceLeave = new AnnualBalanceLeave();
         createdAnnualBalanceLeave.setId(createdAnnualBalanceId);
-        
+
         Mockito.when(employeeServiceMock.getById(EMPLOYEE_ID)).thenReturn(new Employee());
         Mockito.when(mapperMock.toEntity(newAnnualBalanceDTO)).thenReturn(createdAnnualBalanceLeave);
         Mockito.when(annualBalanceServiceMock.createLeave(createdAnnualBalanceLeave)).thenReturn(createdAnnualBalanceId);
@@ -136,21 +137,32 @@ public class TestAnnualBalanceLeaveController {
         Assert.assertEquals("/annualBalanceLeaves/10", result.getHeaders().getLocation().toString());
     }
 
-    /*
     @Test
     public void testDeleteLeaveForEmployeeByLeaveIdWhenLeaveNotExists() {
         //given
+        Mockito.when(employeeServiceMock.getById(EMPLOYEE_ID)).thenReturn(null);
 
         //when
-        //then
+        try {
+            testedObject.deleteLeaveForEmployeeByLeaveId(EMPLOYEE_ID, LEAVE_ID);
+        } catch (ElementNotFoundException e) {
+            Assert.assertEquals(EMPLOYEE_ID, e.getElementId().longValue());
+            Assert.assertEquals(ExceptionElementType.EMPLOYEE.getName(), e.getClazzType());
+        }
+
     }
 
     @Test
     public void testDeleteLeaveForEmployeeByLeaveIdSuccessfuly() {
         //given
+        Mockito.when(employeeServiceMock.getById(EMPLOYEE_ID)).thenReturn(new Employee());
 
         //when
+        ResponseEntity<Void> result = testedObject.deleteLeaveForEmployeeByLeaveId(EMPLOYEE_ID, LEAVE_ID);
+
         //then
+        Mockito.verify(annualBalanceServiceMock).deleteLeave(LEAVE_ID);
+        Assert.assertEquals(HttpStatus.OK, result.getStatusCode());
     }
-     */
+
 }

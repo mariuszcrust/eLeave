@@ -7,6 +7,7 @@ import com.company.eleave.rest.exception.BadParameterException;
 import com.company.eleave.rest.exception.ElementNotFoundException;
 import com.company.eleave.rest.exception.ExceptionElementType;
 import com.company.eleave.rest.mapper.LeaveTypeMapper;
+import com.google.common.annotations.VisibleForTesting;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -101,6 +102,16 @@ public class LeaveTypeController {
 
         leaveTypeService.delete(leaveTypeId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @VisibleForTesting
+    public void setLeaveTypeService(final LeaveTypeService leaveTypeService) {
+        this.leaveTypeService = leaveTypeService;
+    }
+    
+    @VisibleForTesting
+    public void setLeaveTypeMapper(final LeaveTypeMapper leaveTypeMapper) {
+        this.mapper = leaveTypeMapper;
     }
 
 }
