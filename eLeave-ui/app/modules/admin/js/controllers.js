@@ -38,3 +38,44 @@ angular.module('eLeave.admin.controllers', []).controller('AdminLeaveTypesContro
         };
         
     }]);
+
+angular.module('eLeave.admin.controllers', []).controller('EmployeesController', ['$scope', '$state', 'EmployeesService', function ($scope, $state, EmployeesService) {
+        var self = this;
+        self.employee={id:null, firstName:'', lastName:'', email:''};
+        self.employees = [];
+        
+        self.getAllEmployees = function() {
+            EmployeesService.getAll().then(function (response, status) {
+                self.employees = response.data;
+            }, function() {
+                console.log("Cannot retrieve data.");
+            });
+        };
+        
+        self.update = function(employee, id) {
+            EmployeesService.update(employee, id).then(function (response, status) {
+                return response.data;
+            }, function() {
+                console.log("Exception occured during update");
+            });
+        };
+        
+        self.delete = function(id) {
+            EmployeesService.delete(id).then(function (response, status) {
+                return response.data;
+            }, function() {
+                console.log("Exception occured during delete");
+            });
+        };
+        
+        self.create = function(employee) {
+            EmployeesService.create(employee).then(function (response, status) {
+                return response.data;
+            }, function() {
+                console.log("Exception occured during create");
+            });
+        };
+        
+        self.getAllEmployees();
+        
+}]);

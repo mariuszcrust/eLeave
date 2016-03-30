@@ -7,5 +7,9 @@ angular.module('eLeave.admin').config(['$stateProvider', '$locationProvider', fu
             url: '/admin/leaveTypes',
             templateUrl: 'modules/admin/views/leaveTypes.html',
             controller: 'AdminLeaveTypesController'
+        }).state('employees', {
+            url: '/admin/employees',
+            templateUrl: 'modules/admin/views/employees.html',
+            controller: 'EmployeesController'
         });
     }]);
