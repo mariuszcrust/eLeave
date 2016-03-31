@@ -7,6 +7,8 @@ package com.company.eleave.leave.rest;
 
 import utils.IntegrationTest;
 import com.company.eleave.rest.dto.AnnualBalanceLeaveDTO;
+import com.company.eleave.rest.exception.ElementNotFoundException;
+import com.company.eleave.rest.exception.ErrorCode;
 import com.company.eleave.rest.exception.RestResponseExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.sql.Date;
@@ -82,7 +84,9 @@ public class ITAnnualBalanceLeaveController extends IntegrationTest {
                 .andReturn()
                 .getResponse().getContentAsString();
 
-        Assert.assertEquals("Element with id: 200 of type: Employee has not been found", contentAsString);
+        ElementNotFoundException exception = new ObjectMapper().readValue(contentAsString, ElementNotFoundException.class);
+        Assert.assertEquals(EMPLOYEE_ID_NOT_EXISTING, exception.getElementId());
+        Assert.assertEquals(ErrorCode.EMPLOYEE_NOT_FOUND.getCode(), exception.getCode());
     }
 
     @Test
@@ -95,7 +99,9 @@ public class ITAnnualBalanceLeaveController extends IntegrationTest {
                 .andReturn()
                 .getResponse().getContentAsString();
 
-        Assert.assertEquals("Element with id: 200 of type: Employee has not been found", contentAsString);
+        ElementNotFoundException exception = new ObjectMapper().readValue(contentAsString, ElementNotFoundException.class);
+        Assert.assertEquals(EMPLOYEE_ID_NOT_EXISTING, exception.getElementId());
+        Assert.assertEquals(ErrorCode.EMPLOYEE_NOT_FOUND.getCode(), exception.getCode());
     }
 
     @Test
@@ -156,8 +162,14 @@ public class ITAnnualBalanceLeaveController extends IntegrationTest {
     public void testDeleteLeaveForEmployeeWhenEmployeeNotExists() throws Exception {
         final long leaveId = 1;
 
-        mockMvc.perform(delete(request(RestURI.ANNUAL_BALANCE_LEAVES_BY_EMPLOYEE_AND_LEAVE_ID, EMPLOYEE_ID_NOT_EXISTING, leaveId)))
-                .andExpect(status().isNotFound());
+        final String contentAsString = mockMvc.perform(delete(request(RestURI.ANNUAL_BALANCE_LEAVES_BY_EMPLOYEE_AND_LEAVE_ID, EMPLOYEE_ID_NOT_EXISTING, leaveId)))
+                .andExpect(status().isNotFound())
+                .andReturn()
+                .getResponse().getContentAsString();
+
+        ElementNotFoundException exception = new ObjectMapper().readValue(contentAsString, ElementNotFoundException.class);
+        Assert.assertEquals(EMPLOYEE_ID_NOT_EXISTING, exception.getElementId());
+        Assert.assertEquals(ErrorCode.EMPLOYEE_NOT_FOUND.getCode(), exception.getCode());
     }
 
 }

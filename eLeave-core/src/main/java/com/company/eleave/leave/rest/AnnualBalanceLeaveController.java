@@ -6,7 +6,7 @@ import com.company.eleave.leave.entity.AnnualBalanceLeave;
 import com.company.eleave.leave.service.AnnualBalanceService;
 import com.company.eleave.rest.dto.AnnualBalanceLeaveDTO;
 import com.company.eleave.rest.exception.ElementNotFoundException;
-import com.company.eleave.rest.exception.ExceptionElementType;
+import com.company.eleave.rest.exception.ErrorCode;
 import com.company.eleave.rest.mapper.AnnualBalanceLeaveMapper;
 import com.google.common.annotations.VisibleForTesting;
 import java.util.List;
@@ -52,7 +52,7 @@ public class AnnualBalanceLeaveController {
     @RequestMapping(path = "/employee/{id}", method = RequestMethod.GET)
     public ResponseEntity<List<AnnualBalanceLeaveDTO>> getLeavesForEmployee(@PathVariable("id") long employeeId) {
         if (employeeService.getById(employeeId) == null) {
-            throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);
+            throw new ElementNotFoundException(employeeId, ErrorCode.EMPLOYEE_NOT_FOUND.getCode());
         }
 
         List<AnnualBalanceLeave> leavesForUser = annualBalanceService.getLeavesForUser(employeeId);
@@ -65,7 +65,7 @@ public class AnnualBalanceLeaveController {
     public ResponseEntity<Void> addLeaveForEmployee(@PathVariable("id") long employeeId, final @RequestBody AnnualBalanceLeaveDTO annualBalanceLeaveDTO) {
         final Employee employee = employeeService.getById(employeeId);
         if (employee == null) {
-            throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);
+            throw new ElementNotFoundException(employeeId, ErrorCode.EMPLOYEE_NOT_FOUND.getCode());
         }
 
         final AnnualBalanceLeave annualBalanceLeave = mapper.toEntity(annualBalanceLeaveDTO);
@@ -83,7 +83,7 @@ public class AnnualBalanceLeaveController {
     public ResponseEntity<Void> deleteLeaveForEmployeeByLeaveId(@PathVariable("id") long employeeId, @PathVariable("leaveId") long leaveId) {
         final Employee employee = employeeService.getById(employeeId);
         if (employee == null) {
-            throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);
+            throw new ElementNotFoundException(employeeId, ErrorCode.EMPLOYEE_NOT_FOUND.getCode());
         }
 
         annualBalanceService.deleteLeave(leaveId);

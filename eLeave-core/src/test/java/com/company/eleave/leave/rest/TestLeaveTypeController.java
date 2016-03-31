@@ -10,7 +10,7 @@ import com.company.eleave.leave.service.LeaveTypeService;
 import com.company.eleave.rest.dto.LeaveTypeDTO;
 import com.company.eleave.rest.exception.BadParameterException;
 import com.company.eleave.rest.exception.ElementNotFoundException;
-import com.company.eleave.rest.exception.ExceptionElementType;
+import com.company.eleave.rest.exception.ErrorCode;
 import com.company.eleave.rest.mapper.LeaveTypeMapper;
 import com.google.common.collect.Lists;
 import java.util.List;
@@ -91,8 +91,8 @@ public class TestLeaveTypeController {
             testedObject.getById(LEAVE_TYPE_ID);
         } catch (ElementNotFoundException e) {
             //then
-            Assert.assertEquals(LEAVE_TYPE_ID, e.getElementId().longValue());
-            Assert.assertEquals(ExceptionElementType.LEAVE_TYPE.getName(), e.getClazzType());
+            Assert.assertEquals(LEAVE_TYPE_ID, e.getElementId());
+            Assert.assertEquals(ErrorCode.LEAVE_TYPE_NOT_FOUND.getCode(), e.getCode());
         }
     }
 
@@ -159,8 +159,8 @@ public class TestLeaveTypeController {
         try {
             testedObject.delete(LEAVE_TYPE_ID);
         } catch (ElementNotFoundException e) {
-            Assert.assertEquals(LEAVE_TYPE_ID, e.getElementId().longValue());
-            Assert.assertEquals(ExceptionElementType.LEAVE_TYPE.getName(), e.getClazzType());
+            Assert.assertEquals(LEAVE_TYPE_ID, e.getElementId());
+            Assert.assertEquals(ErrorCode.LEAVE_TYPE_NOT_FOUND.getCode(), e.getCode());
         }
 
     }
@@ -191,8 +191,9 @@ public class TestLeaveTypeController {
             testedObject.delete(LEAVE_TYPE_ID);
         } catch (BadParameterException e) {
             //then
-            Assert.assertEquals("NOT_POSSIBLE_TO_REMOVE", e.getExceptionType().toString());
-            Assert.assertEquals(Long.toString(LEAVE_TYPE_ID), e.getValue());
+            Assert.assertEquals(ErrorCode.LEAVE_TYPE_CANNOT_BE_REMOVED_DB_CONSTRAINTS.getCode(), e.getCode());
+            Assert.assertEquals("Element with id: 1 cannot be removed. ", e.getMessage());
+            Assert.assertEquals(String.valueOf(LEAVE_TYPE_ID), e.getValue());
         }
     }
 }

@@ -127,7 +127,7 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `eleavedb`.`approver`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `eleavedb`.`approver` (
-  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `id` BIGINT(20) NOT NULL,
   `version` BIGINT(20) NULL DEFAULT NULL,
   `end_date` DATETIME NULL DEFAULT NULL,
   `start_date` DATETIME NULL DEFAULT NULL,
@@ -136,6 +136,9 @@ CREATE TABLE IF NOT EXISTS `eleavedb`.`approver` (
   INDEX `fk_approver_approver_id` (`approver_id` ASC),
   CONSTRAINT `fk_approver_approver_id`
     FOREIGN KEY (`approver_id`)
+    REFERENCES `eleavedb`.`employee` (`id`),
+  CONSTRAINT `fk_approver_employee_id`
+    FOREIGN KEY (`id`)
     REFERENCES `eleavedb`.`employee` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;

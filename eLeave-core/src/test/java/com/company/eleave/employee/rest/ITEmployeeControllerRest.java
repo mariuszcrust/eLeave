@@ -4,6 +4,9 @@ import com.company.eleave.rest.dto.AnnualBalanceLeaveDTO;
 import com.company.eleave.rest.dto.ApproverDTO;
 import com.company.eleave.rest.dto.EmployeeDTO;
 import com.company.eleave.rest.dto.LeaveTypeDTO;
+import com.company.eleave.rest.exception.BadParameterException;
+import com.company.eleave.rest.exception.ElementNotFoundException;
+import com.company.eleave.rest.exception.ErrorCode;
 import com.company.eleave.rest.exception.RestResponseExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Arrays;
@@ -45,7 +48,7 @@ public class ITEmployeeControllerRest extends IntegrationTest {
                 .getResponse().getContentAsString();
 
         List<EmployeeDTO> result = new ObjectMapper().readValue(contentAsString, List.class);
-        Assert.assertTrue("Wrong size of all employees", result.size() == 10);
+        Assert.assertEquals("Wrong size of all employees", 10, result.size());
     }
 
     @Test
@@ -58,9 +61,9 @@ public class ITEmployeeControllerRest extends IntegrationTest {
         EmployeeDTO result = new ObjectMapper().readValue(contentAsString, EmployeeDTO.class);
 
         Assert.assertNotNull(result);
-        Assert.assertTrue("wrong first name", "john".equals(result.getFirstName()));
-        Assert.assertTrue("wrong last name", "doe1".equals(result.getLastName()));
-        Assert.assertTrue("wrong email", "doe1@mail.com".equals(result.getEmail()));
+        Assert.assertEquals("wrong first name", "john", result.getFirstName());
+        Assert.assertEquals("wrong last name", "doe1", result.getLastName());
+        Assert.assertEquals("wrong email", "doe1@mail.com", result.getEmail());
     }
 
     @Test
@@ -71,7 +74,10 @@ public class ITEmployeeControllerRest extends IntegrationTest {
                 .andReturn()
                 .getResponse().getContentAsString();
 
-        Assert.assertTrue("Element with id: 123 of type: Employee has not been found".equals(contentAsString));
+        ElementNotFoundException exception = new ObjectMapper().readValue(contentAsString, ElementNotFoundException.class);
+
+        Assert.assertEquals(employeeId, exception.getElementId());
+        Assert.assertEquals(ErrorCode.EMPLOYEE_NOT_FOUND.getCode(), exception.getCode());
     }
 
     @Test
@@ -143,7 +149,9 @@ public class ITEmployeeControllerRest extends IntegrationTest {
                 .andReturn()
                 .getResponse().getContentAsString();
 
-        Assert.assertTrue("Element with id: 123 of type: Employee has not been found".equals(contentAsString));
+        ElementNotFoundException exception = new ObjectMapper().readValue(contentAsString, ElementNotFoundException.class);
+        Assert.assertEquals(employeeId, exception.getElementId());
+        Assert.assertEquals(ErrorCode.EMPLOYEE_NOT_FOUND.getCode(), exception.getCode());
     }
 
     @Test
@@ -161,7 +169,9 @@ public class ITEmployeeControllerRest extends IntegrationTest {
                 .andReturn()
                 .getResponse().getContentAsString();
 
-        Assert.assertTrue("Element with id: 123 of type: Employee has not been found".equals(contentAsString));
+        ElementNotFoundException exception = new ObjectMapper().readValue(contentAsString, ElementNotFoundException.class);
+        Assert.assertEquals(employeeId, exception.getElementId());
+        Assert.assertEquals(ErrorCode.EMPLOYEE_NOT_FOUND.getCode(), exception.getCode());
     }
 
     @Test
@@ -179,7 +189,9 @@ public class ITEmployeeControllerRest extends IntegrationTest {
                 .andReturn()
                 .getResponse().getContentAsString();
 
-        Assert.assertTrue("Element with id: 123 of type: Employee has not been found".equals(contentAsString));
+        ElementNotFoundException exception = new ObjectMapper().readValue(contentAsString, ElementNotFoundException.class);
+        Assert.assertEquals(approverId, exception.getElementId());
+        Assert.assertEquals(ErrorCode.EMPLOYEE_NOT_FOUND.getCode(), exception.getCode());
     }
 
     @Test
@@ -197,7 +209,10 @@ public class ITEmployeeControllerRest extends IntegrationTest {
                 .andReturn()
                 .getResponse().getContentAsString();
 
-        Assert.assertTrue("Element with value: 1-April-2016 of type: Date has invalid value. Root cause: Unparseable date: \"1-April-2016\"".equals(contentAsString));
+        BadParameterException exception = new ObjectMapper().readValue(contentAsString, BadParameterException.class);
+        Assert.assertEquals("1-April-2016", exception.getValue());
+        Assert.assertEquals(ErrorCode.START_END_DATE_FOR_APPROVER_INVALID.getCode(), exception.getCode());
+        Assert.assertEquals("Element with value: 1-April-2016 is invalid. ", exception.getMessage());
     }
 
     @Test
@@ -231,7 +246,9 @@ public class ITEmployeeControllerRest extends IntegrationTest {
                 .andReturn()
                 .getResponse().getContentAsString();
 
-        Assert.assertTrue("Element with id: 123 of type: Employee has not been found".equals(contentAsString));
+        ElementNotFoundException exception = new ObjectMapper().readValue(contentAsString, ElementNotFoundException.class);
+        Assert.assertEquals(employeeId, exception.getElementId());
+        Assert.assertEquals(ErrorCode.EMPLOYEE_NOT_FOUND.getCode(), exception.getCode());
     }
 
     @Test
@@ -249,7 +266,9 @@ public class ITEmployeeControllerRest extends IntegrationTest {
                 .andReturn()
                 .getResponse().getContentAsString();
 
-        Assert.assertTrue("Element with id: 123 of type: Employee has not been found".equals(contentAsString));
+        ElementNotFoundException exception = new ObjectMapper().readValue(contentAsString, ElementNotFoundException.class);
+        Assert.assertEquals(approverId, exception.getElementId());
+        Assert.assertEquals(ErrorCode.EMPLOYEE_NOT_FOUND.getCode(), exception.getCode());
     }
 
     @Test
@@ -261,7 +280,9 @@ public class ITEmployeeControllerRest extends IntegrationTest {
                 .andReturn()
                 .getResponse().getContentAsString();
 
-        Assert.assertTrue("Element with id: 123 of type: Employee has not been found".equals(contentAsString));
+        ElementNotFoundException exception = new ObjectMapper().readValue(contentAsString, ElementNotFoundException.class);
+        Assert.assertEquals(employeeId, exception.getElementId());
+        Assert.assertEquals(ErrorCode.EMPLOYEE_NOT_FOUND.getCode(), exception.getCode());
     }
 
     @Test
@@ -279,6 +300,6 @@ public class ITEmployeeControllerRest extends IntegrationTest {
                 .getResponse().getContentAsString();
 
         List<EmployeeDTO> result = new ObjectMapper().readValue(contentAsString, List.class);
-        Assert.assertTrue("Wrong size of all employees" + result.size(), result.size() == 9);
+        Assert.assertEquals("Wrong size of all employees ", 9, result.size());
     }
 }

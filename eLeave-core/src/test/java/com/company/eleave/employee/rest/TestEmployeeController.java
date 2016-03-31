@@ -11,7 +11,7 @@ import com.company.eleave.rest.dto.ApproverDTO;
 import com.company.eleave.rest.dto.EmployeeDTO;
 import com.company.eleave.rest.exception.BadParameterException;
 import com.company.eleave.rest.exception.ElementNotFoundException;
-import com.company.eleave.rest.exception.ExceptionElementType;
+import com.company.eleave.rest.exception.ErrorCode;
 import com.company.eleave.rest.mapper.EmployeeMapper;
 import com.google.common.collect.Lists;
 import java.util.List;
@@ -67,8 +67,8 @@ public class TestEmployeeController {
             testedObject.getById(EMPLOYEE_ID);
         } catch (ElementNotFoundException e) {
             //then
-            Assert.assertEquals(EMPLOYEE_ID, e.getElementId().longValue());
-            Assert.assertEquals(ExceptionElementType.EMPLOYEE.getName(), e.getClazzType());
+            Assert.assertEquals(EMPLOYEE_ID, e.getElementId());
+            Assert.assertEquals(ErrorCode.EMPLOYEE_NOT_FOUND.getCode(), e.getCode());
         }
     }
     
@@ -123,8 +123,8 @@ public class TestEmployeeController {
             testedObject.update(EMPLOYEE_ID, employeeDTO);
         } catch (ElementNotFoundException e) {
             //then
-            Assert.assertEquals(EMPLOYEE_ID, e.getElementId().longValue());
-            Assert.assertEquals(ExceptionElementType.EMPLOYEE.getName(), e.getClazzType());
+            Assert.assertEquals(EMPLOYEE_ID, e.getElementId());
+            Assert.assertEquals(ErrorCode.EMPLOYEE_NOT_FOUND.getCode(), e.getCode());
         }
     }
     
@@ -166,8 +166,8 @@ public class TestEmployeeController {
             testedObject.assignApprover(EMPLOYEE_ID, approverDTO);
         } catch (ElementNotFoundException e) {
             //then
-            Assert.assertEquals(EMPLOYEE_ID, e.getElementId().longValue());
-            Assert.assertEquals(ExceptionElementType.EMPLOYEE.getName(), e.getClazzType());
+            Assert.assertEquals(EMPLOYEE_ID, e.getElementId());
+            Assert.assertEquals(ErrorCode.EMPLOYEE_NOT_FOUND.getCode(), e.getCode());
         }
     }
     
@@ -187,8 +187,8 @@ public class TestEmployeeController {
             testedObject.assignApprover(EMPLOYEE_ID, approverDTO);
         } catch (ElementNotFoundException e) {
             //then
-            Assert.assertEquals(APPROVER_ID, e.getElementId().longValue());
-            Assert.assertEquals(ExceptionElementType.EMPLOYEE.getName(), e.getClazzType());
+            Assert.assertEquals(APPROVER_ID, e.getElementId());
+            Assert.assertEquals(ErrorCode.EMPLOYEE_NOT_FOUND.getCode(), e.getCode());
         }
         
     }
@@ -215,8 +215,7 @@ public class TestEmployeeController {
             testedObject.assignApprover(EMPLOYEE_ID, approverDTO);
         } catch (BadParameterException e) {
             //then
-            Assert.assertEquals("Unparseable date: \"1/1/2016\"", e.getElement());
-            Assert.assertEquals("Date", e.getType());
+            Assert.assertEquals("Element with value: 1/1/2016 is invalid. ", e.getMessage());
             Assert.assertEquals("1/1/2016", e.getValue());
         }
     }
@@ -261,8 +260,8 @@ public class TestEmployeeController {
             testedObject.reassignApproverForEmployee(EMPLOYEE_ID, approverId);
         } catch (ElementNotFoundException e) {
             //then
-            Assert.assertEquals(EMPLOYEE_ID, e.getElementId().longValue());
-            Assert.assertEquals(ExceptionElementType.EMPLOYEE.getName(), e.getClazzType());
+            Assert.assertEquals(EMPLOYEE_ID, e.getElementId());
+            Assert.assertEquals(ErrorCode.EMPLOYEE_NOT_FOUND.getCode(), e.getCode());
         }
     }
     
@@ -279,8 +278,8 @@ public class TestEmployeeController {
             testedObject.reassignApproverForEmployee(EMPLOYEE_ID, approverId);
         } catch (ElementNotFoundException e) {
             //then
-            Assert.assertEquals(approverId, e.getElementId().longValue());
-            Assert.assertEquals(ExceptionElementType.EMPLOYEE.getName(), e.getClazzType());
+            Assert.assertEquals(approverId, e.getElementId());
+            Assert.assertEquals(ErrorCode.EMPLOYEE_NOT_FOUND.getCode(), e.getCode());
         }
     }
     
@@ -308,8 +307,8 @@ public class TestEmployeeController {
             testedObject.delete(EMPLOYEE_ID);
         } catch (ElementNotFoundException e) {
             //then
-            Assert.assertEquals(EMPLOYEE_ID, e.getElementId().longValue());
-            Assert.assertEquals(ExceptionElementType.EMPLOYEE.getName(), e.getClazzType());
+            Assert.assertEquals(EMPLOYEE_ID, e.getElementId());
+            Assert.assertEquals(ErrorCode.EMPLOYEE_NOT_FOUND.getCode(), e.getCode());
         }
         
     }

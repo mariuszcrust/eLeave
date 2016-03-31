@@ -65,7 +65,7 @@ angular.module('eLeave.admin.controllers', []).controller('EmployeesController',
         
         self.delete = function(id) {
             EmployeesService.delete(id).then(function (response, status) {
-                return response.data;
+                self.getAllEmployees();
             }, function() {
                 console.log("Exception occured during delete");
             });

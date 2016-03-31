@@ -8,6 +8,8 @@ package com.company.eleave.leave.rest;
 import utils.IntegrationTest;
 import com.company.eleave.rest.dto.LeaveStatusDTO;
 import com.company.eleave.rest.dto.TakenLeaveDTO;
+import com.company.eleave.rest.exception.ElementNotFoundException;
+import com.company.eleave.rest.exception.ErrorCode;
 import com.company.eleave.rest.exception.RestResponseExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.text.SimpleDateFormat;
@@ -41,9 +43,9 @@ public class ITTakenLeaveController extends IntegrationTest {
     private static final long EMPLOYEE_ID = 1;
 
     private static final long APPROVER_ID = 5;
-    
+
     private static final long TAKEN_LEAVE_ID = 1;
-    
+
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     @Before
@@ -60,13 +62,13 @@ public class ITTakenLeaveController extends IntegrationTest {
         newTakenLeaveDTO.setLeaveFrom(DATE_FORMAT.parse("2016-05-05"));
         newTakenLeaveDTO.setLeaveTo(DATE_FORMAT.parse("2016-05-14"));
         newTakenLeaveDTO.setLeaveTypeId(EMPLOYEE_ID);
-        
+
         LeaveStatusDTO leaveStatusDTO = new LeaveStatusDTO();
         leaveStatusDTO.setComment("pleaseeee");
         leaveStatusDTO.setStatus("PENDING");
-        
+
         newTakenLeaveDTO.setStatus(leaveStatusDTO);
-        
+
         mockMvc.perform(post(RestURI.TAKEN_LEAVES).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(newTakenLeaveDTO)))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location", "/takenLeaves/6"));
@@ -95,7 +97,9 @@ public class ITTakenLeaveController extends IntegrationTest {
                 .andReturn()
                 .getResponse().getContentAsString();
 
-        Assert.assertTrue("Element with id: 123 of type: TakenLeave has not been found".equals(contentAsString));
+        ElementNotFoundException exception = new ObjectMapper().readValue(contentAsString, ElementNotFoundException.class);
+        Assert.assertEquals(takenLeaveNotExisting, exception.getElementId());
+        Assert.assertEquals(ErrorCode.TAKEN_LEAVE_NOT_FOUND.getCode(), exception.getCode());
     }
 
     @Test
@@ -103,7 +107,7 @@ public class ITTakenLeaveController extends IntegrationTest {
         mockMvc.perform(delete(request(RestURI.TAKEN_LEAVES_BY_ID, TAKEN_LEAVE_ID)))
                 .andExpect(status().isOk());
 
-                final String contentAsString = mockMvc.perform(get(request(RestURI.TAKEN_LEAVES_BY_EMPLOYEE, EMPLOYEE_ID)))
+        final String contentAsString = mockMvc.perform(get(request(RestURI.TAKEN_LEAVES_BY_EMPLOYEE, EMPLOYEE_ID)))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse().getContentAsString();
@@ -120,7 +124,9 @@ public class ITTakenLeaveController extends IntegrationTest {
                 .andReturn()
                 .getResponse().getContentAsString();
 
-        Assert.assertEquals("Element with id: 100 of type: Employee has not been found", contentAsString);
+        ElementNotFoundException exception = new ObjectMapper().readValue(contentAsString, ElementNotFoundException.class);
+        Assert.assertEquals(employeeIdNotExisting, exception.getElementId());
+        Assert.assertEquals(ErrorCode.EMPLOYEE_NOT_FOUND.getCode(), exception.getCode());
     }
 
     @Test
@@ -158,9 +164,11 @@ public class ITTakenLeaveController extends IntegrationTest {
                 .andReturn()
                 .getResponse().getContentAsString();
 
-        Assert.assertEquals("Element with id: 100 of type: Employee has not been found", contentAsString);
+        ElementNotFoundException exception = new ObjectMapper().readValue(contentAsString, ElementNotFoundException.class);
+        Assert.assertEquals(employeeIdNotExisting, exception.getElementId());
+        Assert.assertEquals(ErrorCode.EMPLOYEE_NOT_FOUND.getCode(), exception.getCode());
     }
-    
+
     @Test
     public void testGetAllLeavesForApproverSuccessfully() throws Exception {
         final String contentAsString = mockMvc.perform(get(request(RestURI.TAKEN_LEAVES_BY_APPROVER, APPROVER_ID)))

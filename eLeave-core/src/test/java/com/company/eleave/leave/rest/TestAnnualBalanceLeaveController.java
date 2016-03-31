@@ -11,7 +11,7 @@ import com.company.eleave.leave.entity.AnnualBalanceLeave;
 import com.company.eleave.leave.service.AnnualBalanceService;
 import com.company.eleave.rest.dto.AnnualBalanceLeaveDTO;
 import com.company.eleave.rest.exception.ElementNotFoundException;
-import com.company.eleave.rest.exception.ExceptionElementType;
+import com.company.eleave.rest.exception.ErrorCode;
 import com.company.eleave.rest.mapper.AnnualBalanceLeaveMapper;
 import com.google.common.collect.Lists;
 import java.util.ArrayList;
@@ -79,8 +79,8 @@ public class TestAnnualBalanceLeaveController {
             testedObject.getLeavesForEmployee(EMPLOYEE_ID);
         } catch (ElementNotFoundException e) {
             //then
-            Assert.assertEquals(EMPLOYEE_ID, e.getElementId().longValue());
-            Assert.assertEquals(ExceptionElementType.EMPLOYEE.getName(), e.getClazzType());
+            Assert.assertEquals(EMPLOYEE_ID, e.getElementId());
+            Assert.assertEquals(ErrorCode.EMPLOYEE_NOT_FOUND.getCode(), e.getCode());
         }
 
     }
@@ -111,8 +111,8 @@ public class TestAnnualBalanceLeaveController {
         } catch (ElementNotFoundException e) {
 
             //then
-            Assert.assertEquals(EMPLOYEE_ID, e.getElementId().longValue());
-            Assert.assertEquals(ExceptionElementType.EMPLOYEE.getName(), e.getClazzType());
+            Assert.assertEquals(EMPLOYEE_ID, e.getElementId());
+            Assert.assertEquals(ErrorCode.EMPLOYEE_NOT_FOUND.getCode(), e.getCode());
         }
     }
 
@@ -146,8 +146,8 @@ public class TestAnnualBalanceLeaveController {
         try {
             testedObject.deleteLeaveForEmployeeByLeaveId(EMPLOYEE_ID, LEAVE_ID);
         } catch (ElementNotFoundException e) {
-            Assert.assertEquals(EMPLOYEE_ID, e.getElementId().longValue());
-            Assert.assertEquals(ExceptionElementType.EMPLOYEE.getName(), e.getClazzType());
+            Assert.assertEquals(EMPLOYEE_ID, e.getElementId());
+            Assert.assertEquals(ErrorCode.EMPLOYEE_NOT_FOUND.getCode(), e.getCode());
         }
 
     }
