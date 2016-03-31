@@ -11,16 +11,19 @@ public class BadParameterException extends RuntimeException {
     private String element;
 
     private ExceptionType exceptionType;
+    
+    private String message;
 
     public BadParameterException() {
 
     }
 
-    public BadParameterException(final String value, String type, String element, ExceptionType exceptionType) {
+    private BadParameterException(final String value, String type, String element, ExceptionType exceptionType, String message) {
         this.value = value;
         this.type = type;
         this.element = element;
         this.exceptionType = exceptionType;
+        this.message = message;
     }
 
     public String getValue() {
@@ -38,6 +41,10 @@ public class BadParameterException extends RuntimeException {
     public ExceptionType getExceptionType() {
         return exceptionType;
     }
+    
+    public String getMessage() {
+        return message;
+    }
 
     public enum ExceptionType {
         BAD_VALUE, NOT_POSSIBLE_TO_REMOVE;
@@ -52,6 +59,8 @@ public class BadParameterException extends RuntimeException {
         private String element;
 
         private ExceptionType exceptionType;
+        
+        private String message;
 
         public BadParameterExceptionBuilder() {
         }
@@ -75,9 +84,14 @@ public class BadParameterException extends RuntimeException {
             this.exceptionType = exceptionType;
             return this;
         }
+        
+        public BadParameterExceptionBuilder withMessage(String message) {
+            this.message = message;
+            return this;
+        } 
 
         public BadParameterException createException() {
-            return new BadParameterException(value, type, element, exceptionType);
+            return new BadParameterException(value, type, element, exceptionType, message);
         }
     }
 

@@ -13,11 +13,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private static final String MESSAGE_FORMAT_NOT_FOUND = "Element with id: {0} of type: {1} has not been found";
+    private static final String MESSAGE_FORMAT_NOT_FOUND = "Element with id: {0} of type: {1} has not been found. ";
 
-    private static final String MESSAGE_FORMAT_BAD_PARAMETER = "Element with value: {0} of type: {1} has invalid value. Root cause: {2}";
+    private static final String MESSAGE_FORMAT_BAD_PARAMETER = "Element with value: {0} of type: {1} has invalid value. Root cause: {2}. ";
 
-    private static final String MESSAGE_ELEMENT_CANNOT_BE_REMOVED = "Element with id: {0} cannot be removed because of db constraints";
+    private static final String MESSAGE_ELEMENT_CANNOT_BE_REMOVED = "Element with id: {0} cannot be removed because of db constraints. ";
+    
+    private static final String EMPLOYEE_IS_APPROVER = "Employee is approver for other employee. ";
 
     @ExceptionHandler(ElementNotFoundException.class)
     protected ResponseEntity<Object> notFoundException(ElementNotFoundException ex, WebRequest request) {
