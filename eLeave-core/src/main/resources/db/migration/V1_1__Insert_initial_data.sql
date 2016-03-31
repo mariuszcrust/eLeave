@@ -151,7 +151,7 @@ call eleavedb.createApprover(@maciek_employee_id, '2016-01-01', null, @rita_empl
 call eleavedb.createApprover(@rita_employee_id, '2016-01-01', null, @pawel_employee_id);
 
 -- Create leave types
-call eleavedb.createLeaveType('Annual holiday', 24, @annual_leave_type_id);
+call eleavedb.createLeaveType('Annual holiday', 26, @annual_leave_type_id);
 call eleavedb.createLeaveType('On demand', 4, @on_demand_leave_type_id);
 call eleavedb.createLeaveType('Special holiday', 2, @special_holiday_leave_type_id);
 call eleavedb.createLeaveType('Paid child care', 2, @paid_child_leave_type_id);

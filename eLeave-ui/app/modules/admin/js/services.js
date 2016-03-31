@@ -1,19 +1,23 @@
 'use strict'
 
-angular.module('eleave.admin.services', []).factory('adminLeaveTypesService', ['GET_LEAVE_TYPES_ENDPOINT', '$http', function (GET_LEAVE_TYPES_ENDPOINT, $http) {
+angular.module('eleave.admin.services', []).factory('adminLeaveTypesService', ['LEAVE_TYPES_ENDPOINT', '$http', function (LEAVE_TYPES_ENDPOINT, $http) {
         return {
             getLeaveTypesData: function () {
-                return $http.get(GET_LEAVE_TYPES_ENDPOINT);
+                return $http.get(LEAVE_TYPES_ENDPOINT);
             },
-            
+            removeLeaveType: function (id) {
+                return $http.delete(LEAVE_TYPES_ENDPOINT + id);
+            },
             checkDaysAllowed: function (value) {
-                if(!(/^[0-9]+$/.test(value))) {
+                if (!(/^[0-9]+$/.test(value))) {
                     return "Days Allowed should be a counting number e.g. 5.";
                 }
             }
         };
     }]);
 
+//angular.module('eleave.admin.services').value('LEAVE_TYPES_ENDPOINT', 'http://localhost:8084/eLeave/leaveTypes');
+angular.module('eleave.admin.services').value('LEAVE_TYPES_ENDPOINT', '/eLeave/leaveTypes/');
 angular.module('eleave.admin.services', []).factory('EmployeesService', ['EMPLOYEES_ENDPOINT', '$http', function (EMPLOYEES_ENDPOINT, $http) {
         return {
             getAll: function () {
@@ -33,9 +37,5 @@ angular.module('eleave.admin.services', []).factory('EmployeesService', ['EMPLOY
             }
         };
     }]);
-
-angular.module('eleave.admin.services').value('GET_LEAVE_TYPES_ENDPOINT', 'http://localhost:8084/eLeave/leaveTypes');
 angular.module('eleave.admin.services').value('EMPLOYEES_ENDPOINT', 'http://localhost:8084/eLeave/employees/');
-
-//angular.module('eleave.admin.services').value('GET_LEAVE_TYPES_ENDPOINT', '/eLeave/leaveTypes');
 //angular.module('eleave.admin.services').value('GET_EMPLOYEES_ENDPOINT', '/eLeave/employees');
