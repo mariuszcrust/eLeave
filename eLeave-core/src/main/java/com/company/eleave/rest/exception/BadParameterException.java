@@ -1,28 +1,24 @@
 package com.company.eleave.rest.exception;
 
+import java.text.MessageFormat;
+
 public class BadParameterException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
     private String value;
 
-    private String type;
+    private String code;
 
-    private String element;
-
-    private ExceptionType exceptionType;
-    
     private String message;
 
     public BadParameterException() {
 
     }
 
-    private BadParameterException(final String value, String type, String element, ExceptionType exceptionType, String message) {
+    private BadParameterException(final String value, String code, String message) {
         this.value = value;
-        this.type = type;
-        this.element = element;
-        this.exceptionType = exceptionType;
+        this.code = code;
         this.message = message;
     }
 
@@ -30,36 +26,20 @@ public class BadParameterException extends RuntimeException {
         return value;
     }
 
-    public String getType() {
-        return type;
+    public String getCode() {
+        return code;
     }
 
-    public String getElement() {
-        return element;
-    }
-
-    public ExceptionType getExceptionType() {
-        return exceptionType;
-    }
-    
     public String getMessage() {
         return message;
-    }
-
-    public enum ExceptionType {
-        BAD_VALUE, NOT_POSSIBLE_TO_REMOVE;
     }
 
     public static class BadParameterExceptionBuilder {
 
         private String value;
 
-        private String type;
+        private String code;
 
-        private String element;
-
-        private ExceptionType exceptionType;
-        
         private String message;
 
         public BadParameterExceptionBuilder() {
@@ -70,28 +50,18 @@ public class BadParameterException extends RuntimeException {
             return this;
         }
 
-        public BadParameterExceptionBuilder withType(String type) {
-            this.type = type;
+        public BadParameterExceptionBuilder withCode(String code) {
+            this.code = code;
             return this;
         }
 
-        public BadParameterExceptionBuilder withElement(String element) {
-            this.element = element;
+        public BadParameterExceptionBuilder withMessage(String message, Object... parameters) {
+            this.message = MessageFormat.format(message, parameters);
             return this;
         }
-
-        public BadParameterExceptionBuilder withExceptionType(ExceptionType exceptionType) {
-            this.exceptionType = exceptionType;
-            return this;
-        }
-        
-        public BadParameterExceptionBuilder withMessage(String message) {
-            this.message = message;
-            return this;
-        } 
 
         public BadParameterException createException() {
-            return new BadParameterException(value, type, element, exceptionType, message);
+            return new BadParameterException(value, code, message);
         }
     }
 

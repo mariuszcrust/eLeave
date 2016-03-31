@@ -9,8 +9,8 @@ import com.company.eleave.rest.dto.LeaveStatusDTO;
 import com.company.eleave.rest.dto.TakenLeaveDTO;
 import com.company.eleave.rest.exception.BadParameterException;
 import com.company.eleave.rest.exception.ElementNotFoundException;
-import com.company.eleave.rest.exception.ExceptionElementType;
-import com.company.eleave.rest.exception.ExceptionParameterType;
+import com.company.eleave.rest.exception.ErrorCode;
+import com.company.eleave.rest.exception.ExceptionMessage;
 import com.company.eleave.rest.mapper.LeaveStatusMapper;
 import com.company.eleave.rest.mapper.TakenLeaveMapper;
 import java.util.List;
@@ -59,15 +59,13 @@ public class TakenLeaveController {
     public ResponseEntity<Void> updateStatusLeave(@PathVariable("id") final Long takenLeaveId, @RequestBody LeaveStatusDTO leaveStatusDTO) {
         final TakenLeave takenLeave = takenLeaveService.getById(takenLeaveId);
         if (takenLeave == null) {
-            throw new ElementNotFoundException(takenLeaveId, ExceptionElementType.TAKEN_LEAVE);
+            throw new ElementNotFoundException(takenLeaveId, ErrorCode.TAKEN_LEAVE_NOT_FOUND.getCode());
         }
 
         if (!LeaveStatus.StatusName.contains(leaveStatusDTO.getStatus())) {
             throw new BadParameterException.BadParameterExceptionBuilder()
                     .withValue(leaveStatusDTO.getStatus())
-                    .withElement(ExceptionParameterType.ANNUAL_BALANCE_LEAVE_TYPE_STATUS.getName())
-                    .withExceptionType(BadParameterException.ExceptionType.BAD_VALUE)
-                    .createException();
+                    .withMessage(ExceptionMessage.MESSAGE_FORMAT_BAD_PARAMETER, leaveStatusDTO.getStatus()).createException();
         }
 
         takenLeave.setLeaveStatus(leaveStatusMapper.toEntity(leaveStatusDTO));
@@ -80,7 +78,7 @@ public class TakenLeaveController {
     public ResponseEntity<Void> deleteLeave(@PathVariable("id") final Long takenLeaveId) {
         final TakenLeave takenLeave = takenLeaveService.getById(takenLeaveId);
         if (takenLeave == null) {
-            throw new ElementNotFoundException(takenLeaveId, ExceptionElementType.TAKEN_LEAVE);
+            throw new ElementNotFoundException(takenLeaveId, ErrorCode.TAKEN_LEAVE_NOT_FOUND.getCode());
         }
 
         takenLeaveService.delete(takenLeave);
@@ -92,7 +90,7 @@ public class TakenLeaveController {
     public ResponseEntity<List<TakenLeaveDTO>> getAllLeavesForEmployee(@PathVariable("employeeId") final Long employeeId) {
         final Employee employee = employeeService.getById(employeeId);
         if (employee == null) {
-            throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);
+            throw new ElementNotFoundException(employeeId, ErrorCode.EMPLOYEE_NOT_FOUND.getCode());
         }
 
         List<TakenLeaveDTO> takenLeavesForEmployee = takenLeaveService.findTakenLeavesByEmployeeId(employeeId).stream().map(takenLeave -> takenLeaveMapper.toDto(takenLeave)).collect(Collectors.toList());
@@ -104,7 +102,7 @@ public class TakenLeaveController {
     public ResponseEntity<List<TakenLeaveDTO>> getAllLeavesForApprover(@PathVariable("approverId") final Long approverId) {
         final Employee employee = employeeService.getById(approverId);
         if (employee == null) {
-            throw new ElementNotFoundException(approverId, ExceptionElementType.EMPLOYEE);
+            throw new ElementNotFoundException(approverId, ErrorCode.EMPLOYEE_NOT_FOUND.getCode());
         }
 
         List<TakenLeaveDTO> takenLeavesForApprover = takenLeaveService.findTakenLeavesByApproverId(approverId).stream().map(takenLeave -> takenLeaveMapper.toDto(takenLeave)).collect(Collectors.toList());

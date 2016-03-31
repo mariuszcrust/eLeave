@@ -1,7 +1,6 @@
 package com.company.eleave.rest.exception;
 
-import java.text.MessageFormat;
-
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,28 +12,81 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private static final String MESSAGE_FORMAT_NOT_FOUND = "Element with id: {0} of type: {1} has not been found. ";
-
-    private static final String MESSAGE_FORMAT_BAD_PARAMETER = "Element with value: {0} of type: {1} has invalid value. Root cause: {2}. ";
-
-    private static final String MESSAGE_ELEMENT_CANNOT_BE_REMOVED = "Element with id: {0} cannot be removed because of db constraints. ";
-    
-    private static final String EMPLOYEE_IS_APPROVER = "Employee is approver for other employee. ";
-
     @ExceptionHandler(ElementNotFoundException.class)
     protected ResponseEntity<Object> notFoundException(ElementNotFoundException ex, WebRequest request) {
-        return handleExceptionInternal(ex, MessageFormat.format(MESSAGE_FORMAT_NOT_FOUND, ex.getElementId().toString(), ex.getClazzType()), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+        ElemendNotFoundExceptionDTO exception = new ElemendNotFoundExceptionDTO();
+        exception.setCode(ex.getCode());
+        exception.setElementId(ex.getElementId());
+        
+        return handleExceptionInternal(ex, exception, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
     @ExceptionHandler(BadParameterException.class)
     protected ResponseEntity<Object> badParameterException(BadParameterException ex, WebRequest request) {
+        BadParameterExceptionDTO exception = new BadParameterExceptionDTO();
+        exception.setCode(ex.getCode());
+        exception.setMessage(ex.getMessage());
+        exception.setValue(ex.getValue());
+        
+        return handleExceptionInternal(ex, exception, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
 
-        //fucked up, needs to be changed ...
-        if (BadParameterException.ExceptionType.NOT_POSSIBLE_TO_REMOVE.equals(ex.getExceptionType())) {
-            return handleExceptionInternal(ex, MessageFormat.format(MESSAGE_ELEMENT_CANNOT_BE_REMOVED, ex.getValue()), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    //Created because passing instance of exception send in response stacktrace ...
+    class ElemendNotFoundExceptionDTO {
+
+        private long elementId;
+
+        private String code;
+
+        public long getElementId() {
+            return elementId;
         }
 
-        return handleExceptionInternal(ex, MessageFormat.format(MESSAGE_FORMAT_BAD_PARAMETER, ex.getValue(), ex.getType(), ex.getElement(), ex.getMessage()), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+        public String getCode() {
+            return code;
+        }
+
+        public void setElementId(long elementId) {
+            this.elementId = elementId;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+    }
+
+    class BadParameterExceptionDTO {
+
+        private String value;
+
+        private String code;
+
+        private String message;
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+
     }
 
 }

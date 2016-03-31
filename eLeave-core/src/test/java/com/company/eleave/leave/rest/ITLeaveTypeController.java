@@ -7,6 +7,8 @@ package com.company.eleave.leave.rest;
 
 import utils.IntegrationTest;
 import com.company.eleave.rest.dto.LeaveTypeDTO;
+import com.company.eleave.rest.exception.ElementNotFoundException;
+import com.company.eleave.rest.exception.ErrorCode;
 import com.company.eleave.rest.exception.RestResponseExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
@@ -62,7 +64,9 @@ public class ITLeaveTypeController extends IntegrationTest {
                 .andReturn()
                 .getResponse().getContentAsString();
 
-        Assert.assertTrue("Element with id: 123 of type: LeaveType has not been found".equals(contentAsString));
+        ElementNotFoundException exception = new ObjectMapper().readValue(contentAsString, ElementNotFoundException.class);
+        Assert.assertEquals(nonExistingLeaveType, exception.getElementId());
+        Assert.assertEquals(ErrorCode.LEAVE_TYPE_NOT_FOUND.getCode(), exception.getCode());
     }
 
     @Test
@@ -108,7 +112,9 @@ public class ITLeaveTypeController extends IntegrationTest {
                 .andReturn()
                 .getResponse().getContentAsString();
 
-        Assert.assertTrue("Element with id: 123 of type: LeaveType has not been found".equals(contentAsString));
+        ElementNotFoundException exception = new ObjectMapper().readValue(contentAsString, ElementNotFoundException.class);
+        Assert.assertEquals(leaveTypeNotExisting, exception.getElementId());
+        Assert.assertEquals(ErrorCode.LEAVE_TYPE_NOT_FOUND.getCode(), exception.getCode());
     }
 
     @Test
@@ -138,7 +144,9 @@ public class ITLeaveTypeController extends IntegrationTest {
                 .andReturn()
                 .getResponse().getContentAsString();
 
-        Assert.assertTrue("Element with id: 123 of type: LeaveType has not been found".equals(contentAsString));
+        ElementNotFoundException exception = new ObjectMapper().readValue(contentAsString, ElementNotFoundException.class);
+        Assert.assertEquals(leaveTypeNotExisting, exception.getElementId());
+        Assert.assertEquals(ErrorCode.LEAVE_TYPE_NOT_FOUND.getCode(), exception.getCode());
     }
 
     @Test

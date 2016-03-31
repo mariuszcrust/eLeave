@@ -8,8 +8,8 @@ import com.company.eleave.rest.dto.ApproverDTO;
 import com.company.eleave.rest.dto.EmployeeDTO;
 import com.company.eleave.rest.exception.BadParameterException;
 import com.company.eleave.rest.exception.ElementNotFoundException;
-import com.company.eleave.rest.exception.ExceptionElementType;
-import com.company.eleave.rest.exception.ExceptionParameterType;
+import com.company.eleave.rest.exception.ErrorCode;
+import com.company.eleave.rest.exception.ExceptionMessage;
 import com.company.eleave.rest.mapper.EmployeeMapper;
 import com.google.common.annotations.VisibleForTesting;
 import java.text.ParseException;
@@ -54,7 +54,7 @@ public class EmployeeController {
     public ResponseEntity<EmployeeDTO> getById(@PathVariable("id") final Long employeeId) {
         final Employee result = employeeService.getById(employeeId);
         if (result == null) {
-            throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);
+            throw new ElementNotFoundException(employeeId, ErrorCode.EMPLOYEE_NOT_FOUND.getCode());
         }
 
         return new ResponseEntity<>(mapper.toDto(result), HttpStatus.OK);
@@ -75,7 +75,7 @@ public class EmployeeController {
         final Employee currentEmployee = employeeService.getById(employeeId);
 
         if (currentEmployee == null) {
-            throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);
+            throw new ElementNotFoundException(employeeId, ErrorCode.EMPLOYEE_NOT_FOUND.getCode());
         }
 
         // TODO make some propagate methods
@@ -92,12 +92,12 @@ public class EmployeeController {
     public ResponseEntity<Void> assignApprover(final @PathVariable("id") Long employeeId, final @RequestBody ApproverDTO approverDTO) {
         final Employee currentEmployee = employeeService.getById(employeeId);
         if (currentEmployee == null) {
-            throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);
+            throw new ElementNotFoundException(employeeId, ErrorCode.EMPLOYEE_NOT_FOUND.getCode());
         }
 
         final Employee newApprover = employeeService.getById(approverDTO.getApproverId());
         if (newApprover == null) {
-            throw new ElementNotFoundException(approverDTO.getApproverId(), ExceptionElementType.EMPLOYEE);
+            throw new ElementNotFoundException(approverDTO.getApproverId(), ErrorCode.EMPLOYEE_NOT_FOUND.getCode());
         }
 
         final Approver approver = new Approver();
@@ -109,8 +109,8 @@ public class EmployeeController {
         } catch (ParseException e) {
             throw new BadParameterException.BadParameterExceptionBuilder()
                     .withValue(approverDTO.getStartDate())
-                    .withType(ExceptionParameterType.START_END_DATE_FOR_APPROVER.getName())
-                    .withElement(e.getMessage()).withExceptionType(BadParameterException.ExceptionType.BAD_VALUE).createException();
+                    .withCode(ErrorCode.START_END_DATE_FOR_APPROVER_INVALID.getCode())
+                    .withMessage(ExceptionMessage.MESSAGE_FORMAT_BAD_PARAMETER, approverDTO.getStartDate()).createException();
         }
 
         approverService.assignApprover(approver);
@@ -122,12 +122,12 @@ public class EmployeeController {
     public ResponseEntity<Void> reassignApproverForEmployee(final @PathVariable("id") Long employeeId, final @PathVariable("approverId") Long approverId) {
         final Employee employee = employeeService.getById(employeeId);
         if (employee == null) {
-            throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);
+            throw new ElementNotFoundException(employeeId, ErrorCode.EMPLOYEE_NOT_FOUND.getCode());
         }
 
         final Employee approver = employeeService.getById(approverId);
         if (approver == null) {
-            throw new ElementNotFoundException(approverId, ExceptionElementType.EMPLOYEE);
+            throw new ElementNotFoundException(approverId, ErrorCode.EMPLOYEE_NOT_FOUND.getCode());
         }
 
         approverService.removeApproverForEmployee(employeeId);
@@ -140,7 +140,7 @@ public class EmployeeController {
         final Employee currentEmployee = employeeService.getById(employeeId);
 
         if (currentEmployee == null) {
-            throw new ElementNotFoundException(employeeId, ExceptionElementType.EMPLOYEE);
+            throw new ElementNotFoundException(employeeId, ErrorCode.EMPLOYEE_NOT_FOUND.getCode());
         }
 
         employeeService.delete(employeeId);

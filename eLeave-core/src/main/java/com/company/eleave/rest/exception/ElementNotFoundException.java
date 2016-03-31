@@ -2,24 +2,26 @@ package com.company.eleave.rest.exception;
 
 public class ElementNotFoundException extends RuntimeException {
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  private Long elementId;
+    private long elementId;
 
-  private String clazzType;
+    private String code;
 
-  public ElementNotFoundException(final Long id, final ExceptionElementType type) {
-    this.elementId = id;
-    this.clazzType = type.getName();
-  }
+    public ElementNotFoundException() {
+    }
 
-  public Long getElementId() {
-    return elementId;
-  }
+    public ElementNotFoundException(final Long id, final String code) {
+        this.elementId = id;
+        this.code = code;
+    }
 
-  public String getClazzType() {
-    return clazzType;
-  }
+    public long getElementId() {
+        return elementId;
+    }
 
+    public String getCode() {
+        return code;
+    }
 
 }
