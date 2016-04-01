@@ -3,8 +3,8 @@
 angular.module('eLeave.admin.controllers', []).controller('AdminLeaveTypesController', ['$scope', '$state', 'adminLeaveTypesService', function ($scope, $state, adminLeaveTypesService) {
         $scope.leaveTypes = [];
         $scope.getAllLeaveTypes = function () {
-            adminLeaveTypesService.getLeaveTypesData().then(function (response) {
-                $scope.leaveTypes = response.data;
+            adminLeaveTypesService.getLeaveTypesData().then(function (data) {
+                $scope.leaveTypes = data;
             }, function () {
                 console.log("Cannot retrieve data.");
             });
@@ -42,7 +42,7 @@ angular.module('eLeave.admin.controllers', []).controller('AdminLeaveTypesContro
 
     }]);
 
-angular.module('eLeave.admin.controllers', []).controller('EmployeesController', ['$scope', '$state', 'EmployeesService', function ($scope, $state, EmployeesService) {
+angular.module('eLeave.admin.controllers').controller('EmployeesController', ['$scope', '$state', 'EmployeesService', function ($scope, $state, EmployeesService) {
         var self = this;
         self.employee={id:null, firstName:'', lastName:'', email:''};
         self.employees = [];
