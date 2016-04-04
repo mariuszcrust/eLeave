@@ -27,16 +27,16 @@
     <privilege id="6" version="1" privilege_name="REMOVE_EMPLOYEE"/>
 
     <!-- USER -->
-    <user id="1" version="1" password="password" user_name = "user1"/>
-    <user id="2" version="1" password="password" user_name = "user2"/>
-    <user id="3" version="1" password="password" user_name = "user3"/>
-    <user id="4" version="1" password="password" user_name = "user4"/>
-    <user id="5" version="1" password="password" user_name = "user5"/>
-    <user id="6" version="1" password="password" user_name = "user6"/>
-    <user id="7" version="1" password="password" user_name = "user7"/>
-    <user id="8" version="1" password="password" user_name = "user8"/>
-    <user id="9" version="1" password="password" user_name = "user9"/>
-    <user id="10" version="1" password="password" user_name = "user10"/>
+    <user id="1" version="1" active="true" password="password" user_name = "user1"/>
+    <user id="2" version="1" active="true" password="password" user_name = "user2"/>
+    <user id="3" version="1" active="true" password="password" user_name = "user3"/>
+    <user id="4" version="1" active="true" password="password" user_name = "user4"/>
+    <user id="5" version="1" active="true" password="password" user_name = "user5"/>
+    <user id="6" version="1" active="true" password="password" user_name = "user6"/>
+    <user id="7" version="1" active="true" password="password" user_name = "user7"/>
+    <user id="8" version="1" active="true" password="password" user_name = "user8"/>
+    <user id="9" version="1" active="true" password="password" user_name = "user9"/>
+    <user id="10" version="1" active="true" password="password" user_name = "user10"/>
 	
     <!-- EMPLOYEE -->
     <employee id="1" version="1" email="doe1@mail.com" first_name="john" last_name="doe1" user_id="1"/>

@@ -3,6 +3,7 @@ package com.company.eleave.rest.dto;
 public class UserDTO {
 
     private long id; 
+    private boolean active;
     private String username;
     private String password;
 
@@ -12,6 +13,14 @@ public class UserDTO {
     
     public void setId(long id) {
         this.id = id;
+    }
+    
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+    
+    public boolean isActive() {
+        return active;
     }
     
     public String getUsername() {

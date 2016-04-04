@@ -14,6 +14,8 @@ public class RestURI {
     public static final String EMPLOYEE_ASSIGN_APPROVER = EMPLOYEES + "/{0}/approver";
 
     public static final String EMPLOYEE_REASSIGN_APPROVER = EMPLOYEES + "/{0}/approver/{1}";
+    
+    public static final String EMPLOYEES_ACCOUNT_BY_ID = "/employees/account/{0}";
 
     public static final String ANNUAL_BALANCE_LEAVES = "/annualBalanceLeaves";
 

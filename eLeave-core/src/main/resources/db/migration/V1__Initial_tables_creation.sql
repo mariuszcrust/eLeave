@@ -45,6 +45,7 @@ CREATE TABLE IF NOT EXISTS `eleavedb`.`user_role_privilege` (
 CREATE TABLE IF NOT EXISTS `eleavedb`.`user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `version` bigint(20) DEFAULT NULL,
+  `active` boolean NOT NULL,
   `password` varchar(255) DEFAULT NULL,
   `user_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`))

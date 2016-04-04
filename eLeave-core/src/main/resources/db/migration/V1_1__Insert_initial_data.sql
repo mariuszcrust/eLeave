@@ -30,7 +30,7 @@ end //
 
 create procedure eleavedb.createUser($name varchar(50), out $id int)
 begin
-    insert into user (version, user_name, password) values (1, $name, 'password');
+    insert into user (version, active, user_name, password) values (1, true, $name, 'password');
     set $id := last_insert_id();
 end //
 
@@ -143,12 +143,12 @@ call eleavedb.createEmployee('alex@softserve.com','alex','belugorov', @alex_user
 call eleavedb.createEmployee('liubomir@softserve.com','liubomir','mir', @liubomir_user_id, @liubomir_employee_id);
 
 -- Create approvers
-call eleavedb.createApprover('2016-01-01', null, @mariusz_employee_id, @maciek_employee_id);
-call eleavedb.createApprover('2016-01-01', null, @seba_employee_id, @maciek_employee_id);
-call eleavedb.createApprover('2016-01-01', null, @alex_employee_id, @maciek_employee_id);
+call eleavedb.createApprover('2017-01-01', null, @mariusz_employee_id, @maciek_employee_id);
+call eleavedb.createApprover('2017-01-01', null, @seba_employee_id, @maciek_employee_id);
+call eleavedb.createApprover('2017-01-01', null, @alex_employee_id, @maciek_employee_id);
 
-call eleavedb.createApprover('2016-01-01', null, @maciek_employee_id, @rita_employee_id);
-call eleavedb.createApprover('2016-01-01', null, @rita_employee_id, @pawel_employee_id);
+call eleavedb.createApprover('2017-01-01', null, @maciek_employee_id, @rita_employee_id);
+call eleavedb.createApprover('2017-01-01', null, @rita_employee_id, @pawel_employee_id);
 
 -- Create leave types
 call eleavedb.createLeaveType('Annual holiday', 26, @annual_leave_type_id);

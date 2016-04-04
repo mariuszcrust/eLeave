@@ -5,6 +5,7 @@ import com.company.eleave.employee.entity.Employee;
 import com.company.eleave.employee.service.ApproverService;
 import com.company.eleave.employee.service.EmployeeService;
 import com.company.eleave.rest.dto.ApproverDTO;
+import com.company.eleave.rest.dto.EmployeeAccountDTO;
 import com.company.eleave.rest.dto.EmployeeDTO;
 import com.company.eleave.rest.exception.BadParameterException;
 import com.company.eleave.rest.exception.ElementNotFoundException;
@@ -58,6 +59,16 @@ public class EmployeeController {
         }
 
         return new ResponseEntity<>(mapper.toDto(result), HttpStatus.OK);
+    }
+    
+    @RequestMapping(value="/account/{id}", method = RequestMethod.GET)
+    public ResponseEntity<EmployeeAccountDTO> getEmployeeAccountById(@PathVariable("id") final Long employeeId) {
+        final Employee result = employeeService.getWithAccountById(employeeId);
+        if (result == null) {
+            throw new ElementNotFoundException(employeeId, ErrorCode.EMPLOYEE_NOT_FOUND.getCode());
+        }
+
+        return new ResponseEntity<>(mapper.toEmployeeAccountDto(result), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST)
