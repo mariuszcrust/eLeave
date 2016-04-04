@@ -6,15 +6,24 @@ angular.module('eLeave.about').config(['$stateProvider', '$locationProvider', fu
         $stateProvider.state('about', {
             url: '/about',
             templateUrl: 'modules/about/views/about.html',
-            controller: 'AboutController'
+            controller: 'AboutController',
+            ncyBreadcrumb: {
+                label: 'About'
+            }
         }).state('about.mario', {
             url: '/mario',
             templateUrl: 'modules/about/views/about-mario.html',
-            controller: 'MarioHomeController'
+            controller: 'MarioHomeController',
+            ncyBreadcrumb: {
+                label: 'Mario'
+            }
         }).state('about.seba', {
             url: '/seba',
             templateUrl: 'modules/about/views/about-seba.html',
-            controller: 'SebaHomeController'
+            controller: 'SebaHomeController',
+            ncyBreadcrumb: {
+                label: 'Seba'
+            }
         });
 
         //$locationProvider.html5Mode(true);

@@ -27,18 +27,20 @@
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administration <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a ui-sref="leaveTypes">Leave Types</a></li>
-                            <li><a ui-sref="employees">Employees</a></li>
+                            <li><a ui-sref="admin.leaveTypes">Leave Types</a></li>
+                            <li><a ui-sref="admin.employees">Employees</a></li>
                         </ul>
                     </li>
-                    
+
                 </ul>
             </div>
         </nav>
-
-
         <div class="container" ng-cloak>
             <br/>  	
+
+            <div class="breadcrumb" ncy-breadcrumb>
+                <span ncy-breadcrumb-text></span>
+            </div>
         </div>
         <div ui-view class="main-content">Loading . . .</div>
 
@@ -57,6 +59,7 @@
     <script src="lib/angular-cookies/angular-cookies.js"></script>
     <script src="lib/angular-smart-table/dist/smart-table.js"></script>
     <script src="lib/angular-xeditable/dist/js/xeditable.js"></script>
+    <script src="lib/angular-breadcrumb/dist/angular-breadcrumb.js"></script>
 
     <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>

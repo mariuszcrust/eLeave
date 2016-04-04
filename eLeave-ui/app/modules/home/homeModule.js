@@ -6,9 +6,11 @@ angular.module('eLeave.home').config(['$stateProvider', '$locationProvider', fun
         $stateProvider.state('home', {
             url: '/home',
             templateUrl: 'modules/home/views/home.html',
-            controller: 'HomeController'
+            controller: 'HomeController',
+            ncyBreadcrumb: {
+                label: 'Home'
+            }
         });
-
         //$locationProvider.html5Mode(true);
     }]);
 
