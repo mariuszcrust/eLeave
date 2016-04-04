@@ -60,10 +60,9 @@ public class EmployeeService {
             newApprover.setStartDate(currentDate);
             newApprover.setEmployee(approver.getEmployee());
             newApprover.setApprover(approverForDeletedElement.getApprover());
+            
             approverRepository.save(newApprover);
         }
-        
-        
         
         final List<TakenLeave> leavesForEmployee = takenLeaveRepository.findTakenLeavesForEmployeeId(employeeId);
         takenLeaveRepository.delete(leavesForEmployee);

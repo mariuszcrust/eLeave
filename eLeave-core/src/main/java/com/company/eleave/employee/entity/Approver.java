@@ -23,10 +23,10 @@ import com.company.eleave.BaseEntity;
 public class Approver extends BaseEntity implements Serializable {
 
   @OneToOne
-  @PrimaryKeyJoinColumn(name = "id", referencedColumnName = "employee")
+  @JoinColumn(name = "employee_id")
   private Employee employee;
 
-  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+  @OneToOne
   @JoinColumn(name = "approver_id")
   private Employee approver;
 
