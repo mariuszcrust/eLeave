@@ -6,24 +6,29 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.company.eleave.employee.entity.Approver;
 import com.company.eleave.employee.repository.ApproverRepository;
+import java.util.List;
 
 @Service("approverService")
 @Transactional
 public class ApproverService {
 
-  @Autowired
-  private ApproverRepository approverRepo;
+    @Autowired
+    private ApproverRepository approverRepo;
 
-  public void assignApprover(final Approver approver) {
-    approverRepo.save(approver);
-  }
+    public void assignApprover(final Approver approver) {
+        approverRepo.save(approver);
+    }
 
-  public Approver getById(Long employeeId) {
-    return approverRepo.findOne(employeeId);
-  }
+    public Approver getById(Long employeeId) {
+        return approverRepo.findOne(employeeId);
+    }
 
-  public void removeApproverForEmployee(Long employeeId) {
-    approverRepo.delete(getById(employeeId));
+    public void removeApproverForEmployee(Long employeeId) {
+        approverRepo.delete(getById(employeeId));
 
-  }
+    }
+
+    public List<Approver> getEmployeesAssignedToApprover(Long employeeId) {
+        return approverRepo.getEmployeesAssignedToApprover(employeeId);
+    }
 }

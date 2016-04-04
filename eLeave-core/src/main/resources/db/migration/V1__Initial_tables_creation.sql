@@ -45,6 +45,7 @@ CREATE TABLE IF NOT EXISTS `eleavedb`.`user_role_privilege` (
 CREATE TABLE IF NOT EXISTS `eleavedb`.`user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `version` bigint(20) DEFAULT NULL,
+  `active` boolean NOT NULL,
   `password` varchar(255) DEFAULT NULL,
   `user_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`))
@@ -127,10 +128,11 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `eleavedb`.`approver`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `eleavedb`.`approver` (
-  `id` BIGINT(20) NOT NULL,
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `version` BIGINT(20) NULL DEFAULT NULL,
   `end_date` DATETIME NULL DEFAULT NULL,
   `start_date` DATETIME NULL DEFAULT NULL,
+  `employee_id` BIGINT(20) NULL DEFAULT NULL,
   `approver_id` BIGINT(20) NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_approver_approver_id` (`approver_id` ASC),
@@ -138,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `eleavedb`.`approver` (
     FOREIGN KEY (`approver_id`)
     REFERENCES `eleavedb`.`employee` (`id`),
   CONSTRAINT `fk_approver_employee_id`
-    FOREIGN KEY (`id`)
+    FOREIGN KEY (`employee_id`)
     REFERENCES `eleavedb`.`employee` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;

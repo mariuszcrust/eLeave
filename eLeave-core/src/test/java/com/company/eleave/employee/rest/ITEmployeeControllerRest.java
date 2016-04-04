@@ -2,6 +2,7 @@ package com.company.eleave.employee.rest;
 
 import com.company.eleave.rest.dto.AnnualBalanceLeaveDTO;
 import com.company.eleave.rest.dto.ApproverDTO;
+import com.company.eleave.rest.dto.EmployeeAccountDTO;
 import com.company.eleave.rest.dto.EmployeeDTO;
 import com.company.eleave.rest.dto.LeaveTypeDTO;
 import com.company.eleave.rest.exception.BadParameterException;
@@ -294,12 +295,12 @@ public class ITEmployeeControllerRest extends IntegrationTest {
                 .andReturn()
                 .getResponse().getContentAsString();
 
-        final String contentAsString = mockMvc.perform(get(RestURI.EMPLOYEES))
+        final String contentAsString = mockMvc.perform(get(request(RestURI.EMPLOYEES_ACCOUNT_BY_ID, employeeId)))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse().getContentAsString();
 
-        List<EmployeeDTO> result = new ObjectMapper().readValue(contentAsString, List.class);
-        Assert.assertEquals("Wrong size of all employees ", 9, result.size());
+        EmployeeAccountDTO result = new ObjectMapper().readValue(contentAsString, EmployeeAccountDTO.class);
+        Assert.assertEquals(false, result.getUser().isActive());
     }
 }
