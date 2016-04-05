@@ -21,24 +21,24 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="employee in empCtrl.employees">
+                            <tr ng-repeat="employeeAccount in empCtrl.employees">
                                 <td>
-                                    <span ng-bind="employee.firstName">
-                                        {{employee.firstName}}
+                                    <span ng-bind="employeeAccount.employee.firstName">
+                                        {{employeeAccount.employee.firstName}}
                                     </span>
                                 </td>
                                 <td>
-                                    <span ng-bind="employee.lastName">
-                                        {{employee.lastName}}
+                                    <span ng-bind="employeeAccount.employee.lastName">
+                                        {{employeeAccount.employee.lastName}}
                                     </span>
                                 </td>
                                 <td>
-                                    <span ng-bind="employee.email">
-                                        {{employee.email}}
+                                    <span ng-bind="employeeAccount.employee.email">
+                                        {{employeeAccount.employee.email}}
                                     </span>
                                 </td>
                                 <td style="white-space: nowrap">
-                                    <button type="button" ng-click="empCtrl.delete(employee.id)" class="btn btn-sm btn-danger">
+                                    <button type="button" ng-click="empCtrl.delete(employeeAccount.employee.id)" class="btn btn-sm btn-danger">
                                         <i class="glyphicon glyphicon-trash"></i>
                                     </button>   
                                 </td>

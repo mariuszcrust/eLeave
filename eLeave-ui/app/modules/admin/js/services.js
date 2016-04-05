@@ -24,8 +24,8 @@ angular.module('eleave.admin.services').value('LEAVE_TYPES_ENDPOINT', '/eLeave/l
 
 angular.module('eleave.admin.services').factory('EmployeesService', ['EMPLOYEES_ENDPOINT', '$http', function (EMPLOYEES_ENDPOINT, $http) {
         return {
-            getAll: function () {
-              return $http.get(EMPLOYEES_ENDPOINT);  
+            getAllActive: function () {
+              return $http.get(EMPLOYEES_ENDPOINT + "?onlyActive=true");  
             },
             
             update: function(employee, id) {

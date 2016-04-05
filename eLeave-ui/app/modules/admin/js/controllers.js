@@ -47,8 +47,8 @@ angular.module('eLeave.admin.controllers').controller('EmployeesController', ['$
         self.employee = {id: null, firstName: '', lastName: '', email: ''};
         self.employees = [];
 
-        self.getAllEmployees = function () {
-            EmployeesService.getAll().then(function (response, status) {
+        self.getAllActiveEmployees = function () {
+            EmployeesService.getAllActive().then(function (response, status) {
                 self.employees = response.data;
             }, function () {
                 console.log("Cannot retrieve data.");
@@ -65,7 +65,7 @@ angular.module('eLeave.admin.controllers').controller('EmployeesController', ['$
 
         self.delete = function (id) {
             EmployeesService.delete(id).then(function (response, status) {
-                self.getAllEmployees();
+                self.getAllActiveEmployees();
             }, function () {
                 console.log("Exception occured during delete");
             });
@@ -79,7 +79,7 @@ angular.module('eLeave.admin.controllers').controller('EmployeesController', ['$
             });
         };
 
-        self.getAllEmployees();
+        self.getAllActiveEmployees();
 
     }]);
 

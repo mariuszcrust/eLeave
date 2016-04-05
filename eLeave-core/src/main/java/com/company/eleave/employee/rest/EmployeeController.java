@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -45,8 +46,11 @@ public class EmployeeController {
     private static final SimpleDateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<EmployeeDTO>> getAll() {
-        List<EmployeeDTO> result = employeeService.getAll().stream().map(employee -> mapper.toDto(employee)).collect(Collectors.toList());
+    public ResponseEntity<List<EmployeeAccountDTO>> getAll(@RequestParam(required = false, value = "onlyActive", defaultValue = "false") boolean onlyActive) {
+        List<EmployeeAccountDTO> result = employeeService.getAll(onlyActive).stream()
+                .map(employee -> mapper.toEmployeeAccountDto(employee))
+                .filter(employee -> onlyActive == true && employee.getUser().isActive() == true || onlyActive == false)
+                .collect(Collectors.toList());
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

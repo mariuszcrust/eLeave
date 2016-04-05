@@ -8,11 +8,13 @@ import org.junit.Test;
 import com.company.eleave.employee.service.ApproverService;
 import com.company.eleave.employee.service.EmployeeService;
 import com.company.eleave.rest.dto.ApproverDTO;
+import com.company.eleave.rest.dto.EmployeeAccountDTO;
 import com.company.eleave.rest.dto.EmployeeDTO;
 import com.company.eleave.rest.exception.BadParameterException;
 import com.company.eleave.rest.exception.ElementNotFoundException;
 import com.company.eleave.rest.exception.ErrorCode;
 import com.company.eleave.rest.mapper.EmployeeMapper;
+import com.company.eleave.security.entity.User;
 import com.google.common.collect.Lists;
 import java.util.List;
 import org.junit.Before;
@@ -45,14 +47,19 @@ public class TestEmployeeController {
     @Test
     public void testGetAll() {
         //given
-        final List<Employee> employees = Lists.newArrayList(new Employee(), new Employee());
-        Mockito.when(employeeServiceMock.getAll()).thenReturn(employees);
+        Employee employee1 = new Employee();
+        employee1.setUser(new User());
+        
+        Employee employee2 = new Employee();
+        employee2.setUser(new User());
+        
+        final List<Employee> employees = Lists.newArrayList(employee1, employee2);
+        Mockito.when(employeeServiceMock.getAll(false)).thenReturn(employees);
 
         //when
-        ResponseEntity<List<EmployeeDTO>> result = testedObject.getAll();
+        ResponseEntity<List<EmployeeAccountDTO>> result = testedObject.getAll(false);
 
         //then
-        Mockito.verify(employeeServiceMock).getAll();
         Assert.assertEquals(HttpStatus.OK, result.getStatusCode());
         Assert.assertEquals(2, result.getBody().size());
     }

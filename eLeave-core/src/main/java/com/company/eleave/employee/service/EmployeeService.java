@@ -38,8 +38,8 @@ public class EmployeeService {
     @Autowired
     private AnnualBalanceLeaveRepository annualBalanceLeaveRepository;
 
-    public List<Employee> getAll() {
-        return Lists.newArrayList(employeeRepo.findAll());
+    public List<Employee> getAll(boolean onlyActive) {
+        return Lists.newArrayList(employeeRepo.findAllEmployeesWithAccount());
     }
 
     public Employee getById(Long employeeId) {
@@ -48,7 +48,6 @@ public class EmployeeService {
     
     public Employee getWithAccountById(final Long employeeId) {
         Employee employee = employeeRepo.findByIdWithAccount(employeeId);
-        Hibernate.initialize(employee.getUser());
         return employee;
     }
 

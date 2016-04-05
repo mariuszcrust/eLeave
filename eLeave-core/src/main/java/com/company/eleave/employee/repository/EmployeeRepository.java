@@ -15,8 +15,8 @@ import org.springframework.data.repository.query.Param;
 
 public interface EmployeeRepository extends CrudRepository<Employee, Long>{
     
-  @Query("SELECT e FROM Employee e")
-  List<Employee> findAllEmployeesWithoutUser();
+  @Query("SELECT e FROM Employee e JOIN FETCH e.user u")
+  List<Employee> findAllEmployeesWithAccount();
 
   @Query("SELECT e FROM Employee e JOIN FETCH e.user u WHERE e.id = :employeeId")
   public Employee findByIdWithAccount(final @Param("employeeId") Long employeeId);

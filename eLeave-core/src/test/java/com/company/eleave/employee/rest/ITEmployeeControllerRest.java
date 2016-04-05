@@ -301,6 +301,6 @@ public class ITEmployeeControllerRest extends IntegrationTest {
                 .getResponse().getContentAsString();
 
         EmployeeAccountDTO result = new ObjectMapper().readValue(contentAsString, EmployeeAccountDTO.class);
-        Assert.assertEquals(false, result.getUser().isActive());
+        Assert.assertFalse(result.getUser().isActive());
     }
 }
