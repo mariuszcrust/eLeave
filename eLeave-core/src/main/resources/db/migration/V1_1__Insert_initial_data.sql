@@ -8,6 +8,7 @@ DROP PROCEDURE IF EXISTS eleavedb.createEmployee;
 DROP PROCEDURE IF EXISTS eleavedb.createApprover;
 DROP PROCEDURE IF EXISTS eleavedb.createAnnualBalanceLeave;
 DROP PROCEDURE IF EXISTS eleavedb.createLeaveTaken;
+DROP PROCEDURE IF EXISTS eleavedb.createHoliday;
 
 delimiter //
 create procedure eleavedb.createPrivilege ($name varchar(30))
@@ -67,6 +68,12 @@ create procedure eleavedb.createTakenLeave($leave_days_taken int, $leave_from da
 begin
     insert into taken_leave(version, leave_days_taken, leave_from, comment, status_name, leave_to, annual_balance_leave_id, approver_id)
                 values(1, $leave_days_taken, $leave_from, $comment, $status_name, $leave_to, $annual_balance_leave_id, $approver_id);
+end //
+
+create procedure eleavedb.createHoliday($name varchar(255), $comment varchar(255), $date datetime, $year int, $movable boolean)
+begin
+    insert into holiday(version, name, comment, date, year, movable)
+                values(1, $name, $comment, $date, $year, $movable);
 end //
 
 delimiter ;
@@ -178,6 +185,14 @@ call eleavedb.createTakenLeave(2, '2016-02-02', 'some holiday', 'APPROVED', '201
 
 call eleavedb.createTakenLeave(6, '2016-02-02', 'some holiday', 'APPROVED', '2016-02-07', @seba_annual_leave_2015, @maciek_employee_id);
 
+-- Create holiday
+call eleavedb.createHoliday('Three kings', 'This is church holiday', '2016-01-06', 2016, false);
+call eleavedb.createHoliday('Wielki Poniedzialek', 'Nie wiem jak to jest po angielsku', '2016-03-26', 2016, true);
+call eleavedb.createHoliday('Work holiday', 'This is comunism holiday :)', '2016-05-01', 2016, false);
+call eleavedb.createHoliday('Polish consitution', 'National holiday', '2016-05-03', 2016, false);
+call eleavedb.createHoliday('Hallowen', 'Holiday of dead people', '2016-11-01', 2016, false);
+
+
 DROP PROCEDURE IF EXISTS eleavedb.createPrivilege;
 DROP PROCEDURE IF EXISTS eleavedb.createUserRole;
 DROP PROCEDURE IF EXISTS eleavedb.createUserRoleHasPrivilege;
@@ -188,3 +203,4 @@ DROP PROCEDURE IF EXISTS eleavedb.createEmployee;
 DROP PROCEDURE IF EXISTS eleavedb.createApprover;
 DROP PROCEDURE IF EXISTS eleavedb.createAnnualBalanceLeave;
 DROP PROCEDURE IF EXISTS eleavedb.createTakenLeave;
+DROP PROCEDURE IF EXISTS eleavedb.createHoliday;

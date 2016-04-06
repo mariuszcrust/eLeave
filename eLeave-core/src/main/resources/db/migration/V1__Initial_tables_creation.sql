@@ -169,3 +169,18 @@ CREATE TABLE IF NOT EXISTS `eleavedb`.`taken_leave` (
     REFERENCES `eleavedb`.`employee` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+-- -----------------------------------------------------
+-- Table `eleavedb`.`holiday`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `eleavedb`.`holiday` (
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `version` BIGINT(20) NULL DEFAULT NULL,
+  `name` VARCHAR(255) NULL DEFAULT NULL,
+  `comment` VARCHAR(255) NULL DEFAULT NULL,
+  `date` DATETIME NULL DEFAULT NULL,
+  `year` INT(11) NOT NULL,
+  `movable` boolean NOT NULL,
+  PRIMARY KEY (`id`))
+  ENGINE=InnoDB
+  DEFAULT CHARACTER SET = utf8;
