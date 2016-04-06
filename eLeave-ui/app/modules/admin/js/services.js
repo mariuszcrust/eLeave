@@ -3,7 +3,7 @@
 angular.module('eleave.admin.services', []).factory('adminLeaveTypesService', ['LEAVE_TYPES_ENDPOINT', '$http', function (LEAVE_TYPES_ENDPOINT, $http) {
         return {
             getLeaveTypesData: function () {
-                return $http.get(LEAVE_TYPES_ENDPOINT).then(function(response){
+                return $http.get(LEAVE_TYPES_ENDPOINT).then(function (response) {
                     return response.data;
                 });
             },
@@ -13,8 +13,22 @@ angular.module('eleave.admin.services', []).factory('adminLeaveTypesService', ['
             checkDaysAllowed: function (value) {
                 if (!(/^[0-9]+$/.test(value))) {
                     return "Days Allowed should be a counting number e.g. 5.";
-                    
+
                 }
+            },
+            getColumnsDefs: function () {
+                return {
+                    enableSorting: false,
+                    enableColumnMenus : false,
+                    enableHorizontalScrollbar: 0,
+                    enableVerticalScrollbar: 0,
+                    columnDefs: [
+                        {name: 'name', field: 'leaveTypeName'},
+                        {name: 'daysAllowed', field: 'defaultDaysAllowed'},
+                        {name: 'comment',  field: 'comment'},
+                        {name: '', field: 'id' , cellTemplate: 'modules/admin/views/partials/action-buttons.html', cellClass: 'action-buttons'}
+                    ]
+                };
             }
         };
     }]);
@@ -27,16 +41,13 @@ angular.module('eleave.admin.services').factory('EmployeesService', ['EMPLOYEES_
             getAllActive: function () {
               return $http.get(EMPLOYEES_ENDPOINT + "?onlyActive=true");  
             },
-            
-            update: function(employee, id) {
+            update: function (employee, id) {
                 return $http.put(EMPLOYEES_ENDPOINT + id, employee);
             },
-            
-            delete: function(id) {
+            delete: function (id) {
                 return $http.delete(EMPLOYEES_ENDPOINT + id);
             },
-            
-            create: function(employee) {
+            create: function (employee) {
                 return $http.create(EMPLOYEES_ENDPOINT, employee);
             }
         };

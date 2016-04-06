@@ -1,18 +1,49 @@
 .no-records-found {
-  text-align: center;
+    position: absolute;
+    top: 50%;                    
+    transform: translateY(-50%); 
+    opacity: 0.25;
+    font-size: 3em;
+    width: 100%;
+    text-align: center;
+    z-index: 1000;
 }
 
 .table-eleave td:last-child {
+    text-align: center;  
+}
+
+.action-buttons {
   text-align: center;  
 }
 
+.ui-grid {
+    border: none;
+}
+
+.ui-grid-top-panel {
+    background: none;
+}
+
+.ui-grid-header {
+    border-bottom: 2px solid #ddd; 
+}
+
+.ui-grid-header-cell {
+    border-right: none;
+}
+
+.ui-grid-cell {
+    border-right: none;
+}
+
 .panel-primary {
-    border-color: #444444 !important;
+    border-color: #444444;
 }
 
 .panel-primary  > .panel-heading {
-     background-color: #444444 !important;
-     border-color: #444444 !important;
+    background-color: #444444;
+    border-color: #444444;
 }
 
 /*******************************

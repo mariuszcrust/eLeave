@@ -1,22 +1,18 @@
 'use strict'
 
 angular.module('eLeave.admin.controllers', []).controller('AdminLeaveTypesController', ['$scope', '$state', 'adminLeaveTypesService', function ($scope, $state, adminLeaveTypesService) {
-        $scope.leaveTypes = [];
+        
         $scope.getAllLeaveTypes = function () {
             adminLeaveTypesService.getLeaveTypesData().then(function (data) {
-                $scope.leaveTypes = data;
-            }, function () {
-                console.log("Cannot retrieve data.");
+                $scope.gridOptions.data = data;
             });
         };
 
-        $scope.getAllLeaveTypes();
-
-        $scope.removeLevaeType = function (row) {
-            adminLeaveTypesService.removeLeaveType(row.id).then(function () {
-                var index = $scope.leaveTypes.indexOf(row);
+        $scope.remove = function (row) {
+            adminLeaveTypesService.removeLeaveType(row.entity.id).then(function () {
+                var index = $scope.gridOptions.data.indexOf(row.entity);
                 if (index !== -1) {
-                    $scope.leaveTypes.splice(index, 1);
+                    $scope.gridOptions.data.splice(index, 1);
                 }
             });
 
@@ -39,7 +35,9 @@ angular.module('eLeave.admin.controllers', []).controller('AdminLeaveTypesContro
         $scope.checkDaysAllowed = function (value) {
             return adminLeaveTypesService.checkDaysAllowed(value);
         };
-
+        
+        $scope.gridOptions = adminLeaveTypesService.getColumnsDefs(); 
+        $scope.getAllLeaveTypes();
     }]);
 
 angular.module('eLeave.admin.controllers').controller('EmployeesController', ['$scope', '$state', 'EmployeesService', function ($scope, $state, EmployeesService) {
