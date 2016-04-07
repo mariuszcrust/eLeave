@@ -24,12 +24,5 @@ angular.module('eLeave.admin').config(['$stateProvider', '$locationProvider', fu
             ncyBreadcrumb: {
                 label: 'Employees'
             }
-        }).state('admin.holidays', {
-            url: '/admin/holidays',
-            templateUrl: 'modules/admin/views/admin-holidays.html',
-            controller: 'HolidaysController',
-            ncyBreadcrumb: {
-                label: 'Holidays'
-            }
         });
     }]);

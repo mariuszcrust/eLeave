@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('eLeave.admin.controllers', []).controller('AdminLeaveTypesController', ['$scope', '$state', '$uibModal', 'adminLeaveTypesService', function ($scope, $state, $uibModal, adminLeaveTypesService) {
-
+        
         $scope.getAllLeaveTypes = function () {
             adminLeaveTypesService.getLeaveTypesData().then(function (data) {
                 $scope.gridOptions.data = data;
@@ -38,11 +38,12 @@ angular.module('eLeave.admin.controllers', []).controller('AdminLeaveTypesContro
             });
         };
 
+
         $scope.checkDaysAllowed = function (value) {
             return adminLeaveTypesService.checkDaysAllowed(value);
         };
-
-        $scope.gridOptions = adminLeaveTypesService.getColumnsDefs();
+        
+        $scope.gridOptions = adminLeaveTypesService.getColumnsDefs(); 
         $scope.getAllLeaveTypes();
     }]);
 
@@ -72,43 +73,32 @@ angular.module('eLeave.admin.controllers').controller('EmployeesController', ['$
             });
         };
 
-        $scope.remove = function (row) {
-            employeesService.delete(row.entity.id).then(function () {
-                var index = $scope.gridOptions.data.indexOf(row.entity);
-                if (index !== -1) {
-                    $scope.gridOptions.data.splice(index, 1);
-                }
-            });
-
-        };
-
-        $scope.gridOptions = employeesService.getColumnsDefs();
-        $scope.getAllActive();
-    }]);
-
-angular.module('eLeave.admin.controllers').controller('HolidaysController', ['$scope', '$state', 'HolidaysService', function ($scope, $state, holidaysService) {
-        $scope.getAll = function () {
-            holidaysService.getAllActive().then(function (response, status) {
-                self.gridOptions.data = response.data;
+        self.update = function (employee, id) {
+            EmployeesService.update(employee, id).then(function (response, status) {
+                return response.data;
             }, function () {
-                console.log("Cannot retrieve data.");
+                console.log("Exception occured during update");
             });
         };
 
-        $scope.remove = function (row) {
-            holidaysService.delete(row.entity.id).then(function (response, status) {
-                var index = $scope.gridOptions.data.indexOf(row.entity);
-                if (index !== -1) {
-                    $scope.gridOptions.data.splice(index, 1);
-                }
+        self.delete = function (id) {
+            EmployeesService.delete(id).then(function (response, status) {
+                self.getAllActiveEmployees();
             }, function () {
-                console.log("Cannot retrieve data.");
+                console.log("Exception occured during delete");
             });
-
         };
 
-        $scope.gridOptions = holidaysService.getColumnsDefs();
-        $scope.getAllActive();
+        self.create = function (employee) {
+            EmployeesService.create(employee).then(function (response, status) {
+                return response.data;
+            }, function () {
+                console.log("Exception occured during create");
+            });
+        };
+
+        self.getAllActiveEmployees();
+
     }]);
 
 angular.module('eLeave.admin.controllers').controller('AdminController', ['$scope', '$state', function ($scope, $state) {
