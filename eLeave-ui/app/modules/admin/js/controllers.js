@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('eLeave.admin.controllers', []).controller('AdminLeaveTypesController', ['$scope', '$state', 'adminLeaveTypesService', function ($scope, $state, adminLeaveTypesService) {
+angular.module('eLeave.admin.controllers', []).controller('AdminLeaveTypesController', ['$scope', '$state', '$uibModal', 'adminLeaveTypesService', function ($scope, $state, $uibModal, adminLeaveTypesService) {
 
         $scope.getAllLeaveTypes = function () {
             adminLeaveTypesService.getLeaveTypesData().then(function (data) {
@@ -9,29 +9,35 @@ angular.module('eLeave.admin.controllers', []).controller('AdminLeaveTypesContro
         };
 
         $scope.remove = function (row) {
-            adminLeaveTypesService.removeLeaveType(row.entity.id).then(function () {
-                var index = $scope.gridOptions.data.indexOf(row.entity);
-                if (index !== -1) {
-                    $scope.gridOptions.data.splice(index, 1);
+            $uibModal.open({
+                templateUrl: 'modules/admin/views/partials/remove-confirmation.html',
+                controller: 'ModalDeleteLeaveTypesController',
+                resolve: {
+                    row: function () {
+                        return row;
+                    },
+                    dialog: {
+                        message: 'Do you really want to delete this leave type?',
+                        item: row.entity.leaveTypeName
+                    }
                 }
+            }).result.then(function (row) {
+                adminLeaveTypesService.removeLeaveType(row.entity.id).then(function () {
+                    var index = $scope.gridOptions.data.indexOf(row.entity);
+                    if (index !== -1) {
+                        $scope.gridOptions.data.splice(index, 1);
+                    }
+                });
             });
-
         };
 
-        $scope.saveLeaveType = function (data, id) {
-            console.log("Id: " + id + "Data: " + data);
+        $scope.add = function () {
+            $uibModal.open({
+                templateUrl: 'modules/admin/views/partials/edit-modal-sidebar.html',
+                controller: 'RemoveConfirmationController'
+            });
         };
 
-
-        $scope.addLeaveType = function () {
-            $scope.inserted = {
-                id: $scope.leaveTypes.length + 1,
-                leaveTypeName: '',
-                defaultDaysAllowed: 0,
-                comment: ''
-            };
-            $scope.leaveTypes.push($scope.inserted);
-        };
         $scope.checkDaysAllowed = function (value) {
             return adminLeaveTypesService.checkDaysAllowed(value);
         };
@@ -40,10 +46,27 @@ angular.module('eLeave.admin.controllers', []).controller('AdminLeaveTypesContro
         $scope.getAllLeaveTypes();
     }]);
 
-angular.module('eLeave.admin.controllers').controller('EmployeesController', ['$scope', '$state', 'EmployeesService', function ($scope, $state, employeesService) {
-        $scope.getAllActive = function () {
-            employeesService.getAllActive().then(function (response, status) {
-                $scope.gridOptions.data = response.data;
+angular.module('eLeave.admin.controllers').controller('RemoveConfirmationController', ['$scope', '$uibModalInstance', 'row', 'dialog', function ($scope, $uibModalInstance, row, dialog) {
+        $scope.row = row;
+        $scope.dialog = dialog;
+        
+        $scope.yes = function () {
+            $uibModalInstance.close(row);
+        };
+
+        $scope.no = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+    }]);
+
+angular.module('eLeave.admin.controllers').controller('EmployeesController', ['$scope', '$state', 'EmployeesService', function ($scope, $state, EmployeesService) {
+        var self = this;
+        self.employee = {id: null, firstName: '', lastName: '', email: ''};
+        self.employees = [];
+
+        self.getAllActiveEmployees = function () {
+            EmployeesService.getAllActive().then(function (response, status) {
+                self.employees = response.data;
             }, function () {
                 console.log("Cannot retrieve data.");
             });
