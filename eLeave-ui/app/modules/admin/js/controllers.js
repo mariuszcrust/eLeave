@@ -11,7 +11,7 @@ angular.module('eLeave.admin.controllers', []).controller('AdminLeaveTypesContro
         $scope.remove = function (row) {
             $uibModal.open({
                 templateUrl: 'modules/admin/views/partials/remove-confirmation.html',
-                controller: 'ModalDeleteLeaveTypesController',
+                controller: 'RemoveConfirmationController',
                 resolve: {
                     row: function () {
                         return row;
