@@ -11,6 +11,7 @@
         <class>com.company.eleave.leave.entity.LeaveStatus</class>
         <class>com.company.eleave.leave.entity.LeaveType</class>
         <class>com.company.eleave.leave.entity.TakenLeave</class>
+        <class>com.company.eleave.leave.entity.Holiday</class>
         <class>com.company.eleave.security.entity.Privilege</class>
         <class>com.company.eleave.security.entity.User</class>
         <class>com.company.eleave.security.entity.UserRole</class>
