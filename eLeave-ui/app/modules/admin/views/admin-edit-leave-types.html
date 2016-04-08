@@ -5,7 +5,7 @@
 <div class="modal-body">
     <form ng-submit="vm.apply()" name="vm.leaveTypeForm" novalidate>
         <formly-form model="vm.leaveType" fields="vm.leaveTypeFields" form="vm.leaveTypeForm">
-            <div>
+            <div class="modal-left-submit-btn">
                 <button class="btn btn-success" type="submit" ng-disabled="vm.leaveTypeForm.$invalid">
                     <i class="glyphicon glyphicon-ok"></i>
                 </button>

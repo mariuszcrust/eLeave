@@ -94,3 +94,7 @@
     border-bottom-color: #EEEEEE;
     background-color: #FAFAFA;
 }
+
+.modal-left-submit-btn {
+    text-align: right;
+}
