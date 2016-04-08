@@ -35,6 +35,7 @@ angular.module('eLeave.admin.controllers', []).controller('AdminLeaveTypesContro
             $aside.open({
                 templateUrl: 'modules/admin/views/admin-edit-leave-types.html',
                 controller: 'EditLeaveTypeController',
+                controllerAs: 'vm',
                 placement: 'left',
                 size: 'lg',
                 resolve: {
@@ -45,6 +46,10 @@ angular.module('eLeave.admin.controllers', []).controller('AdminLeaveTypesContro
                         title: 'Add New Leave Type'
                     }
                 }
+            }).result.then(function (entity) {
+                adminLeaveTypesService.addLeaveType(entity).then(function(leaveType) {
+                    $scope.gridOptions.data.push(leaveType);
+                });
             });
         };
 
@@ -52,6 +57,7 @@ angular.module('eLeave.admin.controllers', []).controller('AdminLeaveTypesContro
             $aside.open({
                 templateUrl: 'modules/admin/views/admin-edit-leave-types.html',
                 controller: 'EditLeaveTypeController',
+                controllerAs: 'vm',
                 placement: 'left',
                 size: 'lg',
                 resolve: {
@@ -62,11 +68,15 @@ angular.module('eLeave.admin.controllers', []).controller('AdminLeaveTypesContro
                         title: 'Edit Leave Type'
                     }
                 }
+            }).result.then(function (entity) {
+                adminLeaveTypesService.updateLeaveType(entity).then(function(leaveType) {
+                    $scope.gridOptions.data.filter(function(element) {
+                        return element.id === leaveType.id;
+                    }).forEach(function(element){
+                        angular.extend(element, leaveType);
+                    });
+                });
             });
-        };
-
-        $scope.checkDaysAllowed = function (value) {
-            return adminLeaveTypesService.checkDaysAllowed(value);
         };
 
         $scope.gridOptions = adminLeaveTypesService.getColumnsDefs();
@@ -86,15 +96,56 @@ angular.module('eLeave.admin.controllers').controller('RemoveConfirmationControl
         };
     }]);
 
-angular.module('eLeave.admin.controllers').controller('EditLeaveTypeController', ['$scope', '$uibModalInstance', 'row', 'dialog', function ($scope, $uibModalInstance, row, dialog) {
-        $scope.dialog = dialog;
-        $scope.row = row;
+angular.module('eLeave.admin.controllers').controller('EditLeaveTypeController', ['$scope', '$uibModalInstance', 'row', 'dialog', 'adminLeaveTypesService', function ($scope, $uibModalInstance, row, dialog, adminLeaveTypesService) {
+        var vm = this;
+        vm.dialog = dialog;
+        vm.leaveType = row.entity;
+        vm.leaveTypeFields = [
+            {
+                key: 'leaveTypeName',
+                type: 'input',
+                templateOptions: {
+                    type: 'text',
+                    label: 'Leave Type Name',
+                    placeholder: 'Enter Leave Type Name',
+                    required: true,
+                    minlength: 2
+                }
+            },
+            {
+                key: 'defaultDaysAllowed',
+                type: 'input',
+                templateOptions: {
+                    type: 'number',
+                    label: 'Days Allowed',
+                    placeholder: 'Enter Days Allowed',
+                    required: true,
+                    min: 1,
+                    max: 50
+                },
+                validators: {
+                    daysAllowed: function ($viewValue, $modelValue) {
+                        var value = $modelValue || $viewValue;
+                        return adminLeaveTypesService.checkDaysAllowed(value);
+                    }
+                }
+            },
+            {
+                key: 'comment',
+                type: 'textarea',
+                templateOptions: {
+                    label: 'Comment',
+                    placeholder: 'Enter Comment',
+                    required: false
+                }
+            }
+        ];
 
-        $scope.apply = function () {
-            $uibModalInstance.close(row);
+        vm.apply = function () {
+            $uibModalInstance.close(vm.leaveType);
         };
 
-        $scope.cancel = function () {
+        vm.cancel = function () {
             $uibModalInstance.dismiss('cancel');
         };
     }]);
@@ -111,7 +162,7 @@ angular.module('eLeave.admin.controllers').controller('EmployeesController', ['$
                 console.log("Cannot retrieve data.");
             });
         };
-        
+
         $scope.remove = function (row) {
             $uibModal.open({
                 templateUrl: 'modules/admin/views/partials/remove-confirmation.html',
@@ -131,21 +182,21 @@ angular.module('eLeave.admin.controllers').controller('EmployeesController', ['$
                     if (index !== -1) {
                         $scope.gridOptions.data.splice(index, 1);
                     }
-                }, function() {
+                }, function () {
                     console.log("Cannot delete.");
                 });
             });
         };
-        
-        /*
-        $scope.add = function () {
-            $uibModal.open({
-                templateUrl: 'modules/admin/views/partials/edit-modal-sidebar.html',
-                controller: 'RemoveConfirmationController'
-            });
-        };
 
-*/
+        /*
+         $scope.add = function () {
+         $uibModal.open({
+         templateUrl: 'modules/admin/views/partials/edit-modal-sidebar.html',
+         controller: 'RemoveConfirmationController'
+         });
+         };
+         
+         */
         $scope.gridOptions = employeesService.getColumnsDefs();
         $scope.getAllActive();
     }]);
@@ -178,7 +229,7 @@ angular.module('eLeave.admin.controllers').controller('HolidaysController', ['$s
                     if (index !== -1) {
                         $scope.gridOptions.data.splice(index, 1);
                     }
-                }, function() {
+                }, function () {
                     console.log("Cannot delete.");
                 });
             });

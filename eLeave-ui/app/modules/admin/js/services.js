@@ -1,9 +1,21 @@
 'use strict'
 
-angular.module('eleave.admin.services', []).factory('adminLeaveTypesService', ['LEAVE_TYPES_ENDPOINT', '$http', function (LEAVE_TYPES_ENDPOINT, $http) {
+angular.module('eleave.admin.services', []).factory('adminLeaveTypesService', ['ELEAVE_BASE', 'LEAVE_TYPES_ENDPOINT', '$http', function (ELEAVE_BASE, LEAVE_TYPES_ENDPOINT, $http) {
         return {
             getLeaveTypesData: function () {
                 return $http.get(LEAVE_TYPES_ENDPOINT).then(function (response) {
+                    return response.data;
+                });
+            },
+            addLeaveType: function (leaveType) {
+                return $http.post(LEAVE_TYPES_ENDPOINT, leaveType).then(function (response) {
+                    return $http.get(ELEAVE_BASE + response.headers(['location'])).then(function(response){
+                        return response.data;
+                    });
+                });
+            },
+            updateLeaveType: function(leaveType) {
+                return $http.put(LEAVE_TYPES_ENDPOINT, leaveType).then(function (response) {
                     return response.data;
                 });
             },
@@ -11,10 +23,7 @@ angular.module('eleave.admin.services', []).factory('adminLeaveTypesService', ['
                 return $http.delete(LEAVE_TYPES_ENDPOINT + id);
             },
             checkDaysAllowed: function (value) {
-                if (!(/^[0-9]+$/.test(value))) {
-                    return "Days Allowed should be a counting number e.g. 5.";
-
-                }
+                return (/^[0-9]+$/.test(value));             
             },
             getColumnsDefs: function () {
                 return {
@@ -35,7 +44,7 @@ angular.module('eleave.admin.services', []).factory('adminLeaveTypesService', ['
 
 //angular.module('eleave.admin.services').value('LEAVE_TYPES_ENDPOINT', 'http://localhost:8084/eLeave/leaveTypes');
 angular.module('eleave.admin.services').value('LEAVE_TYPES_ENDPOINT', '/eLeave/leaveTypes/');
-
+angular.module('eleave.admin.services').value('ELEAVE_BASE', '/eLeave');
 angular.module('eleave.admin.services').factory('EmployeesService', ['EMPLOYEES_ENDPOINT', '$http', function (EMPLOYEES_ENDPOINT, $http) {
         return {
             getAllActive: function () {

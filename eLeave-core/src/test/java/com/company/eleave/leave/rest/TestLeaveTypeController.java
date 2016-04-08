@@ -126,6 +126,7 @@ public class TestLeaveTypeController {
     public void testUpdateLeaveType() {
         //given
         final LeaveTypeDTO leaveTypeDTO = new LeaveTypeDTO();
+        leaveTypeDTO.setId(LEAVE_TYPE_ID);
         leaveTypeDTO.setComment("newComment");
         leaveTypeDTO.setDefaultDaysAllowed(200);
         leaveTypeDTO.setLeaveTypeName("newTestLeaveTypeName");
@@ -139,7 +140,7 @@ public class TestLeaveTypeController {
         Mockito.when(mapperMock.toDto(leaveType)).thenReturn(leaveTypeDTO);
 
         //when
-        ResponseEntity<LeaveTypeDTO> result = testedObject.updateLeaveType(LEAVE_TYPE_ID, leaveTypeDTO);
+        ResponseEntity<LeaveTypeDTO> result = testedObject.updateLeaveType(leaveTypeDTO);
 
         //then
         Mockito.verify(leaveTypeServiceMock).update(leaveType);

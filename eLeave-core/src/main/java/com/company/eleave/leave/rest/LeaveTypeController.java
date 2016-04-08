@@ -67,14 +67,14 @@ public class LeaveTypeController {
         headers.setLocation(UriComponentsBuilder.fromPath("/leaveTypes/{id}").buildAndExpand(leaveTypeId).toUri());
 
         LOGGER.log(Level.INFO, "Leave type stored with id: {0}", leaveTypeId);
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(leaveTypeId, headers, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<LeaveTypeDTO> updateLeaveType(@PathVariable("id") final Long leaveTypeId, final @RequestBody LeaveTypeDTO leaveTypeDTO) {
-        LeaveType leaveType = leaveTypeService.getById(leaveTypeId);
+    @RequestMapping(method = RequestMethod.PUT)
+    public ResponseEntity<LeaveTypeDTO> updateLeaveType(final @RequestBody LeaveTypeDTO leaveTypeDTO) {
+        LeaveType leaveType = leaveTypeService.getById(leaveTypeDTO.getId());
         if (leaveType == null) {
-            throw new ElementNotFoundException(leaveTypeId, ErrorCode.LEAVE_TYPE_NOT_FOUND.getCode());
+            throw new ElementNotFoundException(leaveTypeDTO.getId(), ErrorCode.LEAVE_TYPE_NOT_FOUND.getCode());
         }
 
         leaveType.setComment(leaveTypeDTO.getComment());

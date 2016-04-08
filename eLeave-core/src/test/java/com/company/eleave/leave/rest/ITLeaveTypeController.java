@@ -120,11 +120,12 @@ public class ITLeaveTypeController extends IntegrationTest {
     @Test
     public void testUpdateLeaveSuccessfully() throws Exception {
         final LeaveTypeDTO leaveTypeDTO = new LeaveTypeDTO();
+        leaveTypeDTO.setId(STANDARD_HOLIDAY_LEAVE_TYPE);
         leaveTypeDTO.setComment("java is better then CF");
         leaveTypeDTO.setDefaultDaysAllowed(40);
         leaveTypeDTO.setLeaveTypeName("Standard holiday in SS");
 
-        final String contentAsString = mockMvc.perform(put(request(RestURI.LEAVE_TYPES_BY_ID, STANDARD_HOLIDAY_LEAVE_TYPE)).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(leaveTypeDTO)))
+        final String contentAsString = mockMvc.perform(put(request(RestURI.LEAVE_TYPES)).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(leaveTypeDTO)))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse().getContentAsString();
