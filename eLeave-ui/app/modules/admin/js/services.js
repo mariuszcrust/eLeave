@@ -72,11 +72,9 @@ angular.module('eleave.admin.services').value('EMPLOYEES_ENDPOINT', 'http://loca
 angular.module('eleave.admin.services').factory('HolidaysService', ['HOLIDAYS_ENDPOINT', '$http', function (HOLIDAYS_ENDPOINT, $http) {
         return {
             getAll: function () {
-                return $http.get(HOLIDAYS_ENDPOINT).then(function (response) {
-                    return response.data;
-                });
+                return $http.get(HOLIDAYS_ENDPOINT);
             },
-            remove: function (id) {
+            delete: function (id) {
                 return $http.delete(HOLIDAYS_ENDPOINT + id);
             },
             getColumnsDefs: function () {

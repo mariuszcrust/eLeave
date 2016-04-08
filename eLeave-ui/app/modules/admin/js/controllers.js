@@ -79,11 +79,11 @@ angular.module('eLeave.admin.controllers').controller('EmployeesController', ['$
                     },
                     dialog: {
                         message: 'Do you really want to delete this employee ?',
-                        item: row.entity.leaveTypeName
+                        item: row.entity.employee.firstName
                     }
                 }
             }).result.then(function (row) {
-                employeeService.delete(row.entity.id).then(function (response, status) {
+                employeesService.delete(row.entity.employee.id).then(function (response, status) {
                     var index = $scope.gridOptions.data.indexOf(row.entity);
                     if (index !== -1) {
                         $scope.gridOptions.data.splice(index, 1);
@@ -109,27 +109,40 @@ angular.module('eLeave.admin.controllers').controller('EmployeesController', ['$
 
 angular.module('eLeave.admin.controllers').controller('HolidaysController', ['$scope', '$state', '$uibModal', 'HolidaysService', function ($scope, $state, $uibModal, holidaysService) {
         $scope.getAll = function () {
-            holidaysService.getAllActive().then(function (response, status) {
-                self.gridOptions.data = response.data;
+            holidaysService.getAll().then(function (response, status) {
+                $scope.gridOptions.data = response.data;
             }, function () {
                 console.log("Cannot retrieve data.");
             });
         };
 
         $scope.remove = function (row) {
-            holidaysService.delete(row.entity.id).then(function (response, status) {
-                var index = $scope.gridOptions.data.indexOf(row.entity);
-                if (index !== -1) {
-                    $scope.gridOptions.data.splice(index, 1);
+            $uibModal.open({
+                templateUrl: 'modules/admin/views/partials/remove-confirmation.html',
+                controller: 'RemoveConfirmationController',
+                resolve: {
+                    row: function () {
+                        return row;
+                    },
+                    dialog: {
+                        message: 'Do you really want to delete this holiday ?',
+                        item: row.entity.name
+                    }
                 }
-            }, function () {
-                console.log("Cannot retrieve data.");
+            }).result.then(function (row) {
+                holidaysService.delete(row.entity.id).then(function (response, status) {
+                    var index = $scope.gridOptions.data.indexOf(row.entity);
+                    if (index !== -1) {
+                        $scope.gridOptions.data.splice(index, 1);
+                    }
+                }, function() {
+                    console.log("Cannot delete.");
+                });
             });
-
         };
 
         $scope.gridOptions = holidaysService.getColumnsDefs();
-        $scope.getAllActive();
+        $scope.getAll();
     }]);
 
 angular.module('eLeave.admin.controllers').controller('AdminController', ['$scope', '$state', function ($scope, $state) {

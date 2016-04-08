@@ -4,7 +4,7 @@
         <!-- Default panel contents -->
         <div class="panel-heading">
             <div>
-                <h4>Holidays</h4>
+                <h4>Employees</h4>
             </div>
         </div>
 
@@ -15,7 +15,7 @@
                         <div class="no-records-found" ng-show="!gridOptions.data.length">No matching records found.</div>
                     </div>
                     <br>
-                    <button type="button" class="btn btn-xs btn-success">
+                    <button type="button" ng-click="add()" class="btn btn-xs btn-success">
                         <i class="glyphicon glyphicon-plus"></i>
                     </button>
                 </div>
