@@ -1,6 +1,6 @@
 'use strict'
 
-var eLeaveApp = angular.module('eLeave',['ui.router', 'ui.bootstrap', 'smart-table', 'xeditable', 'ui.grid', 'ui.grid.edit', 'ncy-angular-breadcrumb', 'eLeave.home', 'eLeave.admin', 'eLeave.about', 'eLeave.controllers', 'eLeave.directives', 'eLeave.filters', 'eLeave.services']);
+var eLeaveApp = angular.module('eLeave',['ui.router', 'ui.bootstrap', 'ngAside', 'formly', 'smart-table', 'xeditable', 'ui.grid', 'ui.grid.edit', 'ncy-angular-breadcrumb', 'eLeave.home', 'eLeave.admin', 'eLeave.about', 'eLeave.controllers', 'eLeave.directives', 'eLeave.filters', 'eLeave.services']);
 
 eLeaveApp.config(['$urlRouterProvider', function($urlRouterProvider){
         $urlRouterProvider.otherwise('/home');

@@ -11,14 +11,14 @@ angular.module('eLeave.admin').config(['$stateProvider', '$locationProvider', fu
                 label: 'Administration'
             }
         }).state('admin.leaveTypes', {
-            url: '/admin/leaveTypes',
+            url: '/leaveTypes',
             templateUrl: 'modules/admin/views/admin-leave-types.html',
             controller: 'AdminLeaveTypesController',
             ncyBreadcrumb: {
                 label: 'Leave Types'
             }
         }).state('admin.employees', {
-            url: '/admin/employees',
+            url: '/employees',
             templateUrl: 'modules/admin/views/admin-employees.html',
             controller: 'EmployeesController',
             ncyBreadcrumb: {

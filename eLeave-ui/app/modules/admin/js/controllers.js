@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('eLeave.admin.controllers', []).controller('AdminLeaveTypesController', ['$scope', '$state', '$uibModal', 'adminLeaveTypesService', function ($scope, $state, $uibModal, adminLeaveTypesService) {
+angular.module('eLeave.admin.controllers', []).controller('AdminLeaveTypesController', ['$scope', '$state', '$uibModal', '$aside', 'adminLeaveTypesService', function ($scope, $state, $uibModal, $aside, adminLeaveTypesService) {
 
         $scope.getAllLeaveTypes = function () {
             adminLeaveTypesService.getLeaveTypesData().then(function (data) {
@@ -32,12 +32,38 @@ angular.module('eLeave.admin.controllers', []).controller('AdminLeaveTypesContro
         };
 
         $scope.add = function () {
-            $uibModal.open({
-                templateUrl: 'modules/admin/views/partials/edit-modal-sidebar.html',
-                controller: 'RemoveConfirmationController'
+            $aside.open({
+                templateUrl: 'modules/admin/views/admin-edit-leave-types.html',
+                controller: 'EditLeaveTypeController',
+                placement: 'left',
+                size: 'lg',
+                resolve: {
+                    row: function () {
+                        return {};
+                    },
+                    dialog: {
+                        title: 'Add New Leave Type'
+                    }
+                }
             });
         };
 
+        $scope.edit = function (row) {
+            $aside.open({
+                templateUrl: 'modules/admin/views/admin-edit-leave-types.html',
+                controller: 'EditLeaveTypeController',
+                placement: 'left',
+                size: 'lg',
+                resolve: {
+                    row: function () {
+                        return row;
+                    },
+                    dialog: {
+                        title: 'Edit Leave Type'
+                    }
+                }
+            });
+        };
 
         $scope.checkDaysAllowed = function (value) {
             return adminLeaveTypesService.checkDaysAllowed(value);
@@ -50,7 +76,7 @@ angular.module('eLeave.admin.controllers', []).controller('AdminLeaveTypesContro
 angular.module('eLeave.admin.controllers').controller('RemoveConfirmationController', ['$scope', '$uibModalInstance', 'row', 'dialog', function ($scope, $uibModalInstance, row, dialog) {
         $scope.row = row;
         $scope.dialog = dialog;
-        
+
         $scope.yes = function () {
             $uibModalInstance.close(row);
         };
@@ -60,10 +86,27 @@ angular.module('eLeave.admin.controllers').controller('RemoveConfirmationControl
         };
     }]);
 
-angular.module('eLeave.admin.controllers').controller('EmployeesController', ['$scope', '$state', '$uibModal', 'EmployeesService', function ($scope, $state, $uibModal, employeesService) {
-        $scope.getAllActive = function () {
-            employeesService.getAllActive().then(function (response, status) {
-                $scope.gridOptions.data = response.data;
+angular.module('eLeave.admin.controllers').controller('EditLeaveTypeController', ['$scope', '$uibModalInstance', 'row', 'dialog', function ($scope, $uibModalInstance, row, dialog) {
+        $scope.dialog = dialog;
+        $scope.row = row;
+
+        $scope.apply = function () {
+            $uibModalInstance.close(row);
+        };
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+    }]);
+
+angular.module('eLeave.admin.controllers').controller('EmployeesController', ['$scope', '$state', 'EmployeesService', function ($scope, $state, EmployeesService) {
+        var self = this;
+        self.employee = {id: null, firstName: '', lastName: '', email: ''};
+        self.employees = [];
+
+        self.getAllActiveEmployees = function () {
+            EmployeesService.getAllActive().then(function (response, status) {
+                self.employees = response.data;
             }, function () {
                 console.log("Cannot retrieve data.");
             });
