@@ -45,9 +45,9 @@ angular.module('eleave.admin.services', []).factory('adminLeaveTypesService', ['
 //angular.module('eleave.admin.services').value('LEAVE_TYPES_ENDPOINT', 'http://localhost:8084/eLeave/leaveTypes');
 angular.module('eleave.admin.services').value('LEAVE_TYPES_ENDPOINT', '/eLeave/leaveTypes/');
 angular.module('eleave.admin.services').value('ELEAVE_BASE', '/eLeave');
-angular.module('eleave.admin.services').factory('EmployeesService', ['EMPLOYEES_ENDPOINT', '$http', function (EMPLOYEES_ENDPOINT, $http) {
+angular.module('eleave.admin.services').factory('EmployeesService', ['ELEAVE_BASE', 'EMPLOYEES_ENDPOINT', '$http', function (ELEAVE_BASE, EMPLOYEES_ENDPOINT, $http) {
         return {
-            getAllActive: function () {
+            getAll: function () {
               return $http.get(EMPLOYEES_ENDPOINT + "?onlyActive=true");  
             },
             update: function (employee, id) {
@@ -56,8 +56,15 @@ angular.module('eleave.admin.services').factory('EmployeesService', ['EMPLOYEES_
             delete: function (id) {
                 return $http.delete(EMPLOYEES_ENDPOINT + id);
             },
-            create: function (employee) {
-                return $http.create(EMPLOYEES_ENDPOINT, employee);
+            getAllWithRole: function() {
+                return $http.get('http://localhost:8084/eLeave/employees/roles?role=APPROVER');
+            },
+            add: function (leaveType) {
+                return $http.post(EMPLOYEES_ENDPOINT, leaveType).then(function (response) {
+                    return $http.get(ELEAVE_BASE + response.headers(['location'])).then(function(response){
+                        return response.data;
+                    });
+                });
             },
             getColumnsDefs: function () {
                 return {

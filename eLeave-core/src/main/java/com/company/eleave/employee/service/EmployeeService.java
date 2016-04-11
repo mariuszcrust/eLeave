@@ -84,6 +84,7 @@ public class EmployeeService {
         final User user = new User();
         user.setUserName(employee.getFirstName() + "." + employee.getLastName());
         user.setPassword("password");
+        user.setActive(true);
 
         employee.setUser(user);
 

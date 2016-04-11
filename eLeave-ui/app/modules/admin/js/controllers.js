@@ -150,14 +150,10 @@ angular.module('eLeave.admin.controllers').controller('EditLeaveTypeController',
         };
     }]);
 
-angular.module('eLeave.admin.controllers').controller('EmployeesController', ['$scope', '$state', 'EmployeesService', function ($scope, $state, EmployeesService) {
-        var self = this;
-        self.employee = {id: null, firstName: '', lastName: '', email: ''};
-        self.employees = [];
-
-        self.getAllActiveEmployees = function () {
-            EmployeesService.getAllActive().then(function (response, status) {
-                self.employees = response.data;
+angular.module('eLeave.admin.controllers').controller('EmployeesController', ['$scope', '$state', '$uibModal', '$aside', 'EmployeesService', function ($scope, $state, $uibModal, $aside, EmployeesService) {
+        $scope.getAll = function () {
+            EmployeesService.getAll().then(function (response, status) {
+                $scope.gridOptions.data = response.data;
             }, function () {
                 console.log("Cannot retrieve data.");
             });
@@ -177,7 +173,7 @@ angular.module('eLeave.admin.controllers').controller('EmployeesController', ['$
                     }
                 }
             }).result.then(function (row) {
-                employeesService.delete(row.entity.employee.id).then(function (response, status) {
+                EmployeesService.delete(row.entity.employee.id).then(function (response, status) {
                     var index = $scope.gridOptions.data.indexOf(row.entity);
                     if (index !== -1) {
                         $scope.gridOptions.data.splice(index, 1);
@@ -188,17 +184,104 @@ angular.module('eLeave.admin.controllers').controller('EmployeesController', ['$
             });
         };
 
-        /*
-         $scope.add = function () {
-         $uibModal.open({
-         templateUrl: 'modules/admin/views/partials/edit-modal-sidebar.html',
-         controller: 'RemoveConfirmationController'
-         });
-         };
-         
-         */
-        $scope.gridOptions = employeesService.getColumnsDefs();
-        $scope.getAllActive();
+        $scope.add = function () {
+            $aside.open({
+                templateUrl: 'modules/admin/views/admin-edit-employees.html',
+                controller: 'EditEmployeesController',
+                controllerAs: 'vm',
+                placement: 'left',
+                size: 'lg',
+                resolve: {
+                    row: function () {
+                        return {};
+                    },
+                    dialog: {
+                        title: 'Add New Employee'
+                    }
+                }
+            }).result.then(function (entity) {
+                EmployeesService.add(entity).then(function(employee) {
+                    $scope.gridOptions.data.push(employee);
+                });
+            });
+        };
+        
+        $scope.gridOptions = EmployeesService.getColumnsDefs();
+        $scope.getAll();
+    }]);
+
+angular.module('eLeave.admin.controllers').controller('EditEmployeesController', ['$scope', '$uibModalInstance', 'row', 'dialog', 'EmployeesService', 'adminLeaveTypesService', function ($scope, $uibModalInstance, row, dialog, EmployeesService, adminLeaveTypesService) {
+        var vm = this;
+        vm.dialog = dialog;
+        vm.employee = row.employee;
+        
+         EmployeesService.getAllWithRole().then(function (data) {
+                vm.approversForDropDown = data;
+            }, function () {
+                console.log("Cannot retrieve data.");
+        });
+            
+        adminLeaveTypesService.getLeaveTypesData().then(function (data) {
+            vm.leaveTypesForDropDown = data;
+            }, function () {
+                console.log("Cannot retrieve data.");
+        });
+        
+        console.log(vm.approversForDropDown);
+        
+        vm.employeeFields = [
+            {
+                key: 'firstName',
+                type: 'input',
+                templateOptions: {
+                    type: 'text',
+                    label: 'Employee Name',
+                    placeholder: 'Enter Employee First Name',
+                    required: true,
+                    minlength: 2
+                }
+            },
+            {
+                key: 'lastName',
+                type: 'input',
+                templateOptions: {
+                    type: 'text',
+                    label: 'Employee Last Name',
+                    placeholder: 'Enter Employee Last Name',
+                    required: true,
+                    min: 1,
+                    max: 50
+                }
+            },
+            {
+                key: 'email',
+                type: 'input',
+                templateOptions: {
+                    type: 'text',
+                    label: 'Employee Email',
+                    placeholder: 'Enter Email',
+                    required: true,
+                    min: 1,
+                    max: 50
+                }
+            },
+            {
+                key: 'approver',
+                type: 'select',
+                templateOptions: {
+                    label: 'Approver',
+                    options: vm.approversForDropDown
+                }
+            }
+        ];
+
+        vm.apply = function () {
+            $uibModalInstance.close(vm.employee);
+        };
+
+        vm.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
     }]);
 
 angular.module('eLeave.admin.controllers').controller('HolidaysController', ['$scope', '$state', '$uibModal', 'HolidaysService', function ($scope, $state, $uibModal, holidaysService) {
