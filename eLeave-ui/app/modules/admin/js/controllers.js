@@ -231,16 +231,24 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
             }, function () {
                 console.log("Cannot retrieve data.");
             });
-        }
-        ;
+        };
+
+        function getLeaveTypes() {
+            adminLeaveTypesService.getLeaveTypesData().then(function (data) {
+                for (var i in data) {
+                    vm.leaveTypesForDropDown.push({
+                        name: response.data[i].leaveTypeName,
+                        value: response.data[i].id
+                    });
+                }
+                return vm.leaveTypesForDropDown;
+            }, function () {
+                console.log("Cannot retrieve data.");
+            });
+        };
 
         getApprovers();
-
-        adminLeaveTypesService.getLeaveTypesData().then(function (data) {
-            vm.leaveTypesForDropDown = data;
-        }, function () {
-            console.log("Cannot retrieve data.");
-        });
+        getLeaveTypes();
 
         vm.employeeFields = [
             {
