@@ -47,7 +47,7 @@ angular.module('eLeave.admin.controllers', []).controller('AdminLeaveTypesContro
                     }
                 }
             }).result.then(function (entity) {
-                adminLeaveTypesService.addLeaveType(entity).then(function(leaveType) {
+                adminLeaveTypesService.addLeaveType(entity).then(function (leaveType) {
                     $scope.gridOptions.data.push(leaveType);
                 });
             });
@@ -69,10 +69,10 @@ angular.module('eLeave.admin.controllers', []).controller('AdminLeaveTypesContro
                     }
                 }
             }).result.then(function (entity) {
-                adminLeaveTypesService.updateLeaveType(entity).then(function(leaveType) {
-                    $scope.gridOptions.data.filter(function(element) {
+                adminLeaveTypesService.updateLeaveType(entity).then(function (leaveType) {
+                    $scope.gridOptions.data.filter(function (element) {
                         return element.id === leaveType.id;
-                    }).forEach(function(element){
+                    }).forEach(function (element) {
                         angular.extend(element, leaveType);
                     });
                 });
@@ -200,12 +200,12 @@ angular.module('eLeave.admin.controllers').controller('EmployeesController', ['$
                     }
                 }
             }).result.then(function (entity) {
-                EmployeesService.add(entity).then(function(employee) {
+                EmployeesService.add(entity).then(function (employee) {
                     $scope.gridOptions.data.push(employee);
                 });
             });
         };
-        
+
         $scope.gridOptions = EmployeesService.getColumnsDefs();
         $scope.getAll();
     }]);
@@ -214,21 +214,34 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
         var vm = this;
         vm.dialog = dialog;
         vm.employee = row.employee;
-        
-         EmployeesService.getAllWithRole().then(function (data) {
-                vm.approversForDropDown = data;
+        vm.approversForDropDown = [];
+        vm.leaveTypesForDropDown = [];
+
+        function getApprovers() {
+            return EmployeesService.getAllWithRole().then(function (response, status) {
+
+                for (var i in response.data) {
+                    vm.approversForDropDown.push({
+                        name: response.data[i].firstName + ' ' + response.data[i].lastName,
+                        value: response.data[i].id
+                    });
+                }
+
+                return vm.approversForDropDown;
             }, function () {
                 console.log("Cannot retrieve data.");
-        });
-            
+            });
+        }
+        ;
+
+        getApprovers();
+
         adminLeaveTypesService.getLeaveTypesData().then(function (data) {
             vm.leaveTypesForDropDown = data;
-            }, function () {
-                console.log("Cannot retrieve data.");
+        }, function () {
+            console.log("Cannot retrieve data.");
         });
-        
-        console.log(vm.approversForDropDown);
-        
+
         vm.employeeFields = [
             {
                 key: 'firstName',
@@ -266,7 +279,7 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
                 }
             },
             {
-                key: 'approver',
+                key: 'approverId',
                 type: 'select',
                 templateOptions: {
                     label: 'Approver',
