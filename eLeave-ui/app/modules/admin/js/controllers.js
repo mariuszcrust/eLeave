@@ -210,7 +210,38 @@ angular.module('eLeave.admin.controllers').controller('EmployeesController', ['$
         $scope.getAll();
     }]);
 
-angular.module('eLeave.admin.controllers').controller('EditEmployeesController', ['$scope', '$uibModalInstance', 'row', 'dialog', 'EmployeesService', 'adminLeaveTypesService', function ($scope, $uibModalInstance, row, dialog, EmployeesService, adminLeaveTypesService) {
+ angular.module('eLeave.admin.controllers').config(function(formlyConfigProvider) {
+    formlyConfigProvider.setType({
+      name: 'repeatSection',
+      templateUrl: 'repeatSection.html',
+      controller: function($scope) {
+        $scope.formOptions = {formState: $scope.formState};
+        $scope.addNew = addNew;
+        
+        $scope.copyFields = copyFields;
+        
+        
+        function copyFields(fields) {
+          fields = angular.copy(fields);
+          return fields;
+        }
+        
+        function addNew() {
+          $scope.model[$scope.options.key] = $scope.model[$scope.options.key] || [];
+          var repeatsection = $scope.model[$scope.options.key];
+          var lastSection = repeatsection[repeatsection.length - 1];
+          var newsection = {};
+          if (lastSection) {
+            newsection = angular.copy(lastSection);
+          }
+          repeatsection.push(newsection);
+        }
+     
+      }
+    });
+  });
+
+angular.module('eLeave.admin.controllers').controller('EditEmployeesController', ['$scope', '$uibModalInstance', 'row', 'dialog', 'EmployeesService', 'adminLeaveTypesService', function ($scope, $uibModalInstance, row, dialog, EmployeesService, adminLeaveTypesService ) {
         var vm = this;
         vm.dialog = dialog;
         vm.employee = row.employee;
@@ -219,7 +250,7 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
 
         function getApprovers() {
             return EmployeesService.getAllWithRole().then(function (response, status) {
-
+                
                 for (var i in response.data) {
                     vm.approversForDropDown.push({
                         name: response.data[i].firstName + ' ' + response.data[i].lastName,
@@ -234,13 +265,15 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
         };
 
         function getLeaveTypes() {
-            adminLeaveTypesService.getLeaveTypesData().then(function (data) {
+            return adminLeaveTypesService.getLeaveTypesData().then(function (data) {
+                
                 for (var i in data) {
                     vm.leaveTypesForDropDown.push({
-                        name: response.data[i].leaveTypeName,
-                        value: response.data[i].id
+                        name: data[i].leaveTypeName,
+                        value: data[i].id
                     });
                 }
+                
                 return vm.leaveTypesForDropDown;
             }, function () {
                 console.log("Cannot retrieve data.");
@@ -292,6 +325,37 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
                 templateOptions: {
                     label: 'Approver',
                     options: vm.approversForDropDown
+                }
+            },
+            {
+                type: 'repeatSection',
+                key: 'annualBalances',
+                templateOptions: {
+                    btnText: 'Add another annual balance',
+                    fields: [
+                        {
+                            className: 'row',
+                            fieldGroup: [
+                                {
+                                    key: 'leaveTypeId',
+                                    type: 'select',
+                                    templateOptions: {
+                                        label: 'Choose Leave Type',
+                                        options: vm.leaveTypesForDropDown
+                                    }
+                                    
+                                },
+                                {
+                                    key: 'numberOfDays',
+                                    type: 'input',
+                                    templateOptions: {
+                                        label: 'Number of days',
+                                        placeholder: 'Enter number of days'
+                                    }
+                                }
+                            ]
+                        }
+                    ]
                 }
             }
         ];
