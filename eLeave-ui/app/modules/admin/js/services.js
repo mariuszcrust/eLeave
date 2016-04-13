@@ -40,7 +40,9 @@ angular.module('eleave.admin.services', []).factory('adminLeaveTypesService', ['
                 };
             }
         };
-    }]);
+    }]).config(function (errorHandlerProvider, $provide) {
+        errorHandlerProvider.decorate($provide, ['adminLeaveTypesService']);
+    });
 
 //angular.module('eleave.admin.services').value('LEAVE_TYPES_ENDPOINT', 'http://localhost:8084/eLeave/leaveTypes');
 angular.module('eleave.admin.services').value('LEAVE_TYPES_ENDPOINT', '/eLeave/leaveTypes/');
