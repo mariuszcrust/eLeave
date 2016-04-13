@@ -50,6 +50,9 @@ angular.module('eleave.admin.services').factory('EmployeesService', ['ELEAVE_BAS
             getAll: function () {
               return $http.get(EMPLOYEES_ENDPOINT + "?onlyActive=true");  
             },
+            getById: function (id) {
+                return $http.get(EMPLOYEES_ENDPOINT + "/" + id);
+            },
             update: function (employee, id) {
                 return $http.put(EMPLOYEES_ENDPOINT + id, employee);
             },

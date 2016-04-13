@@ -205,52 +205,119 @@ angular.module('eLeave.admin.controllers').controller('EmployeesController', ['$
                 });
             });
         };
+        
+        /*
+         *         $scope.add = function () {
+            $aside.open({
+                templateUrl: 'modules/admin/views/admin-edit-leave-types.html',
+                controller: 'EditLeaveTypeController',
+                controllerAs: 'vm',
+                placement: 'left',
+                size: 'lg',
+                resolve: {
+                    row: function () {
+                        return {};
+                    },
+                    dialog: {
+                        title: 'Add New Leave Type'
+                    }
+                }
+            }).result.then(function (entity) {
+                adminLeaveTypesService.addLeaveType(entity).then(function (leaveType) {
+                    $scope.gridOptions.data.push(leaveType);
+                });
+            });
+        };
+         */
+
+        $scope.edit = function (row) {
+            $aside.open({
+                templateUrl: 'modules/admin/views/admin-edit-employees.html',
+                controller: 'EditEmployeesController',
+                controllerAs: 'vm',
+                placement: 'left',
+                size: 'lg',
+                resolve: {
+                    row: function () {
+                        return row;
+                    },
+                    dialog: {
+                        title: 'Edit Employee'
+                    }
+                }
+            }).result.then(function (entity) {
+                EmployeesService.update(entity).then(function (employee) {
+                    $scope.gridOptions.data.filter(function (element) {
+                        return element.id === employee.id;
+                    }).forEach(function (element) {
+                        angular.extend(element, employee);
+                    });
+                });
+            });
+        };
 
         $scope.gridOptions = EmployeesService.getColumnsDefs();
         $scope.getAll();
     }]);
 
- angular.module('eLeave.admin.controllers').config(function(formlyConfigProvider) {
+angular.module('eLeave.admin.controllers').config(function (formlyConfigProvider) {
     formlyConfigProvider.setType({
-      name: 'repeatSection',
-      templateUrl: 'repeatSection.html',
-      controller: function($scope) {
-        $scope.formOptions = {formState: $scope.formState};
-        $scope.addNew = addNew;
-        
-        $scope.copyFields = copyFields;
-        
-        
-        function copyFields(fields) {
-          fields = angular.copy(fields);
-          return fields;
-        }
-        
-        function addNew() {
-          $scope.model[$scope.options.key] = $scope.model[$scope.options.key] || [];
-          var repeatsection = $scope.model[$scope.options.key];
-          var lastSection = repeatsection[repeatsection.length - 1];
-          var newsection = {};
-          if (lastSection) {
-            newsection = angular.copy(lastSection);
-          }
-          repeatsection.push(newsection);
-        }
-     
-      }
-    });
-  });
+        name: 'repeatSection',
+        templateUrl: 'repeatSection.html',
+        controller: function ($scope) {
+            $scope.formOptions = {formState: $scope.formState};
+            $scope.addNew = addNew;
 
-angular.module('eLeave.admin.controllers').controller('EditEmployeesController', ['$scope', '$uibModalInstance', 'row', 'dialog', 'EmployeesService', 'adminLeaveTypesService', function ($scope, $uibModalInstance, row, dialog, EmployeesService, adminLeaveTypesService ) {
+            $scope.copyFields = copyFields;
+
+
+            function copyFields(fields) {
+                fields = angular.copy(fields);
+                return fields;
+            }
+
+            function addNew() {
+                $scope.model[$scope.options.key] = $scope.model[$scope.options.key] || [];
+                var repeatsection = $scope.model[$scope.options.key];
+                var lastSection = repeatsection[repeatsection.length - 1];
+                var newsection = {};
+                if (lastSection) {
+                    newsection = angular.copy(lastSection);
+                }
+                repeatsection.push(newsection);
+            }
+
+        }
+    });
+});
+
+angular.module('eLeave.admin.controllers').controller('EditEmployeesController', ['$scope', '$uibModalInstance', 'row', 'dialog', 'EmployeesService', 'adminLeaveTypesService', function ($scope, $uibModalInstance, row, dialog, EmployeesService, adminLeaveTypesService) {
         var vm = this;
         vm.dialog = dialog;
-        vm.employee = row.employee;
+        
         vm.approversForDropDown = [];
         vm.leaveTypesForDropDown = [];
+        
+        function isEditMode() {
+            return angular.isDefined(row.entity);
+        }
+        
+        if(isEditMode()) {
+            vm.employee = row.entity.employee;
+            getEmployeeDetails(row.entity.employee.id);
+        }
+        
+        function getEmployeeDetails(id) {
+            EmployeesService.getById(id).then(function (response, status) {
+                vm.employee = response.data;
+            }, function () {
+                console.log("Cannot retrieve data.");
+            });
+        }
 
         function getApprovers() {
             return EmployeesService.getAllWithRole().then(function (response, status) {
-                
+
                 for (var i in response.data) {
                     vm.approversForDropDown.push({
                         name: response.data[i].firstName + ' ' + response.data[i].lastName,
@@ -266,14 +333,14 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
 
         function getLeaveTypes() {
             return adminLeaveTypesService.getLeaveTypesData().then(function (data) {
-                
+
                 for (var i in data) {
                     vm.leaveTypesForDropDown.push({
                         name: data[i].leaveTypeName,
                         value: data[i].id
                     });
                 }
-                
+
                 return vm.leaveTypesForDropDown;
             }, function () {
                 console.log("Cannot retrieve data.");
@@ -324,12 +391,14 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
                 type: 'select',
                 templateOptions: {
                     label: 'Approver',
+                    valueProp: 'value',
+                    labelProp: 'name',
                     options: vm.approversForDropDown
                 }
             },
             {
                 type: 'repeatSection',
-                key: 'annualBalances',
+                key: 'annualBalanceLeaves',
                 templateOptions: {
                     btnText: 'Add another annual balance',
                     fields: [
@@ -339,15 +408,17 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
                                 {
                                     key: 'leaveTypeId',
                                     type: 'select',
+                                    className: 'col-xs-6',
                                     templateOptions: {
-                                        label: 'Choose Leave Type',
+                                        label: 'Leave Type',
                                         options: vm.leaveTypesForDropDown
                                     }
-                                    
+
                                 },
                                 {
-                                    key: 'numberOfDays',
+                                    key: 'leaveDaysRemaining',
                                     type: 'input',
+                                    className: 'col-xs-6',
                                     templateOptions: {
                                         label: 'Number of days',
                                         placeholder: 'Enter number of days'

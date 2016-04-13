@@ -99,7 +99,7 @@ public class ITEmployeeControllerRest extends IntegrationTest {
         normalHolidays.setValidityDate(new Date());
 
         final List<AnnualBalanceLeaveDTO> leaves = Arrays.asList(normalHolidays);
-        newEmployee.setAnnualBalanceLeave(leaves);
+        newEmployee.setAnnualBalanceLeaves(leaves);
 
         mockMvc.perform(post(RestURI.EMPLOYEES).contentType(TestObjectConverter.APPLICATION_JSON_UTF8).content(TestObjectConverter.convertObjectToJsonBytes(newEmployee)))
                 .andExpect(status().isCreated())

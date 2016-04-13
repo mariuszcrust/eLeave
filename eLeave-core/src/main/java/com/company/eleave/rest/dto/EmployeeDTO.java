@@ -8,7 +8,10 @@ public class EmployeeDTO {
     private String firstName;
     private String lastName;
     private String email;
-    private List<AnnualBalanceLeaveDTO> annualBalanceLeave;
+
+    private long approverId;
+    
+    private List<AnnualBalanceLeaveDTO> annualBalanceLeaves;
 
     public long getId() {
         return id;
@@ -42,11 +45,19 @@ public class EmployeeDTO {
         this.email = email;
     }
 
-    public List<AnnualBalanceLeaveDTO> getAnnualBalanceLeave() {
-        return annualBalanceLeave;
+    public List<AnnualBalanceLeaveDTO> getAnnualBalanceLeaves() {
+        return annualBalanceLeaves;
     }
 
-    public void setAnnualBalanceLeave(List<AnnualBalanceLeaveDTO> annualBalanceLeave) {
-        this.annualBalanceLeave = annualBalanceLeave;
+    public void setAnnualBalanceLeaves(List<AnnualBalanceLeaveDTO> annualBalanceLeave) {
+        this.annualBalanceLeaves = annualBalanceLeave;
+    }
+    
+    public long getApproverId() {
+        return approverId;
+    }
+
+    public void setApproverId(long approverId) {
+        this.approverId = approverId;
     }
 }

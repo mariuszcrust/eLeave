@@ -19,7 +19,9 @@ public class EmployeeMapper implements Mapper<EmployeeDTO, Employee> {
 
     public EmployeeDTO toDto(Employee employee) {
         EmployeeDTO employeeDto = mapper.map(employee, EmployeeDTO.class);
-        employeeDto.setAnnualBalanceLeave(employee.getAnnualBalanceLeave().stream()
+        //temporary hardcoded
+        employeeDto.setApproverId(4);
+        employeeDto.setAnnualBalanceLeaves(employee.getAnnualBalanceLeave().stream()
                 .map(annualBalance -> toDto(annualBalance)).collect(Collectors.toList()));
         
         return employeeDto;
@@ -32,7 +34,7 @@ public class EmployeeMapper implements Mapper<EmployeeDTO, Employee> {
     
     public EmployeeAccountDTO toEmployeeAccountDto(Employee employee) {
         EmployeeDTO employeeDto = mapper.map(employee, EmployeeDTO.class);
-        employeeDto.setAnnualBalanceLeave(employee.getAnnualBalanceLeave().stream()
+        employeeDto.setAnnualBalanceLeaves(employee.getAnnualBalanceLeave().stream()
                 .map(annualBalance -> toDto(annualBalance)).collect(Collectors.toList()));
         UserDTO userDTO = mapper.map(employee.getUser(), UserDTO.class);
         
