@@ -98,3 +98,7 @@
 .modal-left-submit-btn {
     text-align: right;
 }
+
+.formly.row{
+  display:block;
+}

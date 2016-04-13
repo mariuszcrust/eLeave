@@ -14,6 +14,7 @@ import com.company.eleave.employee.repository.EmployeeRepository;
 import com.company.eleave.leave.repository.AnnualBalanceLeaveRepository;
 import com.company.eleave.leave.repository.TakenLeaveRepository;
 import com.company.eleave.security.entity.User;
+import com.company.eleave.security.entity.UserRole;
 import com.company.eleave.security.repository.UserRepository;
 import com.google.common.collect.Lists;
 import java.util.Date;
@@ -83,9 +84,14 @@ public class EmployeeService {
         final User user = new User();
         user.setUserName(employee.getFirstName() + "." + employee.getLastName());
         user.setPassword("password");
+        user.setActive(true);
 
         employee.setUser(user);
 
         return employeeRepo.save(employee).getId();
+    }
+
+    public List<Employee> getWithRole(UserRole.RoleName role) {
+        return employeeRepo.getWithRole(role);
     }
 }

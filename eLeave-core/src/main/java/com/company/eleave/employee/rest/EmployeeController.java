@@ -12,6 +12,7 @@ import com.company.eleave.rest.exception.ElementNotFoundException;
 import com.company.eleave.rest.exception.ErrorCode;
 import com.company.eleave.rest.exception.ExceptionMessage;
 import com.company.eleave.rest.mapper.EmployeeMapper;
+import com.company.eleave.security.entity.UserRole;
 import com.google.common.annotations.VisibleForTesting;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -64,8 +65,8 @@ public class EmployeeController {
 
         return new ResponseEntity<>(mapper.toDto(result), HttpStatus.OK);
     }
-    
-    @RequestMapping(value="/account/{id}", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/account/{id}", method = RequestMethod.GET)
     public ResponseEntity<EmployeeAccountDTO> getEmployeeAccountById(@PathVariable("id") final Long employeeId) {
         final Employee result = employeeService.getWithAccountById(employeeId);
         if (result == null) {
@@ -160,6 +161,13 @@ public class EmployeeController {
 
         employeeService.delete(employeeId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/roles", method = RequestMethod.GET)
+    public ResponseEntity<List<EmployeeDTO>> getEmployeesWithRole(@RequestParam(required = true, value = "role", defaultValue = "employee") UserRole.RoleName role) {
+        List<EmployeeDTO> employeesWithSpecifiedRole = employeeService.getWithRole(role).stream().map(employee -> mapper.toDto(employee)).collect(Collectors.toList());
+
+        return new ResponseEntity<>(employeesWithSpecifiedRole, HttpStatus.OK);
     }
 
     private Date formatDateTime(final String dateOrNull) throws ParseException {
