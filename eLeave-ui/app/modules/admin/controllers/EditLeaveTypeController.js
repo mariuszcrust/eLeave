@@ -1,5 +1,7 @@
 (function () {
-    function EditLeaveTypeController($uibModalInstance, row, dialog, adminLeaveTypesService) {
+    'use strict';
+    
+    function EditLeaveTypeController($uibModalInstance, row, dialog, leaveTypesService) {
         var leaveTypeFields = [
             {
                 key: 'leaveTypeName',
@@ -26,7 +28,7 @@
                 validators: {
                     daysAllowed: function ($viewValue, $modelValue) {
                         var value = $modelValue || $viewValue;
-                        return adminLeaveTypesService.checkDaysAllowed(value);
+                        return leaveTypesService.checkDaysAllowed(value);
                     }
                 }
             },
@@ -60,7 +62,7 @@
     }
 
     angular.module('eLeave.admin.controllers')
-            .controller('EditLeaveTypeController', ['$uibModalInstance', 'row', 'dialog', 'adminLeaveTypesService', EditLeaveTypeController]);
+            .controller('EditLeaveTypeController', ['$uibModalInstance', 'row', 'dialog', 'leaveTypesService', EditLeaveTypeController]);
 }());
 
 

@@ -13,6 +13,7 @@ angular.module('eLeave.admin.controllers').controller('EmployeesController', ['$
             $uibModal.open({
                 templateUrl: 'modules/admin/views/partials/remove-confirmation.html',
                 controller: 'RemoveConfirmationController',
+                controllerAs: 'removeConfirmationController',
                 resolve: {
                     row: function () {
                         return row;
@@ -141,7 +142,7 @@ angular.module('eLeave.admin.controllers').config(function (formlyConfigProvider
     });
 });
 
-angular.module('eLeave.admin.controllers').controller('EditEmployeesController', ['$scope', '$uibModalInstance', 'row', 'dialog', 'EmployeesService', 'adminLeaveTypesService', function ($scope, $uibModalInstance, row, dialog, EmployeesService, adminLeaveTypesService) {
+angular.module('eLeave.admin.controllers').controller('EditEmployeesController', ['$scope', '$uibModalInstance', 'row', 'dialog', 'EmployeesService', 'leaveTypesService', function ($scope, $uibModalInstance, row, dialog, EmployeesService, leaveTypesService) {
         var vm = this;
         vm.dialog = dialog;
         
@@ -182,7 +183,7 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
         };
 
         function getLeaveTypes() {
-            return adminLeaveTypesService.getLeaveTypesData().then(function (data) {
+            return leaveTypesService.getLeaveTypesData().then(function (data) {
 
                 for (var i in data) {
                     vm.leaveTypesForDropDown.push({
@@ -303,6 +304,7 @@ angular.module('eLeave.admin.controllers').controller('HolidaysController', ['$s
             $uibModal.open({
                 templateUrl: 'modules/admin/views/partials/remove-confirmation.html',
                 controller: 'RemoveConfirmationController',
+                controllerAs: 'removeConfirmationController',
                 resolve: {
                     row: function () {
                         return row;

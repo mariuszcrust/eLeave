@@ -1,5 +1,13 @@
 (function () {
-    function LeaveTypesController($uibModal, $aside, adminLeaveTypesService) {
+    'use strict';
+
+    angular
+            .module('eLeave.admin.controllers')
+            .controller('LeaveTypesController', LeaveTypesController);
+
+    LeaveTypesController.$inject = ['$uibModal', '$aside', 'leaveTypesService'];
+
+    function LeaveTypesController($uibModal, $aside, leaveTypesService) {
         var gridOptions = {
             appScopeProvider: this,
             enableSorting: false,
@@ -14,8 +22,6 @@
             ]
         };
 
-        getAllLeaveTypes();
-
         // exports
         angular.extend(this, {
             gridOptions: gridOptions,
@@ -23,6 +29,8 @@
             edit: edit,
             remove: remove
         });
+        
+        getAllLeaveTypes();
 
         function remove(row) {
             $uibModal.open({
@@ -39,7 +47,7 @@
                     }
                 }
             }).result.then(function (row) {
-                adminLeaveTypesService.removeLeaveType(row.entity.id).then(function () {
+                leaveTypesService.removeLeaveType(row.entity.id).then(function () {
                     var index = gridOptions.data.indexOf(row.entity);
                     if (index !== -1) {
                         gridOptions.data.splice(index, 1);
@@ -64,7 +72,7 @@
                     }
                 }
             }).result.then(function (entity) {
-                adminLeaveTypesService.addLeaveType(entity).then(function (leaveType) {
+                leaveTypesService.addLeaveType(entity).then(function (leaveType) {
                     gridOptions.data.push(leaveType);
                 });
             });
@@ -86,7 +94,7 @@
                     }
                 }
             }).result.then(function (entity) {
-                adminLeaveTypesService.updateLeaveType(entity).then(function (leaveType) {
+                leaveTypesService.updateLeaveType(entity).then(function (leaveType) {
                     gridOptions.data.filter(function (element) {
                         return element.id === leaveType.id;
                     }).forEach(function (element) {
@@ -97,12 +105,10 @@
         }
 
         function getAllLeaveTypes() {
-            adminLeaveTypesService.getLeaveTypesData().then(function (data) {
+            leaveTypesService.getLeaveTypesData().then(function (data) {
                 gridOptions.data = data;
             });
         }
     }
 
-    angular.module('eLeave.admin.controllers')
-            .controller('LeaveTypesController', ['$uibModal', '$aside', 'adminLeaveTypesService', LeaveTypesController]);
 }());

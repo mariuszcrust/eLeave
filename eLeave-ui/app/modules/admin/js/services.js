@@ -1,38 +1,5 @@
 'use strict'
 
-angular.module('eleave.admin.services', []).factory('adminLeaveTypesService', ['ELEAVE_BASE', 'LEAVE_TYPES_ENDPOINT', '$http', function (ELEAVE_BASE, LEAVE_TYPES_ENDPOINT, $http) {
-        return {
-            getLeaveTypesData: function () {
-                return $http.get(LEAVE_TYPES_ENDPOINT).then(function (response) {
-                    return response.data;
-                });
-            },
-            addLeaveType: function (leaveType) {
-                return $http.post(LEAVE_TYPES_ENDPOINT, leaveType).then(function (response) {
-                    return $http.get(ELEAVE_BASE + response.headers(['location'])).then(function(response){
-                        return response.data;
-                    });
-                });
-            },
-            updateLeaveType: function(leaveType) {
-                return $http.put(LEAVE_TYPES_ENDPOINT, leaveType).then(function (response) {
-                    return response.data;
-                });
-            },
-            removeLeaveType: function (id) {
-                return $http.delete(LEAVE_TYPES_ENDPOINT + id);
-            },
-            checkDaysAllowed: function (value) {
-                return (/^[0-9]+$/.test(value));             
-            }
-        };
-    }]).config(function (errorHandlerProvider, $provide) {
-        errorHandlerProvider.decorate($provide, ['adminLeaveTypesService']);
-    });
-
-//angular.module('eleave.admin.services').value('LEAVE_TYPES_ENDPOINT', 'http://localhost:8084/eLeave/leaveTypes');
-angular.module('eleave.admin.services').value('LEAVE_TYPES_ENDPOINT', '/eLeave/leaveTypes/');
-angular.module('eleave.admin.services').value('ELEAVE_BASE', '/eLeave');
 angular.module('eleave.admin.services').factory('EmployeesService', ['ELEAVE_BASE', 'EMPLOYEES_ENDPOINT', '$http', function (ELEAVE_BASE, EMPLOYEES_ENDPOINT, $http) {
         return {
             getAll: function () {
