@@ -1,6 +1,16 @@
 (function () {
+    'use strict';
+
+    angular
+            .module('eLeave.admin.controllers')
+            .controller('RemoveConfirmationController', RemoveConfirmationController);
+
+    RemoveConfirmationController.$inject = ['$uibModalInstance', 'row', 'dialog'];
+
+
     function RemoveConfirmationController($uibModalInstance, row, dialog) {
         var row = row;
+        
         angular.extend(this, {
             dialog: dialog,
             yes: yes,
@@ -15,8 +25,6 @@
             $uibModalInstance.dismiss('cancel');
         }
     }
-    angular.module('eLeave.admin.controllers')
-            .controller('RemoveConfirmationController', ['$uibModalInstance', 'row', 'dialog', RemoveConfirmationController]);
 }());
 
 

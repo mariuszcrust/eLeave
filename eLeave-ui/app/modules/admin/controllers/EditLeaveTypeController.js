@@ -1,6 +1,12 @@
 (function () {
     'use strict';
     
+    angular
+            .module('eLeave.admin.controllers')
+            .controller('EditLeaveTypeController', EditLeaveTypeController);
+
+    EditLeaveTypeController.$inject = ['$uibModalInstance', 'row', 'dialog', 'leaveTypesService'];
+
     function EditLeaveTypeController($uibModalInstance, row, dialog, leaveTypesService) {
         var leaveTypeFields = [
             {
@@ -60,9 +66,6 @@
             $uibModalInstance.dismiss('cancel');
         }
     }
-
-    angular.module('eLeave.admin.controllers')
-            .controller('EditLeaveTypeController', ['$uibModalInstance', 'row', 'dialog', 'leaveTypesService', EditLeaveTypeController]);
 }());
 
 
