@@ -1,0 +1,21 @@
+<div class="modal-header">
+    <button type="button" ng-click="editLeaveTypeController.cancel()" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">{{editLeaveTypeController.dialog.title}}</h4>
+</div>
+<div class="modal-body">
+    <form ng-submit="editLeaveTypeController.apply(editLeaveTypeController.leaveType)" name="leaveTypeForm" novalidate>
+        <formly-form model="editLeaveTypeController.leaveType" fields="editLeaveTypeController.leaveTypeFields" form="leaveTypeForm">
+            <div class="modal-left-submit-btn">
+                <button class="btn btn-success" type="submit" ng-disabled="editLeaveTypeController.leaveTypeForm.$invalid">
+                    <i class="glyphicon glyphicon-ok"></i>
+                </button>
+                <button class="btn btn-primary" type="button" ng-click="editLeaveTypeController.cancel()">
+                    <i class="glyphicon glyphicon-remove"></i>
+                </button>
+            </div>    
+        </formly-form>    
+    </form>
+</div>
+<div class="modal-footer">
+
+</div>

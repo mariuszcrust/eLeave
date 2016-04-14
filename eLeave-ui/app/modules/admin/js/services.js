@@ -24,20 +24,6 @@ angular.module('eleave.admin.services', []).factory('adminLeaveTypesService', ['
             },
             checkDaysAllowed: function (value) {
                 return (/^[0-9]+$/.test(value));             
-            },
-            getColumnsDefs: function () {
-                return {
-                    enableSorting: false,
-                    enableColumnMenus : false,
-                    enableHorizontalScrollbar: 0,
-                    enableVerticalScrollbar: 0,
-                    columnDefs: [
-                        {name: 'name', field: 'leaveTypeName'},
-                        {name: 'daysAllowed', field: 'defaultDaysAllowed'},
-                        {name: 'comment',  field: 'comment'},
-                        {name: '', field: 'id' , cellTemplate: 'modules/admin/views/partials/action-buttons.html', cellClass: 'action-buttons'}
-                    ]
-                };
             }
         };
     }]).config(function (errorHandlerProvider, $provide) {

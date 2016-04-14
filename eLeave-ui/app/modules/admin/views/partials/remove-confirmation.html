@@ -2,12 +2,12 @@
     <h3 class="modal-title">Delete confirmation</h3>
 </div>
 <div class="modal-body">
-    <p>{{dialog.message}}</p>
+    <p>{{removeConfirmationController.dialog.message}}</p>
     <ul>
-        <li><b>{{dialog.item}}</b></li>
+        <li><b>{{removeConfirmationController.dialog.item}}</b></li>
     </ul>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-danger" type="button" ng-click="yes()">Yes</button>
-    <button class="btn btn-primary" type="button" ng-click="no()">No</button>
+    <button class="btn btn-danger" type="button" ng-click="removeConfirmationController.yes()">Yes</button>
+    <button class="btn btn-primary" type="button" ng-click="removeConfirmationController.no()">No</button>
 </div>

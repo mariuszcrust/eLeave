@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" ng-controller="LeaveTypesController as leaveTypesController">
 
     <div class="panel panel-primary">
         <!-- Default panel contents -->
@@ -11,11 +11,11 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-md-10 col-md-offset-1">
-                    <div id="leaveTypesTableId" ui-grid="gridOptions" class="grid">
-                        <div class="no-records-found" ng-show="!gridOptions.data.length">No matching records found.</div>
+                    <div id="leaveTypesTableId" ui-grid="leaveTypesController.gridOptions" class="grid">
+                        <div class="no-records-found" ng-show="!leaveTypesController.gridOptions.data.length">No matching records found.</div>
                     </div>
                     <br>
-                    <button type="button" ng-click="add()" class="btn btn-xs btn-success">
+                    <button type="button" ng-click="leaveTypesController.add()" class="btn btn-xs btn-success">
                         <i class="glyphicon glyphicon-plus"></i>
                     </button>
                 </div>
