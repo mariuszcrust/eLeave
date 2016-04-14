@@ -11,6 +11,8 @@ angular.module('eLeave.admin').config(['$stateProvider', function ($stateProvide
         }).state('admin.leaveTypes', {
             url: '/leaveTypes',
             templateUrl: 'modules/admin/views/admin-leave-types.html',
+            controller: 'LeaveTypesController',
+            controllerAs: 'leaveTypesController',
             ncyBreadcrumb: {
                 label: 'Leave Types'
             }
