@@ -23,7 +23,7 @@
             <formly-form fields="fields" model="element" form="form">
             </formly-form>
             <div style="margin-bottom:20px;">
-              <button type="button" class="btn btn-sm btn-danger" ng-click="model[options.key].splice($index, 1)">
+              <button type="button" class="btn btn-sm btn-danger" ng-click="model[options.key].splice($index, 1)" ng-disabled="element.id != null">
                 Remove
               </button>
             </div>

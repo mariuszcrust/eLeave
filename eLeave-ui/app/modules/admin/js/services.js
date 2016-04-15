@@ -39,7 +39,9 @@ angular.module('eleave.admin.services').factory('EmployeesService', ['ELEAVE_BAS
                 };
             }
         };
-    }]);
+    }]).config(function (errorHandlerProvider, $provide) {
+                errorHandlerProvider.decorate($provide, ['EmployeesService']);
+            });
 angular.module('eleave.admin.services').value('EMPLOYEES_ENDPOINT', 'http://localhost:8084/eLeave/employees/');
 //angular.module('eleave.admin.services').value('GET_EMPLOYEES_ENDPOINT', '/eLeave/employees');
 

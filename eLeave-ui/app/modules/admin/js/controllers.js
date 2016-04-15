@@ -56,30 +56,6 @@ angular.module('eLeave.admin.controllers').controller('EmployeesController', ['$
                 });
             });
         };
-        
-        /*
-         *         $scope.add = function () {
-            $aside.open({
-                templateUrl: 'modules/admin/views/admin-edit-leave-types.html',
-                controller: 'EditLeaveTypeController',
-                controllerAs: 'vm',
-                placement: 'left',
-                size: 'lg',
-                resolve: {
-                    row: function () {
-                        return {};
-                    },
-                    dialog: {
-                        title: 'Add New Leave Type'
-                    }
-                }
-            }).result.then(function (entity) {
-                adminLeaveTypesService.addLeaveType(entity).then(function (leaveType) {
-                    $scope.gridOptions.data.push(leaveType);
-                });
-            });
-        };
-         */
 
         $scope.edit = function (row) {
             $aside.open({
@@ -126,6 +102,15 @@ angular.module('eLeave.admin.controllers').config(function (formlyConfigProvider
                 fields = angular.copy(fields);
                 return fields;
             }
+            
+            function clearValuesInFields(newsection) {
+                newsection.id = null;
+                newsection.leaveDaysAllowed = null;
+                newsection.leaveDaysRemaining = null;
+                newsection.leaveTypeId = null;
+                newsection.leaveTypeName = null;
+                newsection.validityDate = null;
+            }
 
             function addNew() {
                 $scope.model[$scope.options.key] = $scope.model[$scope.options.key] || [];
@@ -135,6 +120,8 @@ angular.module('eLeave.admin.controllers').config(function (formlyConfigProvider
                 if (lastSection) {
                     newsection = angular.copy(lastSection);
                 }
+                
+                clearValuesInFields(newsection);
                 repeatsection.push(newsection);
             }
 
@@ -171,8 +158,8 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
 
                 for (var i in response.data) {
                     vm.approversForDropDown.push({
-                        name: response.data[i].firstName + ' ' + response.data[i].lastName,
-                        value: response.data[i].id
+                        approverName: response.data[i].firstName + ' ' + response.data[i].lastName,
+                        approverId: response.data[i].id
                     });
                 }
 
@@ -187,8 +174,9 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
 
                 for (var i in data) {
                     vm.leaveTypesForDropDown.push({
-                        name: data[i].leaveTypeName,
-                        value: data[i].id
+                        leaveTypeName: data[i].leaveTypeName,
+                        defaultDaysAllowed: data[i].defaultDaysAllowed,
+                        leaveTypeId: data[i].id
                     });
                 }
 
@@ -242,11 +230,29 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
                 type: 'select',
                 templateOptions: {
                     label: 'Approver',
-                    valueProp: 'value',
-                    labelProp: 'name',
+                    valueProp: 'approverId',
+                    labelProp: 'approverName',
                     options: vm.approversForDropDown
                 }
             },
+            
+            /*
+             * private long id;
+    private int leaveDaysRemaining;
+    private int leaveDaysAllowed;
+
+    @JsonSerialize(using = JsonDateSerializer.class)
+    private Date validityDate;
+
+    private String leaveTypeName;
+    private long leaveTypeId;
+            
+            
+                                    leaveTypeName: data[i].leaveTypeName,
+                        defaultDaysAllowed: data[i].defaultDaysAllowed,
+                        leaveTypeId: data[i].id
+             */
+            
             {
                 type: 'repeatSection',
                 key: 'annualBalanceLeaves',
@@ -257,14 +263,29 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
                             className: 'row',
                             fieldGroup: [
                                 {
+                                    key: 'id',
+                                    type: 'text',
+                                    hideExpression: 'true'
+                                },
+                                {
                                     key: 'leaveTypeId',
                                     type: 'select',
                                     className: 'col-xs-6',
                                     templateOptions: {
                                         label: 'Leave Type',
+                                        valueProp: 'leaveTypeId',
+                                        labelProp: 'leaveTypeName',
                                         options: vm.leaveTypesForDropDown
+                                    },
+                                    expressionProperties: {
+                                        'templateOptions.disabled' : function($viewValue, $modelValue, scope)  {
+                                             console.log('disabled',$viewValue, $modelValue, scope);
+                                             
+                                            if(scope.model.id !== null) {
+                                                 return 'true';
+                                            }
+                                        }
                                     }
-
                                 },
                                 {
                                     key: 'leaveDaysRemaining',
@@ -272,6 +293,7 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
                                     className: 'col-xs-6',
                                     templateOptions: {
                                         label: 'Number of days',
+                                        valueProp: 'defaultDaysAllowed',
                                         placeholder: 'Enter number of days'
                                     }
                                 }
