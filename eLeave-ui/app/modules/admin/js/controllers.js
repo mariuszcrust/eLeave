@@ -185,6 +185,13 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
                 console.log("Cannot retrieve data.");
             });
         };
+        
+        function getDefaultDaysAllowedByLeaveTypeId(leaveTypeId) {
+            for (var i=0, iLen=vm.leaveTypesForDropDown.length; i<iLen; i++) {
+                if (vm.leaveTypesForDropDown[i].leaveTypeId === leaveTypeId) 
+                    return vm.leaveTypesForDropDown[i];
+            }
+        }
 
         getApprovers();
         getLeaveTypes();
@@ -279,10 +286,15 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
                                     },
                                     expressionProperties: {
                                         'templateOptions.disabled' : function($viewValue, $modelValue, scope)  {
-                                             console.log('disabled',$viewValue, $modelValue, scope);
-                                             
+
+                                            //disables select when for existing annual leaves
                                             if(scope.model.id !== null) {
                                                  return 'true';
+                                            } 
+                                            
+                                            if(scope.model.leaveTypeId !== null) {
+                                                var defaultDays = getDefaultDaysAllowedByLeaveTypeId(scope.model.leaveTypeId);
+                                                scope.model.leaveDaysRemaining = defaultDays.defaultDaysAllowed;
                                             }
                                         }
                                     }
@@ -293,8 +305,11 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
                                     className: 'col-xs-6',
                                     templateOptions: {
                                         label: 'Number of days',
-                                        valueProp: 'defaultDaysAllowed',
+                                        valueProp: 'leaveDaysRemaining',
                                         placeholder: 'Enter number of days'
+                                    },
+                                    expressionProperties: {
+                                        'templateOptions.valueProp': '1000'
                                     }
                                 }
                             ]
