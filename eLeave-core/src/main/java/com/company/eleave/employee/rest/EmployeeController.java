@@ -47,33 +47,20 @@ public class EmployeeController {
     private static final SimpleDateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<EmployeeAccountDTO>> getAll(@RequestParam(required = false, value = "onlyActive", defaultValue = "false") boolean onlyActive) {
-        List<EmployeeAccountDTO> result = employeeService.getAll(onlyActive).stream()
-                .map(employee -> mapper.toEmployeeAccountDto(employee))
-                .filter(employee -> onlyActive == true && employee.getUser().isActive() == true || onlyActive == false)
-                .collect(Collectors.toList());
+    public ResponseEntity<List<EmployeeDTO>> getAll(@RequestParam(required = false, value = "onlyActive", defaultValue = "false") boolean onlyActive) {
+        List<EmployeeDTO> employees = employeeService.getAll(onlyActive).stream().map(employee -> mapper.toBasicDto(employee)).collect(Collectors.toList());
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<EmployeeDTO> getById(@PathVariable("id") final Long employeeId) {
-        final Employee result = employeeService.getById(employeeId);
+        final Employee result = employeeService.getAllDetailsById(employeeId);
         if (result == null) {
             throw new ElementNotFoundException(employeeId, ErrorCode.EMPLOYEE_NOT_FOUND.getCode());
         }
 
-        return new ResponseEntity<>(mapper.toDto(result), HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/account/{id}", method = RequestMethod.GET)
-    public ResponseEntity<EmployeeAccountDTO> getEmployeeAccountById(@PathVariable("id") final Long employeeId) {
-        final Employee result = employeeService.getWithAccountById(employeeId);
-        if (result == null) {
-            throw new ElementNotFoundException(employeeId, ErrorCode.EMPLOYEE_NOT_FOUND.getCode());
-        }
-
-        return new ResponseEntity<>(mapper.toEmployeeAccountDto(result), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.toDetailsDto(result), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST)

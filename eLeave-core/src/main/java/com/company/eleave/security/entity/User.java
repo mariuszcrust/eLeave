@@ -37,9 +37,6 @@ public class User extends BaseEntity implements UserDetails {
 
   @Column(name = "password")
   private String password;
-  
-  @Column(name = "active")
-  private boolean active;
 
   @ManyToMany
   @JoinTable(name = "user_user_role",
@@ -53,14 +50,6 @@ public class User extends BaseEntity implements UserDetails {
 
   public String getPassword() {
     return password;
-  }
-  
-  public void setActive(boolean active) {
-      this.active = active;
-  }
-  
-  public boolean isActive() {
-      return active;
   }
 
   public void setPassword(String password) {

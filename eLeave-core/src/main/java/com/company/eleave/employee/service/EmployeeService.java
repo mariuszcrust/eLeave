@@ -4,7 +4,6 @@ import com.company.eleave.employee.entity.Approver;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +17,6 @@ import com.company.eleave.security.entity.UserRole;
 import com.company.eleave.security.repository.UserRepository;
 import com.google.common.collect.Lists;
 import java.util.Date;
-import org.hibernate.Hibernate;
 
 @Service("employeeService")
 @Transactional
@@ -40,14 +38,14 @@ public class EmployeeService {
     private AnnualBalanceLeaveRepository annualBalanceLeaveRepository;
 
     public List<Employee> getAll(boolean onlyActive) {
-        return Lists.newArrayList(employeeRepo.findAllEmployeesWithAccount());
+        return onlyActive == true ? Lists.newArrayList(employeeRepo.findAllActive()) : Lists.newArrayList(employeeRepo.findAll());
     }
 
     public Employee getById(Long employeeId) {
         return employeeRepo.findOne(employeeId);
     }
     
-    public Employee getWithAccountById(final Long employeeId) {
+    public Employee getAllDetailsById(final Long employeeId) {
         Employee employee = employeeRepo.findByIdWithAccount(employeeId);
         return employee;
     }
@@ -72,8 +70,11 @@ public class EmployeeService {
         //takenLeaveRepository.delete(leavesForEmployee);
         //final List<AnnualBalanceLeave> annualBalanceLeaves = annualBalanceLeaveRepository.findByEmployee(employeeId);
         //annualBalanceLeaveRepository.delete(annualBalanceLeaves);
-        Employee employee = employeeRepo.findOne(employeeId);
-        employee.getUser().setActive(false);
+        Employee employee = employeeRepo.findByIdWithAccount(employeeId);
+        User user = employee.getUser();
+        employee.setUser(null);
+        employeeRepo.save(employee);
+        userRepository.delete(user);
     }
 
     public void update(Employee currentEmployee) {
@@ -84,7 +85,7 @@ public class EmployeeService {
         final User user = new User();
         user.setUserName(employee.getFirstName() + "." + employee.getLastName());
         user.setPassword("password");
-        user.setActive(true);
+        //user.setActive(true);
 
         employee.setUser(user);
 
@@ -92,6 +93,6 @@ public class EmployeeService {
     }
 
     public List<Employee> getWithRole(UserRole.RoleName role) {
-        return employeeRepo.getWithRole(role);
+        return employeeRepo.getByRole(role);
     }
 }

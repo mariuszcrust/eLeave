@@ -31,7 +31,7 @@ end //
 
 create procedure eleavedb.createUser($name varchar(50), out $id int)
 begin
-    insert into user (version, active, user_name, password) values (1, true, $name, 'password');
+    insert into user (version, user_name, password) values (1, $name, 'password');
     set $id := last_insert_id();
 end //
 

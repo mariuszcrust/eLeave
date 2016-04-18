@@ -11,6 +11,8 @@ public class EmployeeDTO {
 
     private long approverId;
     
+    private String role;
+    
     private List<AnnualBalanceLeaveDTO> annualBalanceLeaves;
 
     public long getId() {
@@ -60,4 +62,14 @@ public class EmployeeDTO {
     public void setApproverId(long approverId) {
         this.approverId = approverId;
     }
+    
+    public void setRole(String role) {
+        this.role = role;
+    }
+    
+    public String getRole() {
+        return this.role;
+    }
+    
+    
 }

@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import com.company.eleave.employee.entity.Employee;
+import com.company.eleave.employee.repository.ApproverRepository;
 import com.company.eleave.leave.entity.AnnualBalanceLeave;
 import com.company.eleave.rest.dto.AnnualBalanceLeaveDTO;
 import com.company.eleave.rest.dto.EmployeeAccountDTO;
@@ -13,16 +14,29 @@ import com.company.eleave.rest.dto.EmployeeDTO;
 import com.company.eleave.rest.dto.UserDTO;
 
 @Component
-public class EmployeeMapper implements Mapper<EmployeeDTO, Employee> {
+public class EmployeeMapper{
 
     private ModelMapper mapper = new ModelMapper();
+    
+    @Autowired
+    private ApproverRepository approverRepository;
 
-    public EmployeeDTO toDto(Employee employee) {
+    public EmployeeDTO toBasicDto(Employee employee) {
         EmployeeDTO employeeDto = mapper.map(employee, EmployeeDTO.class);
         //temporary hardcoded
-        employeeDto.setApproverId(4);
-        employeeDto.setAnnualBalanceLeaves(employee.getAnnualBalanceLeave().stream()
-                .map(annualBalance -> toDto(annualBalance)).collect(Collectors.toList()));
+        //employeeDto.setApproverId(4);
+        //employeeDto.setAnnualBalanceLeaves(employee.getAnnualBalanceLeave().stream()
+        //        .map(annualBalance -> toDto(annualBalance)).collect(Collectors.toList()));
+        
+        return employeeDto;
+    }
+    
+    public EmployeeDTO toDetailsDto(Employee employee) {
+        EmployeeDTO employeeDto = mapper.map(employee, EmployeeDTO.class);
+        //temporary hardcoded
+        //employeeDto.setApproverId(4);
+        //employeeDto.setAnnualBalanceLeaves(employee.getAnnualBalanceLeave().stream()
+        //        .map(annualBalance -> toDto(annualBalance)).collect(Collectors.toList()));
         
         return employeeDto;
     }

@@ -57,7 +57,7 @@ public class TestEmployeeController {
         Mockito.when(employeeServiceMock.getAll(false)).thenReturn(employees);
 
         //when
-        ResponseEntity<List<EmployeeAccountDTO>> result = testedObject.getAll(false);
+        ResponseEntity<List<EmployeeDTO>> result = testedObject.getAll(false);
 
         //then
         Assert.assertEquals(HttpStatus.OK, result.getStatusCode());

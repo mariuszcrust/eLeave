@@ -142,7 +142,7 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
         
         if(isEditMode()) {
             vm.employee = row.entity.employee;
-            getEmployeeDetails(row.entity.employee.id);
+            //getEmployeeDetails(row.entity.employee.id);
         }
         
         function getEmployeeDetails(id) {

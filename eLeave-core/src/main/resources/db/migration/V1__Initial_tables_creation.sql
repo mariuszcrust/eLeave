@@ -45,7 +45,6 @@ CREATE TABLE IF NOT EXISTS `eleavedb`.`user_role_privilege` (
 CREATE TABLE IF NOT EXISTS `eleavedb`.`user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `version` bigint(20) DEFAULT NULL,
-  `active` boolean NOT NULL,
   `password` varchar(255) DEFAULT NULL,
   `user_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`))
@@ -78,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `eleavedb`.`employee` (
   `email` VARCHAR(255) NULL DEFAULT NULL,
   `first_name` VARCHAR(255) NULL DEFAULT NULL,
   `last_name` VARCHAR(255) NULL DEFAULT NULL,
-  `user_id` BIGINT(20) NOT NULL,
+  `user_id` BIGINT(20) NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_employee_user_id` (`user_id` ASC),
   CONSTRAINT `fk_employee_user_id`
