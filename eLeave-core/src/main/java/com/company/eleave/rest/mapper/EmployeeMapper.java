@@ -12,6 +12,7 @@ import com.company.eleave.rest.dto.AnnualBalanceLeaveDTO;
 import com.company.eleave.rest.dto.EmployeeAccountDTO;
 import com.company.eleave.rest.dto.EmployeeDTO;
 import com.company.eleave.rest.dto.UserDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Component
 public class EmployeeMapper{
@@ -19,14 +20,10 @@ public class EmployeeMapper{
     private ModelMapper mapper = new ModelMapper();
     
     @Autowired
-    private ApproverRepository approverRepository;
+    ApproverRepository approverRepository;
 
     public EmployeeDTO toBasicDto(Employee employee) {
         EmployeeDTO employeeDto = mapper.map(employee, EmployeeDTO.class);
-        //temporary hardcoded
-        //employeeDto.setApproverId(4);
-        //employeeDto.setAnnualBalanceLeaves(employee.getAnnualBalanceLeave().stream()
-        //        .map(annualBalance -> toDto(annualBalance)).collect(Collectors.toList()));
         
         return employeeDto;
     }

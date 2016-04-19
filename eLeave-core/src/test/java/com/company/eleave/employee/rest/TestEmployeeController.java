@@ -86,7 +86,7 @@ public class TestEmployeeController {
         employee.setFirstName("stephen");
         employee.setLastName("curry");
 
-        Mockito.when(employeeServiceMock.getById(EMPLOYEE_ID)).thenReturn(employee);
+        Mockito.when(employeeServiceMock.getAllDetailsById(EMPLOYEE_ID)).thenReturn(employee);
 
         //when
         ResponseEntity<EmployeeDTO> result = testedObject.getById(EMPLOYEE_ID);

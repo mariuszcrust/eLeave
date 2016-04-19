@@ -88,7 +88,7 @@ public class EmployeeController {
 
         employeeService.update(currentEmployee);
 
-        return new ResponseEntity<>(mapper.toDto(currentEmployee), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.toDetailsDto(currentEmployee), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}/approver", method = RequestMethod.PUT)
@@ -152,7 +152,7 @@ public class EmployeeController {
 
     @RequestMapping(value = "/roles", method = RequestMethod.GET)
     public ResponseEntity<List<EmployeeDTO>> getEmployeesWithRole(@RequestParam(required = true, value = "role", defaultValue = "employee") UserRole.RoleName role) {
-        List<EmployeeDTO> employeesWithSpecifiedRole = employeeService.getWithRole(role).stream().map(employee -> mapper.toDto(employee)).collect(Collectors.toList());
+        List<EmployeeDTO> employeesWithSpecifiedRole = employeeService.getWithRole(role).stream().map(employee -> mapper.toBasicDto(employee)).collect(Collectors.toList());
 
         return new ResponseEntity<>(employeesWithSpecifiedRole, HttpStatus.OK);
     }

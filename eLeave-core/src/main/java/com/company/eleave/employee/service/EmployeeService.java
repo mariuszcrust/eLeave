@@ -51,7 +51,7 @@ public class EmployeeService {
     }
 
     public void delete(Long employeeId) {
-        final Approver approverForDeletedElement = approverRepository.getApproverByEmployee(employeeId);
+        final Approver approverForDeletedElement = approverRepository.getApproverForEmployee(employeeId);
         final List<Approver> employeesAsignedToBeDeletedElement = approverRepository.getEmployeesAssignedToApprover(employeeId);
         final Date currentDate = new Date();
         for (final Approver approver : employeesAsignedToBeDeletedElement) {
