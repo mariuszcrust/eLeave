@@ -20,11 +20,11 @@ angular.module('eLeave.admin.controllers').controller('EmployeesController', ['$
                     },
                     dialog: {
                         message: 'Do you really want to delete this employee ?',
-                        item: row.entity.employee.firstName
+                        item: row.entity.firstName
                     }
                 }
             }).result.then(function (row) {
-                EmployeesService.delete(row.entity.employee.id).then(function (response, status) {
+                EmployeesService.delete(row.entity.id).then(function (response, status) {
                     var index = $scope.gridOptions.data.indexOf(row.entity);
                     if (index !== -1) {
                         $scope.gridOptions.data.splice(index, 1);
@@ -141,8 +141,8 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
         }
         
         if(isEditMode()) {
-            vm.employee = row.entity.employee;
-            //getEmployeeDetails(row.entity.employee.id);
+            //vm.employee = row.entity.employee;
+            getEmployeeDetails(row.entity.id);
         }
         
         function getEmployeeDetails(id) {
@@ -243,23 +243,6 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
                 }
             },
             
-            /*
-             * private long id;
-    private int leaveDaysRemaining;
-    private int leaveDaysAllowed;
-
-    @JsonSerialize(using = JsonDateSerializer.class)
-    private Date validityDate;
-
-    private String leaveTypeName;
-    private long leaveTypeId;
-            
-            
-                                    leaveTypeName: data[i].leaveTypeName,
-                        defaultDaysAllowed: data[i].defaultDaysAllowed,
-                        leaveTypeId: data[i].id
-             */
-            
             {
                 type: 'repeatSection',
                 key: 'annualBalanceLeaves',
@@ -294,7 +277,10 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
                                             
                                             if(scope.model.leaveTypeId !== null) {
                                                 var defaultDays = getDefaultDaysAllowedByLeaveTypeId(scope.model.leaveTypeId);
+                                                
+                                               
                                                 scope.model.leaveDaysRemaining = defaultDays.defaultDaysAllowed;
+                                           
                                             }
                                         }
                                     }
@@ -307,9 +293,6 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
                                         label: 'Number of days',
                                         valueProp: 'leaveDaysRemaining',
                                         placeholder: 'Enter number of days'
-                                    },
-                                    expressionProperties: {
-                                        'templateOptions.valueProp': '1000'
                                     }
                                 }
                             ]

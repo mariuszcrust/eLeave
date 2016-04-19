@@ -1,5 +1,6 @@
 package com.company.eleave.rest.mapper;
 
+import com.company.eleave.employee.entity.Approver;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -12,6 +13,7 @@ import com.company.eleave.rest.dto.AnnualBalanceLeaveDTO;
 import com.company.eleave.rest.dto.EmployeeAccountDTO;
 import com.company.eleave.rest.dto.EmployeeDTO;
 import com.company.eleave.rest.dto.UserDTO;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Component
@@ -30,10 +32,12 @@ public class EmployeeMapper{
     
     public EmployeeDTO toDetailsDto(Employee employee) {
         EmployeeDTO employeeDto = mapper.map(employee, EmployeeDTO.class);
-        //temporary hardcoded
-        //employeeDto.setApproverId(4);
-        //employeeDto.setAnnualBalanceLeaves(employee.getAnnualBalanceLeave().stream()
-        //        .map(annualBalance -> toDto(annualBalance)).collect(Collectors.toList()));
+        
+        final Date currentDate = new Date();
+        Approver approverForEmployee = approverRepository.getApproverForEmployee(employee.getId(), currentDate);
+        employeeDto.setApproverId(approverForEmployee.getApprover().getId());
+        
+        employeeDto.setAnnualBalanceLeaves(employee.getAnnualBalanceLeave().stream().map(annualBalance -> annualBalanceToDto(annualBalance)).collect(Collectors.toList()));
         
         return employeeDto;
     }
@@ -46,7 +50,7 @@ public class EmployeeMapper{
     public EmployeeAccountDTO toEmployeeAccountDto(Employee employee) {
         EmployeeDTO employeeDto = mapper.map(employee, EmployeeDTO.class);
         employeeDto.setAnnualBalanceLeaves(employee.getAnnualBalanceLeave().stream()
-                .map(annualBalance -> toDto(annualBalance)).collect(Collectors.toList()));
+                .map(annualBalance -> annualBalanceToDto(annualBalance)).collect(Collectors.toList()));
         UserDTO userDTO = mapper.map(employee.getUser(), UserDTO.class);
         
         final EmployeeAccountDTO employeeAccountDTO = new EmployeeAccountDTO();
@@ -56,7 +60,7 @@ public class EmployeeMapper{
         return employeeAccountDTO;
     }
 
-    private AnnualBalanceLeaveDTO toDto(AnnualBalanceLeave balanceLeave) {
+    private AnnualBalanceLeaveDTO annualBalanceToDto(AnnualBalanceLeave balanceLeave) {
         AnnualBalanceLeaveDTO annualBalanceDto = mapper.map(balanceLeave, AnnualBalanceLeaveDTO.class);
         annualBalanceDto.setLeaveTypeId(balanceLeave.getLeaveType().getId());
         annualBalanceDto.setLeaveTypeName(balanceLeave.getLeaveType().getLeaveTypeName());

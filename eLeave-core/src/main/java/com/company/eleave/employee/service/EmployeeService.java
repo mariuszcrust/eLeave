@@ -51,9 +51,9 @@ public class EmployeeService {
     }
 
     public void delete(Long employeeId) {
-        final Approver approverForDeletedElement = approverRepository.getApproverForEmployee(employeeId);
-        final List<Approver> employeesAsignedToBeDeletedElement = approverRepository.getEmployeesAssignedToApprover(employeeId);
         final Date currentDate = new Date();
+        final Approver approverForDeletedElement = approverRepository.getApproverForEmployee(employeeId, currentDate);
+        final List<Approver> employeesAsignedToBeDeletedElement = approverRepository.getEmployeesAssignedToApprover(employeeId, currentDate);
         for (final Approver approver : employeesAsignedToBeDeletedElement) {
             approver.setEndDate(currentDate);
             approverRepository.save(approver);
@@ -66,16 +66,15 @@ public class EmployeeService {
             approverRepository.save(newApprover);
         }
 
-        //final List<TakenLeave> leavesForEmployee = takenLeaveRepository.findTakenLeavesForEmployeeId(employeeId);
-        //takenLeaveRepository.delete(leavesForEmployee);
-        //final List<AnnualBalanceLeave> annualBalanceLeaves = annualBalanceLeaveRepository.findByEmployee(employeeId);
-        //annualBalanceLeaveRepository.delete(annualBalanceLeaves);
         Employee employee = employeeRepo.findByIdWithAccount(employeeId);
+        
         User user = employee.getUser();
         employee.setUser(null);
+        
         employeeRepo.save(employee);
         userRepository.delete(user);
     }
+    
 
     public void update(Employee currentEmployee) {
         employeeRepo.save(currentEmployee);

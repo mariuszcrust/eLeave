@@ -31,9 +31,9 @@ angular.module('eleave.admin.services').factory('EmployeesService', ['ELEAVE_BAS
                     enableHorizontalScrollbar: 0,
                     enableVerticalScrollbar: 0,
                     columnDefs: [
-                        {name: 'First name', field: 'employee.firstName'},
-                        {name: 'Last name', field: 'employee.lastName'},
-                        {name: 'email',  field: 'employee.email'},
+                        {name: 'First name', field: 'firstName'},
+                        {name: 'Last name', field: 'lastName'},
+                        {name: 'email',  field: 'email'},
                         {name: '', field: 'id' , cellTemplate: 'modules/admin/views/partials/action-buttons.html', cellClass: 'action-buttons'}
                     ]
                 };

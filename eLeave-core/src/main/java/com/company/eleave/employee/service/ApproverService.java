@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.company.eleave.employee.entity.Approver;
 import com.company.eleave.employee.repository.ApproverRepository;
+import java.util.Date;
 import java.util.List;
 
 @Service("approverService")
@@ -29,6 +30,6 @@ public class ApproverService {
     }
 
     public List<Approver> getEmployeesAssignedToApprover(Long employeeId) {
-        return approverRepo.getEmployeesAssignedToApprover(employeeId);
+        return approverRepo.getEmployeesAssignedToApprover(employeeId, new Date());
     }
 }
