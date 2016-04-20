@@ -73,3 +73,14 @@ angular.module('eleave.admin.services').factory('HolidaysService', ['HOLIDAYS_EN
 
 angular.module('eleave.admin.services').value('HOLIDAYS_ENDPOINT', 'http://localhost:8084/eLeave/holidays/');
 //angular.module('eleave.admin.services').value('HOLIDAYS_ENDPOINT', '/eLeave/holidays');
+
+angular.module('eleave.admin.services').factory('UsersService', ['USERS_ENDPOINT', '$http', function (USERS_ENDPOINT, $http) {
+        return {
+            getAllRoles: function () {
+                return $http.get(USERS_ENDPOINT + '/roles');
+            }
+        };
+}]);
+
+angular.module('eleave.admin.services').value('USERS_ENDPOINT', 'http://localhost:8084/eLeave/users/');
+//angular.module('eleave.admin.services').value('HOLIDAYS_ENDPOINT', '/eLeave/holidays');

@@ -85,7 +85,17 @@ public class UserRole extends BaseEntity implements GrantedAuthority {
     }
     
     public enum RoleName {
-        SUPER_USER, HR, APPROVER, EMPLOYEE;
+        SUPER_USER("Super User"), HR("HR Department"), APPROVER("Approver"), EMPLOYEE("Employee");
+        
+        private String labelName;
+        
+        RoleName(String labelName) {
+            this.labelName = labelName;
+        }
+        
+        public String getLabelName() {
+            return this.labelName;
+        }
     }
 
     @Override

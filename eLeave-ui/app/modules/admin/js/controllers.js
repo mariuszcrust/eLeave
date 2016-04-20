@@ -129,12 +129,13 @@ angular.module('eLeave.admin.controllers').config(function (formlyConfigProvider
     });
 });
 
-angular.module('eLeave.admin.controllers').controller('EditEmployeesController', ['$scope', '$uibModalInstance', 'row', 'dialog', 'EmployeesService', 'leaveTypesService', function ($scope, $uibModalInstance, row, dialog, EmployeesService, leaveTypesService) {
+angular.module('eLeave.admin.controllers').controller('EditEmployeesController', ['$scope', '$uibModalInstance', 'row', 'dialog', 'EmployeesService', 'leaveTypesService', 'UsersService', function ($scope, $uibModalInstance, row, dialog, EmployeesService, leaveTypesService, UsersService) {
         var vm = this;
         vm.dialog = dialog;
         
         vm.approversForDropDown = [];
         vm.leaveTypesForDropDown = [];
+        vm.rolesForDropDown = [];
         
         function isEditMode() {
             return angular.isDefined(row.entity);
@@ -186,6 +187,22 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
             });
         };
         
+        function getUserRoles() {
+            return UsersService.getAllRoles().then(function (response, status) {
+                
+                for (var i in response.data) {
+                    vm.rolesForDropDown.push({
+                        roleName: response.data[i].name,
+                        labelName: response.data[i].labelName
+                    });
+                }
+
+                return vm.rolesForDropDown;
+            }, function () {
+                console.log("Cannot retrieve data.");
+            });
+        };
+        
         function getDefaultDaysAllowedByLeaveTypeId(leaveTypeId) {
             for (var i=0, iLen=vm.leaveTypesForDropDown.length; i<iLen; i++) {
                 if (vm.leaveTypesForDropDown[i].leaveTypeId === leaveTypeId) 
@@ -195,6 +212,7 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
 
         getApprovers();
         getLeaveTypes();
+        getUserRoles();
 
         vm.employeeFields = [
             {
@@ -242,7 +260,16 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
                     options: vm.approversForDropDown
                 }
             },
-            
+            {
+                key: 'role',
+                type: 'select',
+                templateOptions: {
+                    label: 'Role',
+                    valueProp: 'roleName',
+                    labelProp: 'labelName',
+                    options: vm.rolesForDropDown
+                }
+            },
             {
                 type: 'repeatSection',
                 key: 'annualBalanceLeaves',
@@ -278,9 +305,11 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
                                             if(scope.model.leaveTypeId !== null) {
                                                 var defaultDays = getDefaultDaysAllowedByLeaveTypeId(scope.model.leaveTypeId);
                                                 
-                                               
-                                                scope.model.leaveDaysRemaining = defaultDays.defaultDaysAllowed;
-                                           
+                                                if(scope.model.leaveTypeId !== scope.model.previousLeaveTypeId) {
+                                                    scope.model.leaveDaysRemaining = defaultDays.defaultDaysAllowed;
+                                                }
+          
+                                                scope.model.previousLeaveTypeId = scope.model.leaveTypeId;
                                             }
                                         }
                                     }
