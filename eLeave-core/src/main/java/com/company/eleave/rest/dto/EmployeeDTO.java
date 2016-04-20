@@ -11,10 +11,10 @@ public class EmployeeDTO {
 
     private long approverId;
     
-    private String role;
+    private List<UserRoleDTO> roles;
     
     private List<AnnualBalanceLeaveDTO> annualBalanceLeaves;
-
+    
     public long getId() {
         return id;
     }
@@ -63,12 +63,12 @@ public class EmployeeDTO {
         this.approverId = approverId;
     }
     
-    public void setRole(String role) {
-        this.role = role;
+    public List<UserRoleDTO> getRoles() {
+        return roles;
     }
-    
-    public String getRole() {
-        return this.role;
+
+    public void setRoles(List<UserRoleDTO> roles) {
+        this.roles = roles;
     }
     
     

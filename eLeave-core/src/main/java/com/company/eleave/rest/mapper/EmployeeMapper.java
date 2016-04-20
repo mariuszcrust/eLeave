@@ -13,7 +13,9 @@ import com.company.eleave.rest.dto.AnnualBalanceLeaveDTO;
 import com.company.eleave.rest.dto.EmployeeAccountDTO;
 import com.company.eleave.rest.dto.EmployeeDTO;
 import com.company.eleave.rest.dto.UserDTO;
+import com.company.eleave.rest.dto.UserRoleDTO;
 import java.util.Date;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Component
@@ -23,6 +25,9 @@ public class EmployeeMapper{
     
     @Autowired
     ApproverRepository approverRepository;
+    
+    @Autowired
+    RoleMapper roleMapper;
 
     public EmployeeDTO toBasicDto(Employee employee) {
         EmployeeDTO employeeDto = mapper.map(employee, EmployeeDTO.class);
@@ -38,6 +43,7 @@ public class EmployeeMapper{
         employeeDto.setApproverId(approverForEmployee.getApprover().getId());
         
         employeeDto.setAnnualBalanceLeaves(employee.getAnnualBalanceLeave().stream().map(annualBalance -> annualBalanceToDto(annualBalance)).collect(Collectors.toList()));
+        employeeDto.setRoles(employee.getUser().getUserRoles().stream().map(role -> roleMapper.toDto(role)).collect(Collectors.toList()));
         
         return employeeDto;
     }

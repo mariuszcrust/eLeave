@@ -6,10 +6,13 @@
 package com.company.eleave.security.rest;
 
 import com.company.eleave.rest.dto.UserRoleDTO;
+import com.company.eleave.rest.mapper.RoleMapper;
 import com.company.eleave.security.entity.UserRole;
+import com.company.eleave.security.service.RolesService;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,15 +26,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/users")
 public class UserController {
+    
+    @Autowired
+    RolesService rolesService;
+    
+    @Autowired
+    RoleMapper mapper;
 
     @RequestMapping(value = "/roles", method = RequestMethod.GET)
     public ResponseEntity<List<UserRoleDTO>> getAll() {   
-        List<UserRoleDTO> roles = Arrays.asList(UserRole.RoleName.values()).stream().map(role -> userRoleToDto(role)).collect(Collectors.toList());
+        List<UserRoleDTO> roles = rolesService.getAll().stream().map(role -> mapper.toDto(role)).collect(Collectors.toList());
 
         return new ResponseEntity<>(roles, HttpStatus.OK);
-    }
-    
-    private UserRoleDTO userRoleToDto(UserRole.RoleName role) {
-        return new UserRoleDTO(role.name(), role.getLabelName());
     }
 }

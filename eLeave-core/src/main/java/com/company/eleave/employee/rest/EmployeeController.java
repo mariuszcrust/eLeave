@@ -5,7 +5,6 @@ import com.company.eleave.employee.entity.Employee;
 import com.company.eleave.employee.service.ApproverService;
 import com.company.eleave.employee.service.EmployeeService;
 import com.company.eleave.rest.dto.ApproverDTO;
-import com.company.eleave.rest.dto.EmployeeAccountDTO;
 import com.company.eleave.rest.dto.EmployeeDTO;
 import com.company.eleave.rest.exception.BadParameterException;
 import com.company.eleave.rest.exception.ElementNotFoundException;

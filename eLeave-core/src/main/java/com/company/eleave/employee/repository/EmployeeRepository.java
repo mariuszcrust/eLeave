@@ -19,7 +19,7 @@ public interface EmployeeRepository extends CrudRepository<Employee, Long>{
   @Query("SELECT e FROM Employee e INNER JOIN e.user u")
   List<Employee> findAllActive();
 
-  @Query("SELECT e FROM Employee e JOIN FETCH e.user u WHERE e.id = :employeeId")
+  @Query("SELECT e FROM Employee e JOIN FETCH e.user u JOIN FETCH u.userRoles WHERE e.id = :employeeId")
   public Employee findByIdWithAccount(final @Param("employeeId") Long employeeId);
   
   @Query("SELECT e FROM Employee e JOIN FETCH e.user u JOIN FETCH u.userRoles ur WHERE ur.roleName = :role")
