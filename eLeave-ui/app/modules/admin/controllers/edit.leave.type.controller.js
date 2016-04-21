@@ -5,7 +5,7 @@
             .module('eLeave.admin.controllers')
             .controller('EditLeaveTypeController', EditLeaveTypeController);
 
-    EditLeaveTypeController.$inject = ['$uibModalInstance', 'row', 'dialog', 'leaveTypesService'];
+    EditLeaveTypeController.$inject = ['$uibModalInstance','row', 'dialog', 'leaveTypesService'];
 
     function EditLeaveTypeController($uibModalInstance, row, dialog, leaveTypesService) {
         var leaveTypeFields = [
