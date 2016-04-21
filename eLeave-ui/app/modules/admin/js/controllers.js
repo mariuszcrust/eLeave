@@ -127,7 +127,38 @@ angular.module('eLeave.admin.controllers').config(function (formlyConfigProvider
 
         }
     });
+    
+
+      formlyConfigProvider.setType({
+        name: 'ui-select-multiple',
+        extends: 'select',
+        templateUrl: 'ui-select-multiple.html',
+                controller: function ($scope) {
+            $scope.formOptions = {formState: $scope.formState};
+
+            $scope.copyFields = copyFields;
+
+
+            function copyFields(fields) {
+                fields = angular.copy(fields);
+                return fields;
+            }
+
+        }
+    });
+
 });
+
+
+/*
+angular.module('eLeave.admin.controllers', ['ngSanitize', 'formly', 'formlyBootstrap', 'ui.select'], function config(formlyConfigProvider) {
+  formlyConfigProvider.setType({
+        name: 'ui-select-multiple',
+        extends: 'select',
+        templateUrl: 'ui-select-multiple.html'
+    });
+});
+*/
 
 angular.module('eLeave.admin.controllers').controller('EditEmployeesController', ['$scope', '$uibModalInstance', 'row', 'dialog', 'EmployeesService', 'leaveTypesService', 'UsersService', function ($scope, $uibModalInstance, row, dialog, EmployeesService, leaveTypesService, UsersService) {
         var vm = this;
@@ -192,8 +223,8 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
                 
                 for (var i in response.data) {
                     vm.rolesForDropDown.push({
-                        roleName: response.data[i].name,
-                        labelName: response.data[i].labelName
+                        id: response.data[i].id,
+                        roleName: response.data[i].name
                     });
                 }
 
@@ -260,13 +291,32 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
                     options: vm.approversForDropDown
                 }
             },
+            
+            /*
+             * {
+        key: 'multipleOption',
+        type: 'ui-select-multiple',
+        templateOptions: {
+          optionsAttr: 'bs-options',
+          ngOptions: 'option[to.valueProp] as option in to.options | filter: $select.search',
+          label: 'Multiple Select',
+          valueProp: 'id',
+          labelProp: 'label',
+          placeholder: 'Select options',
+          options: testData
+        }
+             */
+            
             {
-                key: 'role',
-                type: 'select',
+                key: 'roles',
+                type: 'ui-select-multiple',
                 templateOptions: {
-                    label: 'Role',
-                    valueProp: 'roleName',
-                    labelProp: 'labelName',
+                    optionsAttr: 'bs-options',
+                    ngOptions: 'option[to.valueProp] as option in to.options | filter: $select.search',
+                    label: 'Roles',
+                    valueProp: 'id',
+                    labelProp: 'roleName',
+                    placeholder: 'roleName',
                     options: vm.rolesForDropDown
                 }
             },
