@@ -213,7 +213,8 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
                 for (var i in response.data) {
                     vm.rolesForDropDown.push({
                         id: response.data[i].id,
-                        name: response.data[i].name
+                        name: response.data[i].name,
+                        comments: response.data[i].comments
                     });
                 }
 
