@@ -16,12 +16,13 @@
         </formly-form>    
     </form>  
 </div>
-    <script type="text/ng-template" id="ui-select-multiple.html">
-        <ui-select multiple data-ng-model="model[options.key]" ng-required="{{to.required}}" theme="bootstrap">
-        <ui-select-match placeholder="{{ to.placeholder }}">{{$item[to.labelProp]}}</ui-select-match>
+<script type="text/ng-template" id="ui-select-multiple.html">
+    <ui-select multiple data-ng-model="model[options.key]">
+        <ui-select-match placeholder="{{ to.valueProp }}">{{$item[to.labelProp]}}</ui-select-match>
         <ui-select-choices data-repeat="{{ to.ngOptions }}">
             <div ng-bind-html="option[to.labelProp] | highlight: $select.search"></div>
         </ui-select-choices>
+    </ui-select>
     </script>
     <script type="text/ng-template" id="repeatSection.html">
       <div>

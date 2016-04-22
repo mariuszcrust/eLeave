@@ -149,17 +149,6 @@ angular.module('eLeave.admin.controllers').config(function (formlyConfigProvider
 
 });
 
-
-/*
-angular.module('eLeave.admin.controllers', ['ngSanitize', 'formly', 'formlyBootstrap', 'ui.select'], function config(formlyConfigProvider) {
-  formlyConfigProvider.setType({
-        name: 'ui-select-multiple',
-        extends: 'select',
-        templateUrl: 'ui-select-multiple.html'
-    });
-});
-*/
-
 angular.module('eLeave.admin.controllers').controller('EditEmployeesController', ['$scope', '$uibModalInstance', 'row', 'dialog', 'EmployeesService', 'leaveTypesService', 'UsersService', function ($scope, $uibModalInstance, row, dialog, EmployeesService, leaveTypesService, UsersService) {
         var vm = this;
         vm.dialog = dialog;
@@ -224,7 +213,7 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
                 for (var i in response.data) {
                     vm.rolesForDropDown.push({
                         id: response.data[i].id,
-                        roleName: response.data[i].name
+                        name: response.data[i].name
                     });
                 }
 
@@ -291,22 +280,6 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
                     options: vm.approversForDropDown
                 }
             },
-            
-            /*
-             * {
-        key: 'multipleOption',
-        type: 'ui-select-multiple',
-        templateOptions: {
-          optionsAttr: 'bs-options',
-          ngOptions: 'option[to.valueProp] as option in to.options | filter: $select.search',
-          label: 'Multiple Select',
-          valueProp: 'id',
-          labelProp: 'label',
-          placeholder: 'Select options',
-          options: testData
-        }
-             */
-            
             {
                 key: 'roles',
                 type: 'ui-select-multiple',
@@ -315,8 +288,8 @@ angular.module('eLeave.admin.controllers').controller('EditEmployeesController',
                     ngOptions: 'option[to.valueProp] as option in to.options | filter: $select.search',
                     label: 'Roles',
                     valueProp: 'id',
-                    labelProp: 'roleName',
-                    placeholder: 'roleName',
+                    labelProp: 'name',
+                    placeholder: 'name',
                     options: vm.rolesForDropDown
                 }
             },

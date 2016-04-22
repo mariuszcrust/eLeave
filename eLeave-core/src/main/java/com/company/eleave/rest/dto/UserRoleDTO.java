@@ -13,8 +13,7 @@ public class UserRoleDTO {
 
     private long id;
     private String name;
-    //private String labelName;
-    private String comments;
+    private String comment;
 
     public long getId() {
         return id;
@@ -32,22 +31,12 @@ public class UserRoleDTO {
         this.name = name;
     }
 
-    /*
-    public String getLabelName() {
-        return labelName;
+    public String getComment() {
+        return comment;
     }
 
-    public void setLabelName(String labelName) {
-        this.labelName = labelName;
-    }
-*/
-
-    public String getComments() {
-        return comments;
-    }
-
-    public void setComments(String comments) {
-        this.comments = comments;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
 
