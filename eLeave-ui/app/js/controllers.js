@@ -1,3 +1,5 @@
-'use strict'
-
-angular.module('eLeave.controllers',[]);
+(function(){
+    'use strict';
+    
+    angular.module('eLeave.controllers',[]);
+}());

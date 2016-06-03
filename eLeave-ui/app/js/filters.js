@@ -1,3 +1,5 @@
-'use strict'
+(function(){
+    'use strict';
 
-angular.module('eLeave.filters',[]);
+    angular.module('eLeave.filters',[]);
+}());
