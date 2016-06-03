@@ -6,6 +6,7 @@
                 url: '/home',
                 templateUrl: 'modules/home/views/home.html',
                 controller: 'HomeController',
+                controllerAs: 'homeController',
                 ncyBreadcrumb: {
                     label: 'Home'
                 }

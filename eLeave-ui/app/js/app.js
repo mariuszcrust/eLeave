@@ -7,6 +7,8 @@
         'ngAside',
         'formly',
         'formlyBootstrap',
+        'ui.select',
+        'ngSanitize',
         'ui.grid',
         'ui.grid.edit',
         'ncy-angular-breadcrumb',
@@ -27,6 +29,7 @@
     angular.module('eLeave').run(['$state', '$urlRouter', function ($state, $urlRouter) {
             $state.transitionTo('home');
             $urlRouter.listen();
+
         }]);
 
 }());
