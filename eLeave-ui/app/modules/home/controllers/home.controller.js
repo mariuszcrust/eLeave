@@ -41,9 +41,9 @@
                         }
                     },
                     {
-                        className: 'col-xs-4',
+                        className: 'col-xs-2',
                         key: 'leaveBalance',
-                        type: 'input',
+                        type: 'readonly-input',
                         templateOptions: {
                             label: 'Balance'
                         }
@@ -76,7 +76,7 @@
                     {
                         className: 'col-xs-2',
                         key: 'takenDays',
-                        type: 'input',
+                        type: 'readonly-input',
                         templateOptions: {
                             label: 'Days'
                         }

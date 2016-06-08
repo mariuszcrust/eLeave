@@ -10,6 +10,12 @@
             formlyConfig.extras.removeChromeAutoComplete = true;
 
             formlyConfig.setType({
+                name: 'readonly-input',
+                extends: 'input',
+                templateUrl: 'readonly-input.html'
+            });
+
+            formlyConfig.setType({
                 name: 'ui-select-single',
                 extends: 'select',
                 templateUrl: 'ui-select-single.html'
