@@ -88,7 +88,7 @@
                             label: 'Calculate days',
                             text: 'Calculate',
                             btnType: 'info',
-                            onClick: '',
+                            onClick: calculateDays,
                             description: 'Calculate leave days.'
                         } 
                     }
@@ -103,7 +103,8 @@
             leaveRequestFields: leaveRequestFields,
             annualBalanceLeaves: annualBalanceLeaves,
             model: model,
-            displayBalance: displayBalance
+            displayBalance: displayBalance,
+            calculateDays: calculateDays
         });
 
         function getEmployeeLeaves(employeeId) {
@@ -117,6 +118,13 @@
                 return element.leaveTypeId === model.leaveTypeId;
             });
             model.leaveBalance = annualBalanceLeave ? annualBalanceLeave.leaveDaysRemaining : 0;
+        }
+        
+        function calculateDays() {
+            console.log("From " + model.fromDate.toISOString() + " to " + model.toDate.toISOString());
+            var oneDay = 24 * 60 * 60 * 1000;
+            model.takenDays = Math.round(Math.abs((model.toDate.getTime() - model.fromDate.getTime()) / oneDay));
+            
         }
     }
 

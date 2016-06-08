@@ -70,7 +70,7 @@
                     ngModelAttrs: ngModelAttrs,
                     templateOptions: {
                         datepickerOptions: {
-                            format: 'MM.dd.yyyy',
+                            format: 'dd-MM-yyyy',
                             initDate: new Date()
                         }
                     }
