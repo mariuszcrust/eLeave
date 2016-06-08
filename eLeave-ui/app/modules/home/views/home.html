@@ -4,7 +4,7 @@
         <p>This will be a awesome e-leave application.</p>    
     </div>
     <form name="leaveRequestForm" novalidate>
-        <formly-form model="homeController.leaveRequest" fields="homeController.leaveRequestFields" form="leaveRequestForm">
+        <formly-form model="homeController.model" fields="homeController.leaveRequestFields" form="leaveRequestForm">
             <div class="modal-left-submit-btn">
                 <button class="btn btn-success" type="submit" ng-disabled="homeController.leaveTypeForm.$invalid">
                     <i class="glyphicon glyphicon-ok"></i>

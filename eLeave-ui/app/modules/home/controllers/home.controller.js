@@ -8,60 +8,115 @@
     function HomeController(homeService) {
         var annualBalanceLeaves = [
             {
-                leaveTypeId : 1,
-                leaveTypeName : 'Annual Leave'
+                leaveTypeId: 3,
+                leaveTypeName: 'Annual Leave',
+                leaveDaysRemaining: 20
             },
             {
-                leaveTypeId : 2,
-                leaveTypeName : 'Other Leave'
+                leaveTypeId: 4,
+                leaveTypeName: 'Other Leave',
+                leaveDaysRemaining: 12
             }
         ];
+
+        var model = {};
+
         var leaveRequestFields = [
             {
-                key: 'leaveType',
-                type: 'ui-select-single',
-                templateOptions: {
-                    optionsAttr: 'bs-options',
-                    label: 'Annual Balance Leave',
-                    valueProp: 'leaveTypeId',
-                    labelProp: 'leaveTypeName',
-                    placeholder: 'Select Annual Balance Leave',
-                    description: 'Select Annual Balance Leave wich will be charged for your leave of absence.',
-                    options: annualBalanceLeaves
-                }
+                className: 'row',
+                fieldGroup: [
+                    {
+                        className: 'col-xs-8',
+                        key: 'leaveTypeId',
+                        type: 'ui-select-single',
+                        templateOptions: {
+                            optionsAttr: 'bs-options',
+                            label: 'Annual Balance Leave',
+                            onChange: displayBalance,
+                            valueProp: 'leaveTypeId',
+                            labelProp: 'leaveTypeName',
+                            placeholder: 'Select Annual Balance Leave',
+                            description: 'Select Annual Balance Leave wich will be charged for your leave of absence.',
+                            options: annualBalanceLeaves
+                        }
+                    },
+                    {
+                        className: 'col-xs-4',
+                        key: 'leaveBalance',
+                        type: 'input',
+                        templateOptions: {
+                            label: 'Balance'
+                        }
+                    }
+                ]
             },
             {
-                key: 'fromDate',
-                type: 'datepicker',
-                templateOptions: {
-                    label: 'From',
-                    type: 'text',
-                    datepickerPopup: 'dd-MM-yyyy'
-                }
-            },
-            {
-                key: 'toDate',
-                type: 'datepicker',
-                templateOptions: {
-                    label: 'To',
-                    type: 'text',
-                    datepickerPopup: 'dd-MM-yyyy'
-                }
+                className: 'row',
+                fieldGroup: [
+                    {
+                        className: 'col-xs-4',
+                        key: 'fromDate',
+                        type: 'datepicker',
+                        templateOptions: {
+                            label: 'From',
+                            type: 'text',
+                            datepickerPopup: 'dd-MM-yyyy'
+                        }
+                    },
+                    {
+                        className: 'col-xs-4',
+                        key: 'toDate',
+                        type: 'datepicker',
+                        templateOptions: {
+                            label: 'To',
+                            type: 'text',
+                            datepickerPopup: 'dd-MM-yyyy'
+                        }
+                    },
+                    {
+                        className: 'col-xs-2',
+                        key: 'takenDays',
+                        type: 'input',
+                        templateOptions: {
+                            label: 'Days'
+                        }
+                    },
+                    {
+                        className: 'col-xs-2',
+                        type: 'button',
+                        templateOptions: {
+                            label: 'Calculate days',
+                            text: 'Calculate',
+                            btnType: 'info',
+                            onClick: '',
+                            description: 'Calculate leave days.'
+                        } 
+                    }
+                ]
             }
         ];
-        
+
         getEmployeeLeaves(1);
-        
+
         // exports
         angular.extend(this, {
             leaveRequestFields: leaveRequestFields,
-            annualBalanceLeaves: annualBalanceLeaves
+            annualBalanceLeaves: annualBalanceLeaves,
+            model: model,
+            displayBalance: displayBalance
         });
-        
+
         function getEmployeeLeaves(employeeId) {
-            homeService.getEmployeeAnnualBalanceLeaves(employeeId).then(function(data) {
+            homeService.getEmployeeAnnualBalanceLeaves(employeeId).then(function (data) {
                 annualBalanceLeaves = data;
             });
+        }
+
+        function displayBalance() {
+            var annualBalanceLeave = annualBalanceLeaves.find(function(element){
+                return element.leaveTypeId === model.leaveTypeId;
+            });
+            model.leaveBalance = annualBalanceLeave ? annualBalanceLeave.leaveDaysRemaining : 0;
         }
     }
 

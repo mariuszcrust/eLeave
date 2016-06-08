@@ -90,6 +90,31 @@
                 });
             }
 
+            formlyConfig.setType({
+                name: 'button',
+                template: '<div><button type="{{::to.type}}" class="btn btn-{{::to.btnType}}" ng-click="onClick($event)">{{to.text}}</button></div>',
+                wrapper: ['bootstrapLabel'],
+                defaultOptions: {
+                    templateOptions: {
+                        btnType: 'default',
+                        type: 'button'
+                    },
+                    extras: {
+                        skipNgModelAttrsManipulator: true // <-- perf optimazation because this type has no ng-model
+                    }
+                },
+                controller: function ($scope) {
+                    $scope.onClick = onClick;
+
+                    function onClick($event) {
+                        if (angular.isString($scope.to.onClick)) {
+                            return $scope.$eval($scope.to.onClick, {$event: $event});
+                        } else {
+                            return $scope.to.onClick($event);
+                        }
+                    }
+                }
+            });
         }]);
 }());
 
